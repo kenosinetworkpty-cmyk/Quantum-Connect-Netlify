@@ -3,14 +3,15 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Header } from './components/Header';
 import { Home } from './components/Home';
-import { WebHosting } from './components/WebHosting';
-import { Voip } from './components/Voip';
 import { Store } from './components/Store';
+import { Webhosting } from './components/Webhosting';
+import { Voip } from './components/Voip';
 import { StoreCheckout } from './components/StoreCheckout';
 import { Checkout } from './components/Checkout';
 import { Terms } from './components/Terms';
 import { Confirmation } from './components/Confirmation';
 import { Footer } from './components/Footer';
+import { PowerSolutions } from './components/PowerSolutions';
 import { Address, AvailabilityResult, Package, Lead, Provider } from './types';
 import { getPackages, submitLead, PROVIDERS } from './services/mockApi';
 
@@ -90,9 +91,10 @@ const App: React.FC = () => {
             />
           }
         />
-        <Route path="/web-hosting" element={<WebHosting />} />
-        <Route path="/voip" element={<Voip />} />
         <Route path="/store" element={<Store />} />
+        <Route path="/webhosting" element={<Webhosting />} />
+        <Route path="/voip" element={<Voip />} />
+        <Route path="/power-solutions" element={<PowerSolutions />} />
         <Route path="/store-checkout/:productId" element={<StoreCheckout />} />
         <Route path="/checkout/:packageName" element={<Checkout />} />
         <Route path="/terms" element={<Terms />} />
