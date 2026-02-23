@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Page Not Found - QuantumConnect</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              brandBlue: '#0a254e',
+              brandGreen: '#00b87c',
+              brandRed: '#e60000',
+            }
+          }
+        }
+      }
+    </script>
+</head>
+<body class="bg-slate-50 font-sans">
+    <div class="min-h-screen flex flex-col items-center justify-center text-center px-4">
+        <h1 class="text-8xl md:text-9xl font-black text-brandBlue" style="color: #0a254e;">404</h1>
+        <p class="mt-4 text-xl md:text-2xl font-semibold text-slate-700">Oops! Page Not Found</p>
+        <p class="mt-2 max-w-md text-slate-500">The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
+        <div class="mt-8">
+            <a href="/" class="px-8 py-4 bg-brandBlue text-white font-bold rounded-lg shadow-lg hover:shadow-xl hover:bg-opacity-90 transition-all duration-300" style="background-color: #0a254e;">
+                Go to Homepage
+            </a>
+        </div>
+        <div class="mt-16 text-sm text-slate-400">
+            <p>&copy; QuantumConnect</p>
+        </div>
+    </div>
+</body>
+</html>
