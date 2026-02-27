@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Button } from './ui/Button';
-import { Lock, ArrowRight } from 'lucide-react';
+import { Lock, ArrowRight, CheckCircle } from 'lucide-react';
 
 const products = {
   p1: { name: 'Compact Power Station', price: 3499 },
@@ -12,11 +12,41 @@ const products = {
 
 type ProductId = keyof typeof products;
 
+const ProgressIndicator: React.FC<{ step: number }> = ({ step }) => (
+    <div className="w-full mb-12">
+      <div className="flex items-center">
+        <div className="flex items-center text-blue-600 relative">
+          <div className="rounded-full transition duration-500 ease-in-out h-12 w-12 border-2 border-blue-600 flex items-center justify-center">
+            {step > 1 ? <CheckCircle size={24} /> : "1"}
+          </div>
+          <div className="absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-blue-600">Your Details</div>
+        </div>
+        <div className={`flex-auto border-t-2 transition duration-500 ease-in-out ${step > 1 ? 'border-blue-600' : 'border-gray-300'}`}></div>
+        <div className="flex items-center text-gray-500 relative">
+          <div className={`rounded-full transition duration-500 ease-in-out h-12 w-12 border-2 flex items-center justify-center ${step > 1 ? 'border-blue-600 text-blue-600' : 'border-gray-300'}`}>
+            {step > 2 ? <CheckCircle size={24} /> : "2"}
+          </div>
+          <div className={`absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase ${step > 1 ? 'text-blue-600' : 'text-gray-500'}`}>Payment</div>
+        </div>
+        <div className={`flex-auto border-t-2 transition duration-500 ease-in-out ${step > 2 ? 'border-blue-600' : 'border-gray-300'}`}></div>
+        <div className="flex items-center text-gray-500 relative">
+          <div className={`rounded-full transition duration-500 ease-in-out h-12 w-12 border-2 flex items-center justify-center ${step > 2 ? 'border-blue-600 text-blue-600' : 'border-gray-300'}`}>
+            <CheckCircle size={24} />
+          </div>
+          <div className={`absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase ${step > 2 ? 'text-blue-600' : 'text-gray-500'}`}>Confirmation</div>
+        </div>
+      </div>
+    </div>
+  );
+
+
 export const StoreCheckout: React.FC = () => {
   const { productId } = useParams<{ productId: ProductId }>();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('card');
+
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -31,6 +61,10 @@ export const StoreCheckout: React.FC = () => {
     cardNumber: '',
     cardExpiry: '',
     cardCVC: '',
+    accountHolder: '',
+    accountNumber: '',
+    bank: '',
+    branchCode: ''
   });
 
   const product = productId ? products[productId] : null;
@@ -52,8 +86,9 @@ export const StoreCheckout: React.FC = () => {
       alert('Please accept the Terms and Conditions to complete your purchase.');
       return;
     }
+    setStep(3);
     console.log('Store Order submitted!', { productId, ...formData });
-    navigate('/confirmation'); // Assuming a generic confirmation page
+    navigate('/confirmation');
   };
 
   if (!product) {
@@ -65,6 +100,7 @@ export const StoreCheckout: React.FC = () => {
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-16 gap-y-12">
           <div className="lg:col-span-2 bg-white p-8 rounded-2xl shadow-lg">
+            <ProgressIndicator step={step} />
             {step === 1 ? (
               <form onSubmit={handleNextStep}>
                 <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-2">Step 1: Your Details</h2>
@@ -81,7 +117,7 @@ export const StoreCheckout: React.FC = () => {
                 </div>
                 <div className="pt-10">
                   <Button type="submit" className="w-full flex items-center justify-center gap-2" size="lg">
-                    Continue to Checkout <ArrowRight size={18} />
+                    Continue Checkout <ArrowRight size={18} />
                   </Button>
                 </div>
               </form>
@@ -101,10 +137,49 @@ export const StoreCheckout: React.FC = () => {
                     </div>
                   </div>
                   <div className="border-b border-gray-900/10 pb-12">
-                    <h3 className="text-lg font-semibold leading-7 text-gray-900">Payment Details</h3>
-                    <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
-                       {/* Payment fields... */}
+                    <h3 className="text-lg font-semibold leading-7 text-gray-900">Payment Method</h3>
+                    <div className="mt-4 flex gap-x-6">
+                        <div className="flex items-center">
+                            <input id="card" name="paymentMethod" type="radio" value="card" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod('card')} className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-600" />
+                            <label htmlFor="card" className="ml-3 block text-sm font-medium leading-6 text-gray-900">Credit/Debit Card</label>
+                        </div>
+                        <div className="flex items-center">
+                            <input id="debit" name="paymentMethod" type="radio" value="debit" checked={paymentMethod === 'debit'} onChange={() => setPaymentMethod('debit')} className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-600" />
+                            <label htmlFor="debit" className="ml-3 block text-sm font-medium leading-6 text-gray-900">Debit Order</label>
+                        </div>
                     </div>
+
+                    {paymentMethod === 'card' ? (
+                        <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
+                            <div className="sm:col-span-4">
+                               <InputField label="Name on Card" name="cardName" value={formData.cardName} onChange={handleInputChange} />
+                            </div>
+                            <div className="sm:col-span-4">
+                                <InputField label="Card Number" name="cardNumber" value={formData.cardNumber} onChange={handleInputChange} />
+                            </div>
+                            <div className="sm:col-span-2">
+                                <InputField label="Expiry (MM/YY)" name="cardExpiry" value={formData.cardExpiry} onChange={handleInputChange} />
+                            </div>
+                            <div className="sm:col-span-2">
+                                <InputField label="CVC" name="cardCVC" value={formData.cardCVC} onChange={handleInputChange} />
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
+                             <div className="sm:col-span-4">
+                               <InputField label="Account Holder Name" name="accountHolder" value={formData.accountHolder} onChange={handleInputChange} />
+                            </div>
+                            <div className="sm:col-span-4">
+                                <InputField label="Account Number" name="accountNumber" value={formData.accountNumber} onChange={handleInputChange} />
+                            </div>
+                            <div className="sm:col-span-2">
+                                <InputField label="Bank" name="bank" value={formData.bank} onChange={handleInputChange} />
+                            </div>
+                            <div className="sm:col-span-2">
+                                <InputField label="Branch Code" name="branchCode" value={formData.branchCode} onChange={handleInputChange} />
+                            </div>
+                        </div>
+                    )}
                   </div>
                 </div>
                 <div className="pt-10">
@@ -144,7 +219,7 @@ export const StoreCheckout: React.FC = () => {
   );
 };
 
-// Reusable InputField component from previous implementation
+// Reusable InputField component
 interface InputFieldProps {
   label: string;
   name: string;

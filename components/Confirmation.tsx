@@ -1,73 +1,59 @@
 
-import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { CheckCircle, ShieldCheck } from 'lucide-react';
 import { Button } from './ui/Button';
-import { CheckCircle, ShieldCheck, Mail, Bot } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export const Confirmation: React.FC = () => {
-  const [isMounted, setIsMounted] = useState(false);
+    const navigate = useNavigate();
 
-  useEffect(() => {
-    const timer = setTimeout(() => setIsMounted(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
+    useEffect(() => {
+        window.scrollTo(0, 0);
+        document.body.classList.add('confirmation-page');
+        return () => {
+            document.body.classList.remove('confirmation-page');
+        };
+    }, []);
 
-  return (
-    <div
-      className="relative min-h-screen w-full flex items-center justify-center bg-cover bg-center overflow-hidden"
-      style={{
-        backgroundImage: "url('https://lh3.googleusercontent.com/pw/AP1GczNsckRlpT7yB-ySr9N7mWa7N09HAum71k2abhvNu_ZqCKKgxZ8n5XhFSbU6d2jbp455z9Keye5hf6tH-KWSHW3IU6SvdLWfUppMDoY7HYhr1h1gnG2GTvmkKMCXKIyTvB_RQkXNTTygPingbpdkfak=w1920-h1080-s-no-gm?authuser=2')",
-      }}
-    >
-      <div className="absolute inset-0 bg-slate-900/70"></div>
-      <div
-        className={[
-          'relative z-10 text-center text-white px-6 py-12 max-w-4xl mx-auto transition-all duration-1000',
-          isMounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4',
-        ].join(' ')}
-      >
-        <h1 className="text-5xl md:text-6xl font-extrabold tracking-tight drop-shadow-lg">
-          <span className="bg-gradient-to-r from-sky-400 to-emerald-400 text-transparent bg-clip-text">
-            Congratulations on your purchase
-          </span>
-        </h1>
-        <p className="mt-4 text-lg md:text-xl text-slate-300 max-w-2xl mx-auto drop-shadow-md">
-          Check your inbox for confirmation.
-        </p>
+    return (
+        <div className="relative min-h-screen w-full flex items-center justify-center text-white text-center px-4 overflow-hidden">
+            <div 
+                className="absolute top-0 left-0 w-full h-full bg-cover bg-center -z-20"
+                style={{ backgroundImage: 'url(https://lh3.googleusercontent.com/pw/AP1GczN0ikYKFf6US6V0BXQ7ZElSQY9AZSMMVpmf0N6A2yF5xYUT_d0qZkybYH_sHl-dART28WQ5qsek0LvLzbFeWAJQspIow7cnvjD3OSiegZQbkIEIMiiLororN01Fcvp_pN2mv6dpscLptzqrzQhwpoj8=w1063-h599-s-no-gm?authuser=2)' }}
+            ></div>
+            <div className="absolute top-0 left-0 w-full h-full bg-black opacity-40 -z-10"></div>
 
-        <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-slate-400">
-          <div className="flex items-center gap-2">
-            <ShieldCheck size={14} className="text-emerald-400" />
-            <span>SSL Encrypted Checkout</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <CheckCircle size={14} className="text-emerald-400" />
-            <span>Payment Successfully Verified</span>
-          </div>
+            <div className="relative animate-fade-in-up space-y-12 max-w-4xl mx-auto">
+                <header className="space-y-4">
+                    <h1 className="text-5xl md:text-7xl font-bold tracking-tight text-shadow-lg">Congratulations on your purchase.</h1>
+                    <p className="text-xl md:text-2xl text-slate-200 text-shadow-md">Check your inbox for confirmation.</p>
+                </header>
+
+                <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 max-w-2xl mx-auto text-left shadow-xl">
+                    <h2 className="text-2xl font-semibold mb-6 border-b border-white/20 pb-4">What Happens Next?</h2>
+                    <ul className="space-y-4 text-lg text-slate-200">
+                        <li className="flex items-center gap-3"><CheckCircle className="text-green-400" /> Confirmation email sent</li>
+                        <li className="flex items-center gap-3"><CheckCircle className="text-green-400" /> Our team is preparing your Order</li>
+                        <li className="flex items-center gap-3"><CheckCircle className="text-green-400" /> Activation details will be emailed shortly</li>
+                    </ul>
+                </div>
+
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-6 text-sm text-slate-300">
+                    <div className="flex items-center gap-2"><ShieldCheck size={20} className="text-green-400" /> Your order has been securely processed.</div>
+                    <div className="flex items-center gap-2"><ShieldCheck size={20} className="text-green-400" /> SSL Encrypted Checkout</div>
+                </div>
+
+                <footer className="pt-8 space-y-6">
+                    <div className="flex justify-center gap-4">
+                        <Button onClick={() => navigate('/orders')} variant="secondary" size="lg">View My Order</Button>
+                        <Button onClick={() => navigate('/')} variant="outline" size="lg">Return to Home</Button>
+                        <Button onClick={() => navigate('/services')} variant="outline" size="lg">Explore More Services</Button>
+                    </div>
+                    <p className="text-slate-400 text-sm">
+                        Need help? Contact our support team at <a href="mailto:support@yourisp.com" className="underline hover:text-white">support@yourisp.com</a>.
+                    </p>
+                </footer>
+            </div>
         </div>
-
-        <div className="mt-12 bg-slate-800/50 backdrop-blur-sm rounded-lg p-8 border border-slate-700 max-w-2xl mx-auto">
-          <h3 className="text-xl font-semibold text-white mb-4">What Happens Next?</h3>
-          <ul className="space-y-3 text-left text-slate-300">
-            <li className="flex items-center"><CheckCircle className="text-emerald-400 mr-3" size={20} />A confirmation email has been sent to your inbox.</li>
-            <li className="flex items-center"><Bot className="text-sky-400 mr-3" size={20} />Our team is preparing your hosting setup.</li>
-            <li className="flex items-center"><Mail className="text-emerald-400 mr-3" size={20} />Activation details will be emailed shortly.</li>
-          </ul>
-        </div>
-
-        <div className="mt-12 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <Link to="/">
-            <Button variant="primary" size="lg" className="w-full sm:w-auto">Return to Home</Button>
-          </Link>
-          <Link to="/web-hosting">
-            <Button variant="outline" size="lg" className="w-full sm:w-auto text-white border-white hover:bg-white hover:text-slate-900">Explore More Services</Button>
-          </Link>
-        </div>
-
-        <div className="mt-16 text-center text-slate-400 text-sm">
-          <p>Need help? Contact our support team at <a href="mailto:support@yourisp.com" className="text-sky-400 hover:text-sky-300">support@yourisp.com</a></p>
-        </div>
-      </div>
-    </div>
-  );
+    );
 };
