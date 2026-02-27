@@ -65,37 +65,23 @@ export const Terms: React.FC = () => {
               <li>Payments are processed via Netcash. Transactions are secured using industry standard SSL certificates and encryption to protect payment data.</li>
             </ul>
             <h3 className="text-xl font-bold tracking-tight text-gray-900 mt-4">Debit Order Mandate</h3>
-            <p>By opting to pay for our services via debit order, you authorize Quantum Connect (kenosinetwork (PTY) Ltd) to debit your nominated bank account for all charges due for fibre, web hosting, VoIP, and shop product purchases. This mandate and agreement will commence on the date of acceptance and will continue until cancelled in writing.</p>
 
-            <h4>A. Authority and Mandate</h4>
-            <p>I/We, the undersigned, hereby authorize Quantum Connect to draw against my/our bank account the necessary funds for payment of the monthly service fees and any other charges related to the services provided.</p>
-            <p>This authority is granted for the collection of payments for:</p>
-            <ul>
-                <li>Fibre Internet Services</li>
-                <li>Web Hosting and Domain Services</li>
-                <li>VoIP Services</li>
-                <li>Shop Product Purchases</li>
-            </ul>
-            
-            <h4>B. Bank Account Details</h4>
-            <p>You will be required to provide the following banking details to set up your debit order:</p>
-            <ul>
-                <li>Bank Name</li>
-                <li>Branch Code</li>
-                <li>Account Holder Name</li>
-                <li>Account Number</li>
-                <li>Account Type (Cheque, Savings, Transmission)</li>
-            </ul>
-            <p>It is your responsibility to ensure these details are accurate and up to date. Any changes must be communicated to us in writing at least 10 business days before the next billing date.</p>
+            <h4>A. Authority</h4>
+            <p>By providing your bank account details (Bank, Branch, Account Number, and Account Type), you, the Account Holder, give authority to Quantum Connect (kenosinetwork (PTY) Ltd) to issue and deliver payment instructions to your Banker for collection against your nominated account. This signed Authority and Mandate refers to our service contract. You hereby authorise Quantum Connect to issue and deliver payment instructions to your Banker for collection against your account on condition that the sum of such payment instructions will never exceed your obligations as agreed to in the Agreement. The debit order will commence on the start date of your service and continue until this Authority and Mandate is terminated by you by giving us notice in writing, sent via email to support@quantumconnect.click. In this notice, you must indicate the date on which this mandate must be cancelled, which may not be a date in the past.</p>
+            <p>The individual payment instructions authorised will be issued and delivered on the date when the obligation in terms of the Agreement is due. If the date of the payment instruction falls on a non-processing day (weekend or public holiday), you agree that the payment instruction may be debited against your account on the following business day. Subsequent payment instructions will continue to be delivered in terms of this authority until the obligations in terms of the Agreement have been paid or until this authority is cancelled by you.</p>
+            <p>You understand that the withdrawals hereby authorised will be processed through a computerised system provided by the South African Banks. You also understand that details of each withdrawal will be printed on your bank statement with a reference number to identify the Agreement.</p>
 
-            <h4>C. Payment and Billing</h4>
-            <p>The debit will be processed on or about the first business day of each month for the amount due. The amount debited will be the sum of your monthly subscription fees and any other once-off or recurring charges as per your agreement with us. A detailed invoice will be available in your Client Zone prior to the debit date.</p>
+            <h4>B. Mandate</h4>
+            <p>You acknowledge that all payment instructions issued by us shall be treated by your Bank as if the instructions have been issued by you personally.</p>
 
-            <h4>D. Cancellation</h4>
-            <p>This debit order mandate may be cancelled by providing us with 30 days written notice. Such cancellation will not absolve you of your obligation to pay any outstanding fees due to Quantum Connect. We reserve the right to cancel this mandate if three consecutive debit orders are returned unpaid by your bank.</p>
+            <h4>C. Cancellation</h4>
+            <p>You agree that although this Authority and Mandate may be cancelled by you, such cancellation will not cancel the service Agreement. You shall not be entitled to any refund of amounts which we have withdrawn while this Authority was in force if such amounts were legally owing to us.</p>
 
-            <h4>E. Acknowledgment</h4>
-            <p>You acknowledge that this authority is to be administered in accordance with the rules of the Payments Association of South Africa (PASA). You understand that the debit order will be processed through a computerized system and that details of each payment will be printed on your bank statement.</p>
+            <h4>D. Penalty Fees</h4>
+            <p>You understand that you are liable for the payment of penalty fees resulting from dishonoured payment transactions (i.e., a debit order that is returned due to a lack of funds).</p>
+
+            <h4>E. Assignment</h4>
+            <p>You acknowledge that this Authority may be ceded or assigned to a third party if the Agreement is also ceded or assigned to that third party. In the absence of such assignment of the Agreement, this Authority and Mandate cannot be assigned to any third party.</p>
 
             <h3>Refunds and Cancellations for Digital Products</h3>
             <ul>
