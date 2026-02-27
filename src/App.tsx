@@ -45,16 +45,18 @@ const App: React.FC = () => {
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!userAddress || !selectedPackage) {
+      console.error('Cannot submit lead without address and selected package.');
+      return;
+    }
     setIsSubmitting(true);
     try {
       const lead: Lead = {
+        packageId: selectedPackage.id,
         name: leadForm.name,
         email: leadForm.email,
         phone: leadForm.phone,
-        address: userAddress ? `${userAddress.street}, ${userAddress.suburb}, ${userAddress.city}` : '',
-        service: 'Fibre',
-        package: selectedPackage?.name || 'Unknown',
-        timestamp: new Date(),
+        address: userAddress,
       };
       await submitLead(lead);
       setSubmitSuccess(true);
