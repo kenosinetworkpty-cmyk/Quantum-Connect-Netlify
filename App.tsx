@@ -24,10 +24,6 @@ const App: React.FC = () => {
   const [providers] = useState<Provider[]>(PROVIDERS);
   const [availability, setAvailability] = useState<AvailabilityResult | null>(null);
   const [userAddress, setUserAddress] = useState<Address | null>(null);
-  const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
-  const [leadForm, setLeadForm] = useState({ name: '', email: '', phone: '', consent: false });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
 
   useEffect(() => {
     getPackages().then(setPackages);
@@ -43,34 +39,6 @@ const App: React.FC = () => {
     }
   };
 
-  const handlePackageSelect = (pkg: Package) => {
-    setSelectedPackage(pkg);
-    setSubmitSuccess(false);
-    setLeadForm({ name: '', email: '', phone: '', consent: false });
-  };
-
-  const handleLeadSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!selectedPackage || !userAddress) return;
-
-    setIsSubmitting(true);
-    
-    const lead: Lead = {
-      packageId: selectedPackage.id,
-      address: userAddress,
-      ...leadForm
-    };
-
-    try {
-      await submitLead(lead);
-      setSubmitSuccess(true);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
       <Header />
@@ -83,15 +51,7 @@ const App: React.FC = () => {
               providers={providers}
               availability={availability}
               userAddress={userAddress}
-              selectedPackage={selectedPackage}
-              leadForm={leadForm}
-              isSubmitting={isSubmitting}
-              submitSuccess={submitSuccess}
               onAvailabilityCheck={handleAvailabilityCheck}
-              onPackageSelect={handlePackageSelect}
-              onLeadSubmit={handleLeadSubmit}
-              setLeadForm={setLeadForm}
-              setSelectedPackage={setSelectedPackage}
             />
           }
         />
@@ -100,7 +60,7 @@ const App: React.FC = () => {
         <Route path="/voip" element={<Voip />} />
         <Route path="/power-solutions" element={<PowerSolutions />} />
         <Route path="/store-checkout/:productId" element={<StoreCheckout />} />
-        <Route path="/checkout/:packageName" element={<FibreCheckout />} />
+        <Route path="/checkout/:packageName" element={<FibreCheckout packages={packages} />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/fibre-confirmation" element={<FibreConfirmation />} />
         <Route path="/PAIA" element={<PAIA />} />

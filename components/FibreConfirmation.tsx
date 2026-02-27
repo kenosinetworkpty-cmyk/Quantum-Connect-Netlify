@@ -9,7 +9,7 @@ export const FibreConfirmation: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen bg-cover bg-center flex items-center justify-center text-white transition-opacity duration-1000 animate-in fade-in"
+      className="min-h-screen bg-cover bg-center flex items-start pt-32 justify-center text-white transition-opacity duration-1000 animate-in fade-in"
       style={{ backgroundImage: `url(${backgroundImageUrl})` }}
     >
       <div className="absolute inset-0 bg-black bg-opacity-60"></div>
