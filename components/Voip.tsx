@@ -1,7 +1,10 @@
 import React from 'react';
 import { PhoneCall, DollarSign, Scaling, Laptop } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export const Voip: React.FC = () => {
+  const navigate = useNavigate();
+
   const offerings = [
     {
       title: 'Business VoIP Solutions',
@@ -71,7 +74,7 @@ export const Voip: React.FC = () => {
             Experience crystal-clear, affordable, and scalable communication solutions designed to future-proof your business operations.
           </p>
           <div className="mt-8 flex justify-center gap-4">
-            <button style={{ backgroundColor: brandBlue }} className="text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:opacity-90 transition">
+            <button onClick={() => navigate('/consultation-scheduling')} style={{ backgroundColor: brandBlue }} className="text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:opacity-90 transition">
               Request a Consultation
             </button>
             <button style={{ backgroundColor: brandGreen }} className="text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:opacity-90 transition">
@@ -149,7 +152,7 @@ export const Voip: React.FC = () => {
                     <label htmlFor="contactNumber" className="sr-only">Contact Number</label>
                     <input type="tel" id="contactNumber" placeholder="Contact Number" className="w-full p-4 border border-slate-200 rounded-lg" />
                   </div>
-                  <button style={{ backgroundColor: brandBlue }} className="w-full text-white font-bold py-4 px-6 rounded-lg shadow-lg hover:opacity-90 transition">
+                  <button onClick={() => navigate('/consultation-scheduling')} style={{ backgroundColor: brandBlue }} className="w-full text-white font-bold py-4 px-6 rounded-lg shadow-lg hover:opacity-90 transition">
                     Request a Free Consultation
                   </button>
                 </form>
