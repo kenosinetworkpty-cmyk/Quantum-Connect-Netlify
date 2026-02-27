@@ -7,9 +7,9 @@ import { Store } from './components/Store';
 import { Webhosting } from './components/Webhosting';
 import { Voip } from './components/Voip';
 import { StoreCheckout } from './components/StoreCheckout';
-import { Checkout } from './components/Checkout';
 import { Terms } from './components/Terms';
-import { Confirmation } from './components/Confirmation';
+import { FibreCheckout } from './components/FibreCheckout';
+import { FibreConfirmation } from './components/FibreConfirmation';
 import { Footer } from './components/Footer';
 import { PowerSolutions } from './components/PowerSolutions';
 import { PAIA } from './components/PAIA';
@@ -100,9 +100,9 @@ const App: React.FC = () => {
         <Route path="/voip" element={<Voip />} />
         <Route path="/power-solutions" element={<PowerSolutions />} />
         <Route path="/store-checkout/:productId" element={<StoreCheckout />} />
-        <Route path="/checkout/:packageName" element={<Checkout />} />
+        <Route path="/checkout/:packageName" element={<FibreCheckout />} />
         <Route path="/terms" element={<Terms />} />
-        <Route path="/confirmation" element={<Confirmation />} />
+        <Route path="/fibre-confirmation" element={<FibreConfirmation />} />
         <Route path="/PAIA" element={<PAIA />} />
         <Route path="/support" element={<Support />} />
         <Route path="/privacy" element={<Privacy />} />
