@@ -8,6 +8,10 @@ import { PAIA } from '../components/PAIA';
 import { Support } from '../components/Support';
 import { Header } from '../components/Header';
 import { Footer } from '../components/Footer';
+import { Voip } from '../components/Voip';
+import { ConsultationScheduling } from '../components/ConsultationScheduling';
+import { AdminDashboard } from '../components/AdminDashboard';
+import { Confirmation } from '../components/Confirmation';
 import { getPackages, submitLead, PROVIDERS } from '../services/mockApi';
 import { Address, AvailabilityResult, Package, Lead, Provider } from '../types';
 
@@ -91,6 +95,10 @@ const App: React.FC = () => {
         <Route path="/aup" element={<AUP />} />
         <Route path="/paia" element={<PAIA />} />
         <Route path="/support" element={<Support />} />
+        <Route path="/voip" element={<Voip />} />
+        <Route path="/consultation-scheduling" element={<ConsultationScheduling />} />
+        <Route path="/admin" element={<AdminDashboard />} />
+        <Route path="/confirmation" element={<Confirmation />} />
       </Routes>
       <Footer />
     </Router>
