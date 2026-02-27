@@ -13,6 +13,8 @@ import { Confirmation } from './components/Confirmation';
 import { Footer } from './components/Footer';
 import { PowerSolutions } from './components/PowerSolutions';
 import { PAIA } from './components/PAIA';
+import { Support } from './components/Support';
+import { Privacy } from './components/Privacy';
 import { Address, AvailabilityResult, Package, Lead, Provider } from './types';
 import { getPackages, submitLead, PROVIDERS } from './services/mockApi';
 
@@ -101,6 +103,8 @@ const App: React.FC = () => {
         <Route path="/terms" element={<Terms />} />
         <Route path="/confirmation" element={<Confirmation />} />
         <Route path="/PAIA" element={<PAIA />} />
+        <Route path="/support" element={<Support />} />
+        <Route path="/privacy" element={<Privacy />} />
       </Routes>
       <Footer />
     </div>

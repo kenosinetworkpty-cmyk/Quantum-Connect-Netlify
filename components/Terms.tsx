@@ -1,67 +1,146 @@
-
 import React from 'react';
 
 export const Terms: React.FC = () => {
   return (
-    <div className="bg-white py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:max-w-4xl">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">Terms and Conditions</h1>
-          <p className="mt-6 text-xl leading-8 text-gray-700">
-            Please read these terms and conditions carefully before using Our Service.
+    <div className="bg-slate-50 text-slate-900">
+      {/* Hero Section */}
+      <div className="relative bg-gray-100 border-b border-slate-200">
+        <div className="container mx-auto px-4 py-16 text-center">
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-slate-900">
+            Terms of Service
+          </h1>
+          <p className="mt-4 text-lg max-w-3xl mx-auto text-slate-600">
+            These terms govern the use of Quantum Connect services including Fibre, VoIP, Webhosting, and Backup Power Solutions.
           </p>
+          <p className="mt-2 text-sm text-slate-500">Last updated: {new Date().toLocaleDateString('en-ZA', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+        </div>
+      </div>
 
-          <div className="mt-16 text-gray-600 space-y-8">
-            <div className="space-y-4">
-              <h2 className="text-2xl font-bold tracking-tight text-gray-900">1. Introduction</h2>
-              <p>
-                Welcome to Your ISP ('Company', 'we', 'our', 'us')! These Terms and Conditions ('Terms') govern your use of our website located at [Your Website URL] (together or individually 'Service') operated by Your ISP.
-              </p>
-              <p>
-                Our Privacy Policy also governs your use of our Service and explains how we collect, safeguard and disclose information that results from your use of our web pages. Your agreement with us includes these Terms and our Privacy Policy ('Agreements'). You acknowledge that you have read and understood Agreements, and agree to be bound of them.
-              </p>
-            </div>
+      {/* Main Content */}
+      <div className="py-24">
+        <div className="container mx-auto px-4">
+          <div className="max-w-4xl mx-auto prose lg:prose-lg prose-slate text-justify">
 
-            <div className="space-y-4">
-              <h2 className="text-2xl font-bold tracking-tight text-gray-900">2. Services</h2>
-              <p>
-                We provide web hosting, domain registration, and other related services as described on our website. We reserve the right to modify or discontinue any of our services at any time without prior notice. We will not be liable to you or any third party for any modification, price change, suspension, or discontinuance of the Service.
-              </p>
-            </div>
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900">1. Introduction and Acceptance of Terms</h2>
+            <p>Welcome to Quantum Connect (registered name kenosinetwork (PTY) Ltd). These Terms of Service govern your use of our website www.quantumconnect.click and any services we provide. By accessing or using our services you agree to these terms. If you do not agree, do not use our services.</p>
+
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900 mt-8">2. Definitions and Scope of Services</h2>
+            <p><strong>Services</strong> means internet access, hosting, domain registration and transfer, technical support, and any related digital products offered by Quantum Connect.</p>
+            <p><strong>Client Zone</strong> means the secure customer portal where account management, billing, and cancellations are effected.</p>
+            <p>We may update these Terms from time to time; material changes will be posted on our website and, where appropriate, notified to account holders.</p>
+
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900 mt-8">3. User Accounts and Acceptable Use</h2>
+            <h3>Account Registration</h3>
+            <ul>
+              <li>You must provide accurate, current information when creating an account.</li>
+              <li>You are responsible for maintaining the confidentiality of your account credentials and for all activity under your account.</li>
+            </ul>
+            <h3>Acceptable Use</h3>
+            <ul>
+              <li>You must not use our services for unlawful, abusive, or harmful activities.</li>
+              <li>You must comply with any acceptable use policies published on our site and with applicable law.</li>
+            </ul>
+            <h3>Suspension for Misuse</h3>
+            <ul>
+              <li>We may suspend or restrict services where there is a reasonable belief of illegal activity, network abuse, or breach of these Terms.</li>
+            </ul>
+
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900 mt-8">4. Payments, Payment and Refund Policy</h2>
+            <h3>Billing and Fees</h3>
+            <ul>
+              <li>Fees for services are set out in your service order and on our website. All fees are payable in the currency specified on your invoice.</li>
+              <li>Recurring services are billed in advance according to your chosen billing cycle.</li>
+            </ul>
+            <h3>Payment Gateway and Security</h3>
+            <ul>
+              <li>Payments are processed via Netcash. Transactions are secured using industry standard SSL certificates and encryption to protect payment data.</li>
+            </ul>
+            <h3>Refunds and Cancellations for Digital Products</h3>
+            <ul>
+              <li>Refunds for digital products are handled on a case‑by‑case basis and in accordance with applicable consumer protection law and the nature of the product delivered.</li>
+              <li>If you believe you are entitled to a refund, contact support@quantumconnect.click with full details of the purchase and the reason for the request.</li>
+            </ul>
+            <h3>Failed Payments</h3>
+            <ul>
+                <li>If a payment fails, we may suspend services until payment is received. Additional reconnection fees may apply.</li>
+            </ul>
+
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900 mt-8">5. Termination Suspension and Cancellation Procedures</h2>
+            <h3>Customer Initiated Cancellation</h3>
+            <ul>
+              <li>To cancel a service you must log in to the Client Zone and follow the cancellation process. Cancellations made by any other method may not be accepted.</li>
+              <li><strong>Notice Requirement:</strong> You must provide one full calendar month’s written notice before the end of your current billing period. The notice period begins on the date you submit the cancellation via the Client Zone. Services will remain active until the end of the notice period and no pro rata refunds will be given for partial months unless otherwise stated in your service agreement.</li>
+            </ul>
+            <h3>Provider Initiated Suspension or Termination</h3>
+            <ul>
+              <li>We may suspend or terminate services immediately where required by law, to protect network integrity, or where you materially breach these Terms. Where practicable we will provide notice and an opportunity to remedy the breach.</li>
+            </ul>
+            <h3>Effect of Termination</h3>
+            <ul>
+              <li>On termination you remain liable for all outstanding charges up to the effective date of termination. We may delete or anonymise data associated with terminated accounts in accordance with our data retention policies.</li>
+            </ul>
+
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900 mt-8">6. Liability Indemnity and Disclaimers</h2>
+            <h3>Service Availability</h3>
+            <ul>
+              <li>We aim to provide reliable services but do not guarantee uninterrupted or error‑free operation. Scheduled maintenance and emergency work may affect availability.</li>
+            </ul>
+            <h3>Limitation of Liability</h3>
+            <ul>
+              <li>To the fullest extent permitted by law, Quantum Connect’s liability for any claim arising out of or in connection with these Terms is limited to direct proven damages up to the total fees paid by you to Quantum Connect in the 12 months preceding the claim. We are not liable for indirect, special, or consequential losses.</li>
+            </ul>
+            <h3>Indemnity</h3>
+            <ul>
+              <li>You agree to indemnify and hold Quantum Connect harmless from any claims, losses, liabilities, damages, and expenses arising from your breach of these Terms or your misuse of the services.</li>
+            </ul>
+
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900 mt-8">7. Regulatory Compliance Privacy and Complaints</h2>
+            <h3>Regulatory Standards</h3>
+            <ul>
+              <li>Quantum Connect operates in the South African electronic communications environment and aligns its practices with applicable regulatory frameworks and industry codes, including standards and regulations issued by the Independent Communications Authority of South Africa (ICASA) and the Internet Service Providers’ Association (ISPA). We comply with consumer protection and licensing obligations as required by these bodies.</li>
+            </ul>
+            <h3>Data Protection and Privacy</h3>
+            <ul>
+              <li>We collect and process personal information in accordance with our Privacy Policy. Personal data is used to provide services, manage accounts, and comply with legal obligations. For privacy queries contact support@quantumconnect.click.</li>
+            </ul>
+            <h3>Complaints and Dispute Resolution</h3>
+            <ul>
+              <li>If you have a complaint, please email support@quantumconnect.click with full details. We will acknowledge receipt and aim to resolve complaints promptly. If a dispute cannot be resolved internally, you may have recourse to industry dispute resolution mechanisms and regulatory bodies such as ISPA or ICASA.</li>
+            </ul>
+
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900 mt-8">8. Intellectual Property and Content</h2>
+            <h3>Ownership</h3>
+            <ul>
+              <li>All intellectual property rights in our website, branding, software, and documentation remain the property of Quantum Connect or our licensors.</li>
+            </ul>
+            <h3>User Content</h3>
+            <ul>
+              <li>By uploading or submitting content you grant Quantum Connect a non‑exclusive licence to use that content to provide the services. You warrant that you have the rights to submit such content.</li>
+            </ul>
             
-            <div className="space-y-4">
-              <h2 className="text-2xl font-bold tracking-tight text-gray-900">3. User Accounts</h2>
-              <p>
-                When you create an account with us, you must provide us information that is accurate, complete, and current at all times. Failure to do so constitutes a breach of the Terms, which may result in immediate termination of your account on our Service.
-              </p>
-            </div>
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900 mt-8">9. General Provisions Governing Law and Contact</h2>
+            <h3>Governing Law</h3>
+            <ul>
+              <li>These Terms are governed by the laws of the Republic of South Africa.</li>
+            </ul>
+            <h3>Severability</h3>
+            <ul>
+              <li>If any provision is found invalid, the remaining provisions remain in force.</li>
+            </ul>
+            <h3>Contact Details</h3>
+            <ul>
+              <li><strong>Registered Name:</strong> kenosinetwork (PTY) Ltd</li>
+              <li><strong>Trading Name:</strong> Quantum Connect</li>
+              <li><strong>Head of Business:</strong> Neo Mokhutle, General Manager</li>
+              <li><strong>Email:</strong> support@quantumconnect.click</li>
+              <li><strong>Postal Address:</strong> No postal address maintained</li>
+              <li><strong>Physical Address:</strong> No physical address maintained</li>
+              <li><strong>Fax:</strong> Not applicable</li>
+            </ul>
 
-            <div className="space-y-4">
-              <h2 className="text-2xl font-bold tracking-tight text-gray-900">4. Payments and Refunds</h2>
-              <p>
-                All fees are due in advance and are non-refundable. A valid payment method is required for processing the payment for your order. By submitting such payment information, you automatically authorize the Company to charge all subscription fees incurred through your account to any such payment instruments.
-              </p>
-            </div>
+            <h2 className="text-2xl font-bold tracking-tight text-gray-900 mt-8">10. How to Accept These Terms and Where to Find Them</h2>
+            <p>These Terms are effective as of the date published on our website. A copy is available at www.quantumconnect.click/terms. For questions about these Terms contact support@quantumconnect.click.</p>
 
-            <div className="space-y-4">
-              <h2 className="text-2xl font-bold tracking-tight text-gray-900">5. Limitation of Liability</h2>
-              <p>
-                In no event shall Your ISP, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the Service.
-              </p>
-            </div>
-            
-            <div className="space-y-4">
-              <h2 className="text-2xl font-bold tracking-tight text-gray-900">6. Governing Law</h2>
-              <p>
-                These Terms shall be governed and construed in accordance with the laws of [Your Country], without regard to its conflict of law provisions.
-              </p>
-            </div>
-
-            <div className="mt-12 pt-8 border-t border-gray-200">
-              <p className="text-sm text-gray-500">
-                Last updated: {new Date().toLocaleDateString()}
-              </p>
-            </div>
           </div>
         </div>
       </div>
