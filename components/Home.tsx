@@ -105,12 +105,6 @@ export const Home: React.FC<HomeProps> = ({
                   <input type="email" placeholder="Enter your email address" className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-blue-900 outline-none" />
                   <Button variant="primary" className="w-full">Register Interest</Button>
                 </form>
-
-                <p className="text-sm text-slate-500 mt-6">Or, if you have other connectivity needs, you can</p>
-                <Link to="/consultation-scheduling">
-                  <Button variant="secondary" className="w-full mt-2">Request a Consultation</Button>
-                </Link>
-
               </div>
             </div>
           </div>
