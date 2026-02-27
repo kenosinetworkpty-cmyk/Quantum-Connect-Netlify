@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import { Button } from './ui/Button';
-import { Lock } from 'lucide-react';
+import { Lock, ArrowRight, CheckCircle } from 'lucide-react';
 
 const packageDetails: { [key: string]: { price: number } } = {
   Basic: { price: 39 },
@@ -10,18 +10,46 @@ const packageDetails: { [key: string]: { price: number } } = {
   Premium: { price: 149 },
 };
 
+const ProgressIndicator: React.FC<{ step: number }> = ({ step }) => (
+    <div className="w-full mb-12">
+      <div className="flex items-center">
+        <div className="flex items-center text-blue-600 relative">
+          <div className="rounded-full transition duration-500 ease-in-out h-12 w-12 border-2 border-blue-600 flex items-center justify-center">
+            {step > 1 ? <CheckCircle size={24} /> : "1"}
+          </div>
+          <div className="absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase text-blue-600">Your Details</div>
+        </div>
+        <div className={`flex-auto border-t-2 transition duration-500 ease-in-out ${step > 1 ? 'border-blue-600' : 'border-gray-300'}`}></div>
+        <div className="flex items-center text-gray-500 relative">
+          <div className={`rounded-full transition duration-500 ease-in-out h-12 w-12 border-2 flex items-center justify-center ${step > 1 ? 'border-blue-600 text-blue-600' : 'border-gray-300'}`}>
+            {step > 2 ? <CheckCircle size={24} /> : "2"}
+          </div>
+          <div className={`absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase ${step > 1 ? 'text-blue-600' : 'text-gray-500'}`}>Payment</div>
+        </div>
+        <div className={`flex-auto border-t-2 transition duration-500 ease-in-out ${step > 2 ? 'border-blue-600' : 'border-gray-300'}`}></div>
+        <div className="flex items-center text-gray-500 relative">
+          <div className={`rounded-full transition duration-500 ease-in-out h-12 w-12 border-2 flex items-center justify-center ${step > 2 ? 'border-blue-600 text-blue-600' : 'border-gray-300'}`}>
+            <CheckCircle size={24} />
+          </div>
+          <div className={`absolute top-0 -ml-10 text-center mt-16 w-32 text-xs font-medium uppercase ${step > 2 ? 'text-blue-600' : 'text-gray-500'}`}>Confirmation</div>
+        </div>
+      </div>
+    </div>
+  );
+
+
 export const Checkout: React.FC = () => {
   const { packageName } = useParams<{ packageName: string }>();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
   const [termsAccepted, setTermsAccepted] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('card');
 
   const [formData, setFormData] = useState({
     firstName: '',
     surname: '',
     email: '',
     contactNumber: '',
-    companyName: '',
     address: '',
     city: '',
     postalCode: '',
@@ -30,6 +58,10 @@ export const Checkout: React.FC = () => {
     cardNumber: '',
     cardExpiry: '',
     cardCVC: '',
+    accountHolder: '',
+    accountNumber: '',
+    bank: '',
+    branchCode: ''
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -49,7 +81,8 @@ export const Checkout: React.FC = () => {
       alert('Please accept the Terms and Conditions to complete your purchase.');
       return;
     }
-    console.log('Order submitted!', formData);
+    setStep(3);
+    console.log('Order submitted!', { packageName, ...formData });
     navigate('/confirmation');
   };
 
@@ -58,13 +91,13 @@ export const Checkout: React.FC = () => {
   return (
     <div className="bg-slate-100 py-16 sm:py-24">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
-        <ProgressIndicator currentStep={step} />
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-16 gap-y-12 mt-12">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-16 gap-y-12">
           <div className="lg:col-span-2 bg-white p-8 rounded-2xl shadow-lg">
+          <ProgressIndicator step={step} />
             {step === 1 ? (
               <form onSubmit={handleNextStep}>
-                <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-2">Secure Your Hosting Package</h2>
-                <p className="text-slate-600 mb-8">Complete your details below to get started.</p>
+                <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-2">Step 1: Your Details</h2>
+                <p className="text-slate-600 mb-8">Let's get your contact information.</p>
                 <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
                   <InputField label="First Name" name="firstName" value={formData.firstName} onChange={handleInputChange} autoComplete="given-name" />
                   <InputField label="Surname" name="surname" value={formData.surname} onChange={handleInputChange} autoComplete="family-name" />
@@ -77,52 +110,69 @@ export const Checkout: React.FC = () => {
                 </div>
                 <div className="pt-10">
                   <Button type="submit" className="w-full flex items-center justify-center gap-2" size="lg">
-                    <Lock size={16} />
-                    Continue to Secure Checkout
+                    Continue Checkout <ArrowRight size={18} />
                   </Button>
                 </div>
               </form>
             ) : (
               <form onSubmit={handleFinalSubmit}>
-                <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-8">Billing & Payment</h2>
-                <div className="space-y-10">
+                <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-8">Step 2: Shipping & Payment</h2>
+                 <div className="space-y-10">
                   <div className="border-b border-gray-900/10 pb-12">
-                    <h3 className="text-lg font-semibold leading-7 text-gray-900">Billing Information</h3>
+                    <h3 className="text-lg font-semibold leading-7 text-gray-900">Shipping Address</h3>
                     <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
                       <div className="sm:col-span-6">
-                        <InputField label="Address" name="address" value={formData.address} onChange={handleInputChange} autoComplete="street-address" />
+                        <InputField label="Street Address" name="address" value={formData.address} onChange={handleInputChange} />
                       </div>
-                      <div className="sm:col-span-6">
-                        <InputField label="Company Name (Optional)" name="companyName" value={formData.companyName} onChange={handleInputChange} />
-                      </div>
-                      <div className="sm:col-span-2">
-                        <InputField label="City" name="city" value={formData.city} onChange={handleInputChange} autoComplete="address-level2" />
-                      </div>
-                      <div className="sm:col-span-2">
-                        <InputField label="Postal Code" name="postalCode" value={formData.postalCode} onChange={handleInputChange} autoComplete="postal-code" />
-                      </div>
-                      <div className="sm:col-span-2">
-                        <InputField label="Country" name="country" value={formData.country} onChange={handleInputChange} autoComplete="country-name" />
-                      </div>
+                      <div className="sm:col-span-2"><InputField label="City" name="city" value={formData.city} onChange={handleInputChange} /></div>
+                      <div className="sm:col-span-2"><InputField label="Postal Code" name="postalCode" value={formData.postalCode} onChange={handleInputChange} /></div>
+                      <div className="sm:col-span-2"><InputField label="Country" name="country" value={formData.country} onChange={handleInputChange} /></div>
                     </div>
                   </div>
-
                   <div className="border-b border-gray-900/10 pb-12">
-                    <h3 className="text-lg font-semibold leading-7 text-gray-900">Payment Details</h3>
-                    <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
-                      <div className="sm:col-span-4">
-                        <InputField label="Name on Card" name="cardName" value={formData.cardName} onChange={handleInputChange} />
-                      </div>
-                      <div className="sm:col-span-4">
-                        <InputField label="Card Number" name="cardNumber" value={formData.cardNumber} onChange={handleInputChange} />
-                      </div>
-                      <div className="sm:col-span-2">
-                        <InputField label="Expiry Date" name="cardExpiry" value={formData.cardExpiry} onChange={handleInputChange} placeholder="MM/YY" />
-                      </div>
-                      <div className="sm:col-span-2">
-                        <InputField label="CVC" name="cardCVC" value={formData.cardCVC} onChange={handleInputChange} />
-                      </div>
+                    <h3 className="text-lg font-semibold leading-7 text-gray-900">Payment Method</h3>
+                    <div className="mt-4 flex gap-x-6">
+                        <div className="flex items-center">
+                            <input id="card" name="paymentMethod" type="radio" value="card" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod('card')} className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-600" />
+                            <label htmlFor="card" className="ml-3 block text-sm font-medium leading-6 text-gray-900">Credit/Debit Card</label>
+                        </div>
+                        <div className="flex items-center">
+                            <input id="debit" name="paymentMethod" type="radio" value="debit" checked={paymentMethod === 'debit'} onChange={() => setPaymentMethod('debit')} className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-600" />
+                            <label htmlFor="debit" className="ml-3 block text-sm font-medium leading-6 text-gray-900">Debit Order</label>
+                        </div>
                     </div>
+
+                    {paymentMethod === 'card' ? (
+                        <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
+                            <div className="sm:col-span-4">
+                               <InputField label="Name on Card" name="cardName" value={formData.cardName} onChange={handleInputChange} />
+                            </div>
+                            <div className="sm:col-span-4">
+                                <InputField label="Card Number" name="cardNumber" value={formData.cardNumber} onChange={handleInputChange} />
+                            </div>
+                            <div className="sm:col-span-2">
+                                <InputField label="Expiry (MM/YY)" name="cardExpiry" value={formData.cardExpiry} onChange={handleInputChange} />
+                            </div>
+                            <div className="sm:col-span-2">
+                                <InputField label="CVC" name="cardCVC" value={formData.cardCVC} onChange={handleInputChange} />
+                            </div>
+                        </div>
+                    ) : (
+                        <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
+                             <div className="sm:col-span-4">
+                               <InputField label="Account Holder Name" name="accountHolder" value={formData.accountHolder} onChange={handleInputChange} />
+                            </div>
+                            <div className="sm:col-span-4">
+                                <InputField label="Account Number" name="accountNumber" value={formData.accountNumber} onChange={handleInputChange} />
+                            </div>
+                            <div className="sm:col-span-2">
+                                <InputField label="Bank" name="bank" value={formData.bank} onChange={handleInputChange} />
+                            </div>
+                            <div className="sm:col-span-2">
+                                <InputField label="Branch Code" name="branchCode" value={formData.branchCode} onChange={handleInputChange} />
+                            </div>
+                        </div>
+                    )}
                   </div>
                 </div>
                 <div className="pt-10">
@@ -134,7 +184,7 @@ export const Checkout: React.FC = () => {
                   </div>
                   <Button type="submit" className="w-full flex items-center justify-center gap-2" size="lg" disabled={!termsAccepted}>
                     <Lock size={16} />
-                    Complete Secure Purchase
+                    Complete Order
                   </Button>
                 </div>
               </form>
@@ -149,32 +199,6 @@ export const Checkout: React.FC = () => {
     </div>
   );
 };
-
-const ProgressIndicator: React.FC<{ currentStep: number }> = ({ currentStep }) => (
-  <div className="w-full">
-    <ol className="flex items-center w-full text-sm font-medium text-center text-gray-500">
-      <li className={`flex md:w-full items-center ${currentStep >= 1 ? 'text-blue-600' : ''} after:content-[''] after:w-full after:h-1 after:border-b ${currentStep > 1 ? 'after:border-blue-600' : 'after:border-gray-200'} after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10`}>
-        <span className="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200">
-          {currentStep > 1 ? <CheckCircle /> : <span className="mr-2">1</span>}Contact
-        </span>
-      </li>
-      <li className={`flex md:w-full items-center ${currentStep >= 2 ? 'text-blue-600' : ''} after:content-[''] after:w-full after:h-1 after:border-b ${currentStep > 2 ? 'after:border-blue-600' : 'after:border-gray-200'} after:border-1 after:hidden sm:after:inline-block after:mx-6 xl:after:mx-10`}>
-        <span className="flex items-center after:content-['/'] sm:after:hidden after:mx-2 after:text-gray-200">
-          {currentStep > 2 ? <CheckCircle /> : <span className="mr-2">2</span>}Payment
-        </span>
-      </li>
-      <li className={`flex items-center ${currentStep === 3 ? 'text-blue-600' : ''}`}>
-        <span className="mr-2">3</span>Confirmation
-      </li>
-    </ol>
-  </div>
-);
-
-const CheckCircle = () => (
-  <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-    <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-  </svg>
-);
 
 const OrderSummary: React.FC<{ packageName: string | undefined, price: number }> = ({ packageName, price }) => (
   <div className="bg-white p-8 rounded-2xl shadow-lg sticky top-24">

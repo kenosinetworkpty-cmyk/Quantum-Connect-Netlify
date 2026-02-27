@@ -1,7 +1,14 @@
 import React from 'react';
 import { Check } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export const Webhosting: React.FC = () => {
+    const navigate = useNavigate();
+
+    const handleOrderClick = (packageName: string) => {
+        navigate(`/checkout/${packageName}`);
+    };
+
   const packages = [
     {
       name: 'Basic Package',
@@ -107,7 +114,9 @@ export const Webhosting: React.FC = () => {
                   <span className={`text-5xl font-black ${pkg.isFavorite ? 'text-white' : 'text-slate-900'}`}>{pkg.price}</span>
                   <span className={`ml-1 ${pkg.isFavorite ? 'text-blue-200' : 'text-slate-500'}`}>/mo</span>
                 </div>
-                <button className={`w-full font-bold py-3 rounded-lg border transition-colors ${pkg.isFavorite ? 'bg-white text-blue-900 hover:bg-blue-50' : 'bg-transparent border-slate-300 hover:bg-slate-50'}`}>
+                <button 
+                    onClick={() => handleOrderClick(pkg.name.split(' ')[0])} 
+                    className={`w-full font-bold py-3 rounded-lg border transition-colors ${pkg.isFavorite ? 'bg-white text-blue-900 hover:bg-blue-50' : 'bg-transparent border-slate-300 hover:bg-slate-50'}`}>
                   Order
                 </button>
                 <ul className="mt-8 space-y-4">
