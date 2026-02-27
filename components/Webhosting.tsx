@@ -100,7 +100,7 @@ export const Webhosting: React.FC = () => {
     {
         icon: Headset,
         title: '24/7 Expert Support',
-        description: 'Whether you\’re launching your first site or scaling like a pro, our hosting specialists are always available via Live Chat. No waiting. No stress. Just real support, anytime.',
+        description: 'Whether you\'re launching your first site or scaling like a pro, our hosting specialists are always available via Live Chat. No waiting. No stress. Just real support, anytime.',
     }
 ];
 
