@@ -22,7 +22,7 @@ export const FibreConfirmation: React.FC = () => {
             className="text-5xl md:text-6xl font-bold mb-4 bg-clip-text text-transparent bg-gradient-to-r from-green-300 via-blue-400 to-green-400"
             style={{ textShadow: '0 2px 15px rgba(0,0,0,0.4)' }}
           >
-            Congratulations on your Fibre purchase
+            Congratulations on your purchase
           </h1>
           <p className="text-lg md:text-xl text-slate-200 font-light max-w-2xl mx-auto">
             Check your inbox for confirmation. Your order has been securely processed.
@@ -53,7 +53,7 @@ export const FibreConfirmation: React.FC = () => {
             </li>
             <li className="flex items-start gap-4">
               <CheckCircle className="text-green-400 flex-shrink-0 mt-1" size={22} />
-              <span><strong>Our team is preparing your fibre setup:</strong> We're getting your router and equipment ready.</span>
+              <span><strong>Our team is preparing your order:</strong> We're getting your purchase ready.</span>
             </li>
             <li className="flex items-start gap-4">
               <CheckCircle className="text-green-400 flex-shrink-0 mt-1" size={22} />

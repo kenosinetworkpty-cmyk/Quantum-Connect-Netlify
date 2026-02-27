@@ -16,7 +16,7 @@ interface PageLayoutProps {
 export const PageLayout: React.FC<PageLayoutProps> = ({ title, breadcrumbs, children }) => {
   return (
     <div className="bg-white">
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-16"> {/* Increased padding from py-8 to py-16 */}
         {breadcrumbs && (
           <nav className="flex items-center text-sm text-slate-500 mb-4">
             {breadcrumbs.map((crumb, index) => (
