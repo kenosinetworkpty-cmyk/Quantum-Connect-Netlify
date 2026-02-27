@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 export const Terms: React.FC = () => {
@@ -63,6 +64,39 @@ export const Terms: React.FC = () => {
             <ul>
               <li>Payments are processed via Netcash. Transactions are secured using industry standard SSL certificates and encryption to protect payment data.</li>
             </ul>
+            <h3 className="text-xl font-bold tracking-tight text-gray-900 mt-4">Debit Order Mandate</h3>
+            <p>By opting to pay for our services via debit order, you authorize Quantum Connect (kenosinetwork (PTY) Ltd) to debit your nominated bank account for all charges due for fibre, web hosting, VoIP, and shop product purchases. This mandate and agreement will commence on the date of acceptance and will continue until cancelled in writing.</p>
+
+            <h4>A. Authority and Mandate</h4>
+            <p>I/We, the undersigned, hereby authorize Quantum Connect to draw against my/our bank account the necessary funds for payment of the monthly service fees and any other charges related to the services provided.</p>
+            <p>This authority is granted for the collection of payments for:</p>
+            <ul>
+                <li>Fibre Internet Services</li>
+                <li>Web Hosting and Domain Services</li>
+                <li>VoIP Services</li>
+                <li>Shop Product Purchases</li>
+            </ul>
+            
+            <h4>B. Bank Account Details</h4>
+            <p>You will be required to provide the following banking details to set up your debit order:</p>
+            <ul>
+                <li>Bank Name</li>
+                <li>Branch Code</li>
+                <li>Account Holder Name</li>
+                <li>Account Number</li>
+                <li>Account Type (Cheque, Savings, Transmission)</li>
+            </ul>
+            <p>It is your responsibility to ensure these details are accurate and up to date. Any changes must be communicated to us in writing at least 10 business days before the next billing date.</p>
+
+            <h4>C. Payment and Billing</h4>
+            <p>The debit will be processed on or about the first business day of each month for the amount due. The amount debited will be the sum of your monthly subscription fees and any other once-off or recurring charges as per your agreement with us. A detailed invoice will be available in your Client Zone prior to the debit date.</p>
+
+            <h4>D. Cancellation</h4>
+            <p>This debit order mandate may be cancelled by providing us with 30 days written notice. Such cancellation will not absolve you of your obligation to pay any outstanding fees due to Quantum Connect. We reserve the right to cancel this mandate if three consecutive debit orders are returned unpaid by your bank.</p>
+
+            <h4>E. Acknowledgment</h4>
+            <p>You acknowledge that this authority is to be administered in accordance with the rules of the Payments Association of South Africa (PASA). You understand that the debit order will be processed through a computerized system and that details of each payment will be printed on your bank statement.</p>
+
             <h3>Refunds and Cancellations for Digital Products</h3>
             <ul>
               <li>Refunds for digital products are handled on a case‑by‑case basis and in accordance with applicable consumer protection law and the nature of the product delivered.</li>
