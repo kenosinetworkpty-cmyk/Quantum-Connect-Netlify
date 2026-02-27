@@ -30,7 +30,7 @@ const products = [
     name: 'PocketJuice 20k',
     description: 'Fast charging for phones and tablets.',
     price: 'R599',
-    image: 'https://lh3.googleusercontent.com/pw/AP1GczOQguAqX2YZ5IYBPn5NKVVbDXDk33afN1PBWxEy2KQdRFAREyRE87BTqi6UVULo9_uYpj3zkYHsjOeoINWqtab5PoV0fEtZEVtKCy2IVf54EImwfkENvn8e-Wd8yEgcNjs7p5msV0csXomznG7n9iE=w1238-h825-s-no-gm?authuser=2',
+    image: 'https://lh3.googleusercontent.com/pw/AP1GczOtXL1YabGpjyMNFk3UJRHQYpC5Q0VWR_ZaYwJ98vQtAFSFOpXNeV5ACbu-dJ_w4P21pNJkYJ20hoYZbajvL0WKECye5al_O3xkXDKnBZ5IUFJHil4t247l3XqZUXJ9TtatY075Y87_C-2dZhR7X2k=w479-h599-s-no-gm?authuser=2',
   },
   {
     id: 'ps5',

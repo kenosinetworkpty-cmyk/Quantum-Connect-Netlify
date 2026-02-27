@@ -15,6 +15,7 @@ import { PowerSolutions } from './components/PowerSolutions';
 import { PAIA } from './components/PAIA';
 import { Support } from './components/Support';
 import { Privacy } from './components/Privacy';
+import { ConsultationScheduling } from './components/ConsultationScheduling';
 import { Address, AvailabilityResult, Package, Lead, Provider } from './types';
 import { getPackages, submitLead, PROVIDERS } from './services/mockApi';
 
@@ -105,6 +106,7 @@ const App: React.FC = () => {
         <Route path="/PAIA" element={<PAIA />} />
         <Route path="/support" element={<Support />} />
         <Route path="/privacy" element={<Privacy />} />
+        <Route path="/consultation-scheduling" element={<ConsultationScheduling />} />
       </Routes>
       <Footer />
     </div>

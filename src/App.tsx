@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Home } from '../components/Home';
@@ -12,6 +13,8 @@ import { Voip } from '../components/Voip';
 import { ConsultationScheduling } from '../components/ConsultationScheduling';
 import { AdminDashboard } from '../components/AdminDashboard';
 import { Confirmation } from '../components/Confirmation';
+import { FibreCheckout } from '../components/FibreCheckout';
+import { FibreConfirmation } from '../components/FibreConfirmation';
 import { getPackages, submitLead, PROVIDERS } from '../services/mockApi';
 import { Address, AvailabilityResult, Package, Lead, Provider } from '../types';
 
@@ -99,6 +102,8 @@ const App: React.FC = () => {
         <Route path="/consultation-scheduling" element={<ConsultationScheduling />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/confirmation" element={<Confirmation />} />
+        <Route path="/fibre-checkout/:packageName" element={<FibreCheckout />} />
+        <Route path="/fibre-confirmation" element={<FibreConfirmation />} />
       </Routes>
       <Footer />
     </Router>

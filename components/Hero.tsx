@@ -19,7 +19,6 @@ export const Hero: React.FC<HeroProps> = ({ onAvailabilityCheck }) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
 
-  // Handle outside click to close suggestions
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (wrapperRef.current && !wrapperRef.current.contains(event.target as Node)) {
@@ -30,15 +29,18 @@ export const Hero: React.FC<HeroProps> = ({ onAvailabilityCheck }) => {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  // Handle typing for autocomplete
   const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setAddressInput(value);
     
     if (value.length > 2) {
-      const results = await getAddressSuggestions(value);
-      setSuggestions(results);
-      setShowSuggestions(true);
+      try {
+        const results = await getAddressSuggestions(value);
+        setSuggestions(results);
+        setShowSuggestions(true);
+      } catch (err) {
+        setSuggestions([]);
+      } 
     } else {
       setSuggestions([]);
       setShowSuggestions(false);
@@ -100,7 +102,7 @@ export const Hero: React.FC<HeroProps> = ({ onAvailabilityCheck }) => {
       const result = await checkAvailability(addressObj);
       onAvailabilityCheck(result, addressObj);
     } catch (err) {
-      setError('Something went wrong. Please try again.');
+      onAvailabilityCheck({ available: false, providers: [] }, addressObj);
     } finally {
       setIsChecking(false);
     }
@@ -114,7 +116,6 @@ export const Hero: React.FC<HeroProps> = ({ onAvailabilityCheck }) => {
 
   return (
     <section id="fibre" className="relative w-full bg-slate-900 overflow-hidden min-h-[90vh] flex items-center justify-center pb-20">
-      {/* Background Image with Overlay */}
       <div className="absolute inset-0 z-0">
         <img 
           src="https://lh3.googleusercontent.com/pw/AP1GczNuJAd5tgsAKUGlPgO7nREhKLD8Wxz7JFuqvi7tUYT7tf8XjhYd7SLecDug2-r7zLqpjy41lACR5-KEqRbjCFNW3x0VHFYwYKzv7Ct2xUf4F4WwAd_hhiumZt_fBnL1VNCAvkP-mJ4eR8_NrKX_GAg=w899-h599-s-no-gm?authuser=2" 
@@ -157,7 +158,6 @@ export const Hero: React.FC<HeroProps> = ({ onAvailabilityCheck }) => {
           Keep your home, work, and play online without interruptions. <br className="hidden sm:block" /> Hassle‑free installation, 24/7 support.
         </p>
 
-        {/* Search Bar Component */}
         <div className="w-full max-w-3xl animate-in slide-in-from-bottom-8 duration-700 delay-300" ref={wrapperRef}>
           <div className="relative group">
             <div className="relative flex items-center w-full bg-white rounded-2xl shadow-[0_8px_30px_rgba(0,0,0,0.5)] focus-within:shadow-[0_8px_40px_rgba(0,184,124,0.3)] transition-all duration-300 border-2 border-transparent focus-within:border-green-400/30 z-20">
@@ -197,7 +197,6 @@ export const Hero: React.FC<HeroProps> = ({ onAvailabilityCheck }) => {
               </div>
             </div>
 
-            {/* Autocomplete Suggestions */}
             {showSuggestions && suggestions.length > 0 && (
               <div className="absolute top-full left-0 right-0 mt-2 bg-white rounded-xl shadow-2xl border border-slate-100 overflow-hidden z-10 animate-in fade-in slide-in-from-top-2">
                  <ul>
