@@ -111,7 +111,7 @@ const DetailView = ({ submission, onBack, onMarkContacted, onMarkSpam, onAddNote
                         <button onClick={onMarkContacted} className="text-sm font-medium bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">Mark as Contacted</button>
                         <button onClick={onMarkSpam} className="text-sm font-medium bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600">Mark as Spam</button>
                     </div>
-                    <textarea placeholder="Add internal notes..." className="w-full border rounded-lg p-2 text-sm" rows="3"></textarea>
+                    <textarea placeholder="Add internal notes..." className="w-full border rounded-lg p-2 text-sm" rows={3}></textarea>
                      <button onClick={onAddNote} className="text-sm font-medium bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 mt-2">Add Note</button>
                 </div>
             </div>

@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { Button } from './ui/Button';
-import { CheckCircle, Shield, Clock, Users, Briefcase, Calendar, MessageSquare, ArrowRight, Video, BrainCircuit, Star } from 'lucide-react';
+import { CheckCircle, Shield, Clock, Users, Briefcase, Calendar, MessageSquare, ArrowRight, Video, BrainCircuit, Star, Phone } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -99,7 +98,7 @@ export const ConsultationScheduling: React.FC = () => {
                             <InputField icon={<Users size={16} />} label="Full Name" name="fullName" placeholder="John Doe" value={formData.fullName} onChange={handleInputChange} />
                             <InputField icon={<Briefcase size={16} />} label="Company Name" name="companyName" placeholder="Innovate Inc." value={formData.companyName} onChange={handleInputChange} />
                             <InputField icon={<Users size={16} />} label="Business Email" name="businessEmail" placeholder="your@email.com" type="email" value={formData.businessEmail} onChange={handleInputChange} />
-                            <InputField icon={<PhoneCall size={16} />} label="Phone Number" name="phone" placeholder="+27 00 000 0000" value={formData.phone} onChange={handleInputChange} />
+                            <InputField icon={<Phone size={16} />} label="Phone Number" name="phone" placeholder="+27 00 000 0000" value={formData.phone} onChange={handleInputChange} />
                             <SelectField icon={<Users size={16} />} label="Company Size" name="companySize" value={formData.companySize} onChange={handleInputChange}>
                                 <option value="" disabled>Select size</option>
                                 <option value="1-10">1-10 employees</option>
