@@ -16,17 +16,101 @@ import { PAIA } from './components/PAIA';
 import { Support } from './components/Support';
 import { Privacy } from './components/Privacy';
 import { ConsultationScheduling } from './components/ConsultationScheduling';
-import { Address, AvailabilityResult, Package, Lead, Provider } from './types';
+import { Address, AvailabilityResult, Package as FibrePackage, Lead, Provider } from './types';
 import { getPackages, submitLead, PROVIDERS } from './services/mockApi';
 
+// Define a type for Webhosting packages
+export interface WebhostingPackage {
+  name: string;
+  price: string;
+  description: string;
+  isFavorite?: boolean;
+  features: string[];
+  type: 'webhosting';
+}
+
+// Union type for any kind of package
+export type AnyPackage = FibrePackage | WebhostingPackage;
+
+const webhostingPackages: WebhostingPackage[] = [
+    {
+      name: 'Basic Package',
+      price: 'R39',
+      type: 'webhosting',
+      description: 'Superior and secure hosting for personal sites.',
+      features: [
+        'Superior and secure hosting',
+        'Initial assessment and strategic IT roadmap',
+        'Easy-to-use control panel',
+        'Lightning-fast loading speed',
+        'Free website migration',
+        'Offsite backup',
+        '2 GB NVMe Storage',
+        '30 GB traffic',
+        '1 MySQL database',
+        '5 email accounts',
+        '1 website',
+        '3 domain aliases',
+        'SSL certificate',
+      ],
+    },
+    {
+      name: 'Standard Package',
+      price: 'R59',
+      type: 'webhosting',
+      description: 'Perfect for growing businesses with more traffic.',
+      isFavorite: true,
+      features: [
+        'Superior and secure hosting',
+        'Detailed assessment and ongoing advisory',
+        'Easy-to-use control panel',
+        'Lightning-fast loading speed',
+        'Free website migration',
+        'Offsite backup',
+        '5 GB NVMe storage',
+        'Unlimited traffic',
+        '3 MySQL databases',
+        '30 email accounts',
+        '5 websites',
+        '5 domain aliases',
+        'SSL certificate',
+      ],
+    },
+    {
+      name: 'Premium Package',
+      price: 'R149',
+      type: 'webhosting',
+      description: 'Advanced performance for e-commerce.',
+      features: [
+        'Superior and secure hosting',
+        'Comprehensive assessment and ongoing advisory',
+        'Easy-to-use control panel',
+        'Lightning-fast loading speed',
+        'Free website migration',
+        'Offsite backup',
+        '30 GB NVMe storage',
+        'Unlimited traffic',
+        '5 MySQL databases',
+        '15 websites',
+        '15 domain aliases',
+        'SSL certificate',
+        '90 email accounts',
+      ],
+    },
+  ];
+
+
 const App: React.FC = () => {
-  const [packages, setPackages] = useState<Package[]>([]);
+  const [allPackages, setAllPackages] = useState<AnyPackage[]>([]);
   const [providers] = useState<Provider[]>(PROVIDERS);
   const [availability, setAvailability] = useState<AvailabilityResult | null>(null);
   const [userAddress, setUserAddress] = useState<Address | null>(null);
 
   useEffect(() => {
-    getPackages().then(setPackages);
+    getPackages().then(fibrePackages => {
+        const packagesWithTypes = fibrePackages.map(p => ({...p, type: 'fibre' as const}));
+        setAllPackages([...packagesWithTypes, ...webhostingPackages]);
+    });
   }, []);
 
   const handleAvailabilityCheck = (result: AvailabilityResult, address: Address) => {
@@ -39,6 +123,8 @@ const App: React.FC = () => {
     }
   };
 
+  const fibrePackages = allPackages.filter(p => p.type === 'fibre') as FibrePackage[];
+
   return (
     <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
       <Header />
@@ -47,7 +133,7 @@ const App: React.FC = () => {
           path="/"
           element={
             <Home
-              packages={packages}
+              packages={fibrePackages}
               providers={providers}
               availability={availability}
               userAddress={userAddress}
@@ -56,11 +142,11 @@ const App: React.FC = () => {
           }
         />
         <Route path="/store" element={<Store />} />
-        <Route path="/webhosting" element={<Webhosting />} />
+        <Route path="/webhosting" element={<Webhosting packages={webhostingPackages} />} />
         <Route path="/voip" element={<Voip />} />
         <Route path="/power-solutions" element={<PowerSolutions />} />
         <Route path="/store-checkout/:productId" element={<StoreCheckout />} />
-        <Route path="/checkout/:packageName" element={<FibreCheckout packages={packages} />} />
+        <Route path="/checkout/:packageName" element={<FibreCheckout packages={allPackages} />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/fibre-confirmation" element={<FibreConfirmation />} />
         <Route path="/PAIA" element={<PAIA />} />

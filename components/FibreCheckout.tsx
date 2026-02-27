@@ -1,22 +1,26 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { Button } from './ui/Button';
 import { PageLayout } from './ui/PageLayout';
 import { InputField } from './ui/InputField';
 import { Lock, ArrowLeft, CreditCard, Landmark } from 'lucide-react';
-import { Package } from '../types';
+import { AnyPackage } from '../App'; // Import the unified package type
 
-interface FibreCheckoutProps {
-  packages: Package[];
+interface CheckoutProps {
+  packages: AnyPackage[];
 }
 
-export const FibreCheckout: React.FC<FibreCheckoutProps> = ({ packages }) => {
+// Helper to check if a package is a FibrePackage
+const isFibrePackage = (pkg: AnyPackage): pkg is Extract<AnyPackage, { type: 'fibre' }> => {
+  return pkg.type === 'fibre';
+};
+
+export const FibreCheckout: React.FC<CheckoutProps> = ({ packages }) => {
   const { packageName } = useParams<{ packageName: string }>();
   const navigate = useNavigate();
   
   const [step, setStep] = useState(1);
-  const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
+  const [selectedPackage, setSelectedPackage] = useState<AnyPackage | null>(null);
   const [termsAccepted, setTermsAccepted] = useState(false);
   const [billingSameAsInstallation, setBillingSameAsInstallation] = useState(true);
   const [paymentMethod, setPaymentMethod] = useState('card');
@@ -50,7 +54,7 @@ export const FibreCheckout: React.FC<FibreCheckoutProps> = ({ packages }) => {
       alert('Please accept the Terms and Conditions.');
       return;
     }
-    console.log('Fibre Order Submitted', { 
+    console.log('Order Submitted', { 
         package: selectedPackage?.name, 
         ...formData 
     });
@@ -67,6 +71,47 @@ export const FibreCheckout: React.FC<FibreCheckoutProps> = ({ packages }) => {
           <p>Loading package details...</p>
         </div>
       </PageLayout>
+    );
+  }
+
+  const renderOrderSummary = () => {
+    if (!selectedPackage) return null;
+
+    const isFibre = isFibrePackage(selectedPackage);
+    const priceString = isFibre ? `R${selectedPackage.price}` : selectedPackage.price;
+
+    return (
+        <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-100 sticky top-24">
+            <h3 className="text-lg font-bold text-gray-800 mb-4 border-b pb-4">Order Summary</h3>
+            <div className="space-y-4">
+                <div className="bg-slate-50 p-4 rounded-lg">
+                    <div className="flex justify-between items-center mb-1">
+                        <span className="font-semibold text-slate-900">{selectedPackage.name}</span>
+                        <span className="font-bold text-blue-900 text-xl">{priceString}/mo</span>
+                    </div>
+                    {isFibre && (
+                        <div className="text-xs text-slate-500">
+                            {selectedPackage.speedDown}Mbps Down / {selectedPackage.speedUp}Mbps Upload
+                        </div>
+                    )}
+                </div>
+                <div className="text-sm text-slate-600 space-y-3 pt-4 border-t">
+                   {isFibre ? (
+                     <>
+                        <p className="flex justify-between"><span>Setup Fee</span> <span className="font-medium text-green-600">FREE</span></p>
+                        <p className="flex justify-between"><span>Router</span> <span className="font-medium text-green-600">FREE</span></p>
+                        <p className="flex justify-between"><span>Contract</span> <span className="font-medium text-slate-800">Month-to-month</span></p>
+                     </>
+                   ) : (
+                     <p className="text-center text-slate-500">Additional details will be confirmed via email.</p>
+                   )}
+                </div>
+                <div className="text-lg font-bold text-slate-900 pt-4 border-t mt-4 flex justify-between items-baseline">
+                    <span>Total Due Today</span>
+                    <span>R0.00</span>
+                </div>
+            </div>
+        </div>
     );
   }
 
@@ -207,7 +252,7 @@ export const FibreCheckout: React.FC<FibreCheckoutProps> = ({ packages }) => {
       title="Complete Your Order" 
       breadcrumbs={[
         { name: 'Home', href: '/' },
-        { name: 'Fibre Checkout', href: `/checkout/${packageName}` }
+        { name: 'Checkout', href: `/checkout/${packageName}` }
       ]}
     >
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
@@ -219,29 +264,7 @@ export const FibreCheckout: React.FC<FibreCheckoutProps> = ({ packages }) => {
             </div>
 
             <div className="lg:col-span-1">
-                 <div className="bg-white p-6 rounded-2xl shadow-md border border-slate-100 sticky top-24">
-                    <h3 className="text-lg font-bold text-gray-800 mb-4 border-b pb-4">Order Summary</h3>
-                    <div className="space-y-4">
-                        <div className="bg-slate-50 p-4 rounded-lg">
-                            <div className="flex justify-between items-center mb-1">
-                                <span className="font-semibold text-slate-900">{selectedPackage.name}</span>
-                                <span className="font-bold text-blue-900 text-xl">R{selectedPackage.price}/mo</span>
-                            </div>
-                            <div className="text-xs text-slate-500">
-                                {selectedPackage.speedDown}Mbps Down / {selectedPackage.speedUp}Mbps Upload
-                            </div>
-                        </div>
-                        <div className="text-sm text-slate-600 space-y-3 pt-4 border-t">
-                            <p className="flex justify-between"><span>Setup Fee</span> <span className="font-medium text-green-600">FREE</span></p>
-                            <p className="flex justify-between"><span>Router</span> <span className="font-medium text-green-600">FREE</span></p>
-                            <p className="flex justify-between"><span>Contract</span> <span className="font-medium text-slate-800">Month-to-month</span></p>
-                        </div>
-                        <div className="text-lg font-bold text-slate-900 pt-4 border-t mt-4 flex justify-between items-baseline">
-                            <span>Total Due Today</span>
-                            <span>R0.00</span>
-                        </div>
-                    </div>
-                </div>
+                 {renderOrderSummary()}
             </div>
         </div>
     </PageLayout>

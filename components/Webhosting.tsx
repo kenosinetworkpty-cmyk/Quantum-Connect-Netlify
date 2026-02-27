@@ -1,8 +1,13 @@
 import React, { useRef } from 'react';
 import { Check, Rocket, Globe, Zap, Headset } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { WebhostingPackage } from '../App';
 
-export const Webhosting: React.FC = () => {
+interface WebhostingProps {
+  packages: WebhostingPackage[];
+}
+
+export const Webhosting: React.FC<WebhostingProps> = ({ packages }) => {
     const navigate = useNavigate();
     const hostingPackagesRef = useRef<HTMLDivElement>(null);
 
@@ -16,71 +21,6 @@ export const Webhosting: React.FC = () => {
             block: 'center'
         });
     };
-
-  const packages = [
-    {
-      name: 'Basic Package',
-      price: 'R39',
-      description: 'Superior and secure hosting for personal sites.',
-      features: [
-        'Superior and secure hosting',
-        'Initial assessment and strategic IT roadmap',
-        'Easy-to-use control panel',
-        'Lightning-fast loading speed',
-        'Free website migration',
-        'Offsite backup',
-        '2 GB NVMe Storage',
-        '30 GB traffic',
-        '1 MySQL database',
-        '5 email accounts',
-        '1 website',
-        '3 domain aliases',
-        'SSL certificate',
-      ],
-    },
-    {
-      name: 'Standard Package',
-      price: 'R59',
-      description: 'Perfect for growing businesses with more traffic.',
-      isFavorite: true,
-      features: [
-        'Superior and secure hosting',
-        'Detailed assessment and ongoing advisory',
-        'Easy-to-use control panel',
-        'Lightning-fast loading speed',
-        'Free website migration',
-        'Offsite backup',
-        '5 GB NVMe storage',
-        'Unlimited traffic',
-        '3 MySQL databases',
-        '30 email accounts',
-        '5 websites',
-        '5 domain aliases',
-        'SSL certificate',
-      ],
-    },
-    {
-      name: 'Premium Package',
-      price: 'R149',
-      description: 'Advanced performance for e-commerce.',
-      features: [
-        'Superior and secure hosting',
-        'Comprehensive assessment and ongoing advisory',
-        'Easy-to-use control panel',
-        'Lightning-fast loading speed',
-        'Free website migration',
-        'Offsite backup',
-        '30 GB NVMe storage',
-        'Unlimited traffic',
-        '5 MySQL databases',
-        '15 websites',
-        '15 domain aliases',
-        'SSL certificate',
-        '90 email accounts',
-      ],
-    },
-  ];
-
   const perks = [
     {
         icon: Rocket,
@@ -147,7 +87,7 @@ export const Webhosting: React.FC = () => {
                   <span className={`ml-1 ${pkg.isFavorite ? 'text-blue-200' : 'text-slate-500'}`}>/mo</span>
                 </div>
                 <button 
-                    onClick={() => handleOrderClick(pkg.name.split(' ')[0])} 
+                    onClick={() => handleOrderClick(pkg.name)} 
                     className={`w-full font-bold py-3 rounded-lg border transition-colors ${pkg.isFavorite ? 'bg-white text-blue-900 hover:bg-blue-50' : 'bg-transparent border-slate-300 hover:bg-slate-50'}`}>
                   Order
                 </button>
