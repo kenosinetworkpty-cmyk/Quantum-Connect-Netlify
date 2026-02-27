@@ -1,8 +1,37 @@
 import React from 'react';
 import { Facebook, Twitter, Instagram, Linkedin, CreditCard, ShieldCheck } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export const Footer: React.FC = () => {
+  const navigate = useNavigate();
+
+  const handleSmoothScroll = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    navigate('/');
+    setTimeout(() => {
+      const targetElement = document.getElementById(targetId);
+      if (targetElement) {
+        const offset = -100; // Adjust this value to stop higher
+        const bodyRect = document.body.getBoundingClientRect().top;
+        const elementRect = targetElement.getBoundingClientRect().top;
+        const elementPosition = elementRect - bodyRect;
+        const offsetPosition = elementPosition + offset;
+
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: 'smooth'
+        });
+      }
+    }, 100); // Small delay to allow page navigation
+  };
+
+  const handleNav = (e: React.MouseEvent<HTMLAnchorElement>, path: string) => {
+    e.preventDefault();
+    navigate(path);
+    window.scrollTo(0, 0);
+  };
+
+
   return (
     <footer className="bg-slate-900 text-slate-300 py-16 border-t border-slate-800">
       <div className="container mx-auto px-4">
@@ -24,20 +53,20 @@ export const Footer: React.FC = () => {
           <div>
             <h4 className="text-white font-bold mb-6 uppercase text-sm tracking-wider">Quick Links</h4>
             <ul className="space-y-3 text-sm">
-              <li><Link to="/" className="hover:text-white transition-colors">Check Coverage</Link></li>
-              <li><Link to="/#pricing" className="hover:text-white transition-colors">Compare Packages</Link></li>
-              <li><Link to="/#pricing" className="hover:text-white transition-colors">Business Fibre</Link></li>
-              <li><Link to="/support" className="hover:text-white transition-colors">Support Centre</Link></li>
+              <li><a href="#availability-checker" onClick={(e) => handleSmoothScroll(e, 'availability-checker')} className="hover:text-white transition-colors">Check Coverage</a></li>
+              <li><a href="#pricing" onClick={(e) => handleSmoothScroll(e, 'pricing')} className="hover:text-white transition-colors">Compare Packages</a></li>
+              <li><a href="#pricing" onClick={(e) => handleSmoothScroll(e, 'pricing')} className="hover:text-white transition-colors">Business Fibre</a></li>
+              <li><a href="/support" onClick={(e) => handleNav(e, '/support')} className="hover:text-white transition-colors">Support Centre</a></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-white font-bold mb-6 uppercase text-sm tracking-wider">Legal</h4>
             <ul className="space-y-3 text-sm">
-              <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
-              <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-              <li><Link to="/aup" className="hover:text-white transition-colors">Acceptable Use Policy</Link></li>
-              <li><Link to="/PAIA" className="hover:text-white transition-colors">PAIA Manual</Link></li>
+              <li><a href="/terms" onClick={(e) => handleNav(e, '/terms')} className="hover:text-white transition-colors">Terms of Service</a></li>
+              <li><a href="/privacy" onClick={(e) => handleNav(e, '/privacy')} className="hover:text-white transition-colors">Privacy Policy</a></li>
+              <li><a href="/aup" onClick={(e) => handleNav(e, '/aup')} className="hover:text-white transition-colors">Acceptable Use Policy</a></li>
+              <li><a href="/PAIA" onClick={(e) => handleNav(e, '/PAIA')} className="hover:text-white transition-colors">PAIA Manual</a></li>
             </ul>
           </div>
 

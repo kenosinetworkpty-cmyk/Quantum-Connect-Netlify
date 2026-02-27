@@ -4,15 +4,23 @@ export const Terms: React.FC = () => {
   return (
     <div className="bg-slate-50 text-slate-900">
       {/* Hero Section */}
-      <div className="relative bg-gray-100 border-b border-slate-200">
-        <div className="container mx-auto px-4 py-16 text-center">
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight text-slate-900">
+      <div 
+        className="relative bg-gray-100 border-b border-slate-200"
+        style={{
+          backgroundImage: 'url("https://lh3.googleusercontent.com/pw/AP1GczNA9xwnFf0m_M7Q0OY3PEz_LABzC89BDd-YPzXaHhAA51_OGx5CdP7016ri3DBbCwrGbLAUf4IWYrI7hWQSbx7xFYaPXFU5Etnpjpequ0RcRrnLDb7etr2wEqUF_R6nwS6s74tSHiFcNMY3dz55gWUT=w936-h599-s-no-gm?authuser=2")',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      >
+        <div className="absolute inset-0 bg-slate-900/50"></div>
+        <div className="relative container mx-auto px-4 py-24 text-center text-white">
+          <h1 className="text-4xl md:text-5xl font-black tracking-tight">
             Terms of Service
           </h1>
-          <p className="mt-4 text-lg max-w-3xl mx-auto text-slate-600">
+          <p className="mt-4 text-lg max-w-3xl mx-auto text-slate-200">
             These terms govern the use of Quantum Connect services including Fibre, VoIP, Webhosting, and Backup Power Solutions.
           </p>
-          <p className="mt-2 text-sm text-slate-500">Last updated: {new Date().toLocaleDateString('en-ZA', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
+          <p className="mt-2 text-sm text-slate-400">Last updated: {new Date().toLocaleDateString('en-ZA', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
         </div>
       </div>
 
@@ -58,7 +66,7 @@ export const Terms: React.FC = () => {
             <h3>Refunds and Cancellations for Digital Products</h3>
             <ul>
               <li>Refunds for digital products are handled on a case‑by‑case basis and in accordance with applicable consumer protection law and the nature of the product delivered.</li>
-              <li>If you believe you are entitled to a refund, contact support@quantumconnect.click with full details of the purchase and the reason for the request.</li>
+              <li>If you believe you are entitled to a refund, contact support@quantumconnect.click with full details of the purchase and the reason for the reason for the request.</li>
             </ul>
             <h3>Failed Payments</h3>
             <ul>
