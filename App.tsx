@@ -12,6 +12,7 @@ import { Terms } from './components/Terms';
 import { Confirmation } from './components/Confirmation';
 import { Footer } from './components/Footer';
 import { PowerSolutions } from './components/PowerSolutions';
+import { PAIA } from './components/PAIA';
 import { Address, AvailabilityResult, Package, Lead, Provider } from './types';
 import { getPackages, submitLead, PROVIDERS } from './services/mockApi';
 
@@ -99,6 +100,7 @@ const App: React.FC = () => {
         <Route path="/checkout/:packageName" element={<Checkout />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/confirmation" element={<Confirmation />} />
+        <Route path="/PAIA" element={<PAIA />} />
       </Routes>
       <Footer />
     </div>

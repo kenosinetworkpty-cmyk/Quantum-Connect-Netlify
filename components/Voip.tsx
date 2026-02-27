@@ -9,22 +9,18 @@ export const Voip: React.FC = () => {
     {
       title: 'Business VoIP Solutions',
       description: 'A complete voice solution for your business with enterprise-grade features and HD quality.',
-      buttonText: 'Request Quote',
     },
     {
       title: 'Cloud PBX',
       description: 'Migrate your entire phone system to the cloud for ultimate flexibility and scalability.',
-      buttonText: 'Learn More',
     },
     {
       title: 'SIP Trunking',
       description: 'Connect your existing PBX to our network for reliable, cost-effective call routing.',
-      buttonText: 'Get Status',
     },
     {
       title: 'Hosted Telephony',
       description: 'Fully managed and hosted phone system that removes the complexity of on-site hardware.',
-      buttonText: 'Explore Plans',
     },
   ];
 
@@ -77,9 +73,6 @@ export const Voip: React.FC = () => {
             <button onClick={() => navigate('/consultation-scheduling')} style={{ backgroundColor: brandBlue }} className="text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:opacity-90 transition">
               Request a Consultation
             </button>
-            <button style={{ backgroundColor: brandGreen }} className="text-white font-bold py-3 px-6 rounded-lg shadow-lg hover:opacity-90 transition">
-              View VoIP Plans
-            </button>
           </div>
         </div>
       </div>
@@ -96,8 +89,8 @@ export const Voip: React.FC = () => {
               <div key={offering.title} className="bg-white p-8 rounded-xl shadow-lg border border-slate-100 hover:shadow-2xl transition-shadow duration-300">
                 <h3 className="font-bold text-xl">{offering.title}</h3>
                 <p className="mt-2 text-slate-500">{offering.description}</p>
-                <button style={{ backgroundColor: brandGreen }} className="mt-6 text-white font-bold py-2 px-4 rounded-md hover:opacity-90 transition">
-                  {offering.buttonText}
+                <button onClick={() => navigate('/consultation-scheduling')} style={{ backgroundColor: brandGreen }} className="mt-6 text-white font-bold py-2 px-4 rounded-md hover:opacity-90 transition">
+                  Request a Consultation
                 </button>
               </div>
             ))}
@@ -123,41 +116,6 @@ export const Voip: React.FC = () => {
               </div>
             ))}
           </div>
-        </div>
-      </div>
-      
-      {/* Consultation Form Section */}
-      <div className="py-24 bg-white">
-        <div className="container mx-auto px-4">
-           <div className="max-w-3xl mx-auto">
-              <div className="bg-white p-8 sm:p-12 rounded-2xl shadow-xl border border-slate-100">
-                <h2 className="text-3xl md:text-4xl font-bold text-center">Get a Free Consultation</h2>
-                 <p className="mt-4 text-center text-slate-500">
-                    Let our experts assess your needs and tailor a solution that fits your business perfectly. No obligations, just expert advice.
-                  </p>
-                <form className="mt-8 space-y-6">
-                  <div>
-                    <label htmlFor="fullName" className="sr-only">Full Name</label>
-                    <input type="text" id="fullName" placeholder="Full Name" className="w-full p-4 border border-slate-200 rounded-lg" />
-                  </div>
-                  <div>
-                    <label htmlFor="companyName" className="sr-only">Company Name</label>
-                    <input type="text" id="companyName" placeholder="Company Name" className="w-full p-4 border border-slate-200 rounded-lg" />
-                  </div>
-                   <div>
-                    <label htmlFor="email" className="sr-only">Email Address</label>
-                    <input type="email" id="email" placeholder="Email Address" className="w-full p-4 border border-slate-200 rounded-lg" />
-                  </div>
-                  <div>
-                    <label htmlFor="contactNumber" className="sr-only">Contact Number</label>
-                    <input type="tel" id="contactNumber" placeholder="Contact Number" className="w-full p-4 border border-slate-200 rounded-lg" />
-                  </div>
-                  <button onClick={() => navigate('/consultation-scheduling')} style={{ backgroundColor: brandBlue }} className="w-full text-white font-bold py-4 px-6 rounded-lg shadow-lg hover:opacity-90 transition">
-                    Request a Free Consultation
-                  </button>
-                </form>
-              </div>
-           </div>
         </div>
       </div>
     </div>

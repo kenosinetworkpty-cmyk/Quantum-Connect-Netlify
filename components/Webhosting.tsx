@@ -1,12 +1,20 @@
-import React from 'react';
-import { Check } from 'lucide-react';
+import React, { useRef } from 'react';
+import { Check, Rocket, Globe, Zap, Headset } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 export const Webhosting: React.FC = () => {
     const navigate = useNavigate();
+    const hostingPackagesRef = useRef<HTMLDivElement>(null);
 
     const handleOrderClick = (packageName: string) => {
         navigate(`/checkout/${packageName}`);
+    };
+
+    const handleScrollToPackages = () => {
+        hostingPackagesRef.current?.scrollIntoView({
+            behavior: 'smooth',
+            block: 'center'
+        });
     };
 
   const packages = [
@@ -73,6 +81,30 @@ export const Webhosting: React.FC = () => {
     },
   ];
 
+  const perks = [
+    {
+        icon: Rocket,
+        title: 'Skip the Migration Fees — Forever!',
+        description: 'Already rocking a hosting plan but itching to switch? We move your site free of charge — lightning-fast, smooth, and stress-free. No hidden costs. No downtime drama. Just seamless migration.',
+    },
+    {
+        icon: Globe,
+        title: 'Your Domain, Your Rules',
+        description: 'Register a new domain or transfer your existing one effortlessly. One platform. Zero hassle. Total control.',
+    },
+    {
+        icon: Zap,
+        title: 'Premium Hosting Without the Premium Price',
+        description: 'Enjoy high-performance hosting packed with powerful features — without the scary price tag. Full toolkit. Smart pricing. No compromises.',
+    },
+    {
+        icon: Headset,
+        title: '24/7 Expert Support',
+        description: 'Whether you\’re launching your first site or scaling like a pro, our hosting specialists are always available via Live Chat. No waiting. No stress. Just real support, anytime.',
+    }
+];
+
+
   const brandBlue = "#0a254e";
 
   return (
@@ -90,14 +122,14 @@ export const Webhosting: React.FC = () => {
         <div className="relative container mx-auto px-4 py-32 text-center">
           <h1 className="text-4xl md:text-5xl font-black">Web Hosting Packages</h1>
           <p className="mt-4 text-lg text-slate-300">WEB HOSTING MADE IN SOUTH AFRICA. POWERFUL. FAST. SECURE.</p>
-          <button style={{ backgroundColor: brandBlue }} className="mt-8 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:opacity-90 transition">
+          <button onClick={handleScrollToPackages} style={{ backgroundColor: brandBlue }} className="mt-8 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:opacity-90 transition">
             Get Started
           </button>
         </div>
       </div>
 
       {/* Pricing Section */}
-      <div className="py-24">
+      <div ref={hostingPackagesRef} className="py-24">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
             {packages.map((pkg) => (
@@ -131,6 +163,27 @@ export const Webhosting: React.FC = () => {
             ))}
           </div>
         </div>
+      </div>
+
+       {/* Perks Section */}
+       <div className="py-24 bg-white">
+          <div className="container mx-auto px-4 text-center">
+              <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Perks of Webhosting with Quantum Connect</h2>
+              <p className="mt-4 text-slate-500 max-w-2xl mx-auto">
+                  We've packed our hosting with features to give you the best experience.
+              </p>
+              <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
+                  {perks.map((perk, index) => (
+                      <div key={index} className="text-center">
+                          <div className="inline-flex items-center justify-center w-16 h-16 mb-6 bg-blue-100 text-blue-600 rounded-full">
+                              <perk.icon className="w-8 h-8" />
+                          </div>
+                          <h3 className="text-xl font-bold text-slate-900 mb-2">{perk.title}</h3>
+                          <p className="text-slate-500">{perk.description}</p>
+                      </div>
+                  ))}
+              </div>
+          </div>
       </div>
     </div>
   );

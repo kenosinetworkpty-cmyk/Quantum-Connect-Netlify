@@ -1,5 +1,6 @@
 import React from 'react';
-import { Facebook, Twitter, Instagram, Linkedin, CreditCard } from 'lucide-react';
+import { Facebook, Twitter, Instagram, Linkedin, CreditCard, ShieldCheck } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export const Footer: React.FC = () => {
   return (
@@ -23,35 +24,39 @@ export const Footer: React.FC = () => {
           <div>
             <h4 className="text-white font-bold mb-6 uppercase text-sm tracking-wider">Quick Links</h4>
             <ul className="space-y-3 text-sm">
-              <li><a href="#" className="hover:text-white transition-colors">Check Coverage</a></li>
-              <li><a href="#pricing" className="hover:text-white transition-colors">Compare Packages</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Business Fibre</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Support Centre</a></li>
+              <li><Link to="/" className="hover:text-white transition-colors">Check Coverage</Link></li>
+              <li><Link to="/#pricing" className="hover:text-white transition-colors">Compare Packages</Link></li>
+              <li><Link to="/business" className="hover:text-white transition-colors">Business Fibre</Link></li>
+              <li><Link to="/support" className="hover:text-white transition-colors">Support Centre</Link></li>
             </ul>
           </div>
 
           <div>
             <h4 className="text-white font-bold mb-6 uppercase text-sm tracking-wider">Legal</h4>
             <ul className="space-y-3 text-sm">
-              <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Acceptable Use Policy</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">PAIA Manual</a></li>
+              <li><Link to="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
+              <li><Link to="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+              <li><Link to="/aup" className="hover:text-white transition-colors">Acceptable Use Policy</Link></li>
+              <li><Link to="/PAIA" className="hover:text-white transition-colors">PAIA Manual</Link></li>
             </ul>
           </div>
 
           <div>
              <h4 className="text-white font-bold mb-6 uppercase text-sm tracking-wider">Contact Us</h4>
              <ul className="space-y-3 text-sm">
-               <li>kenosinetworkpty@gmail.com</li>
+               <li>support@quantumconnect.click</li>
                <li>WhatsApp Chat: +27 68 054 6225</li>
                <li>WhatsApp support on +27 68 054 6225</li>
              </ul>
              <div className="mt-6">
-                <span className="text-xs text-slate-500 block mb-2">Secure Payments via</span>
+                <span className="text-xs text-slate-500 block mb-2">Secure Payments & SSL</span>
                 <div className="flex items-center space-x-2 text-slate-400">
                    <CreditCard size={24} className="flex-shrink-0" />
-                   <span className="text-xs leading-tight">Visa / Mastercard / EFT / 1Voucher / Ozow / Payfast</span>
+                   <span className="text-xs leading-tight">Visa / Mastercard / EFT / Ozow</span>
+                </div>
+                <div className="flex items-center space-x-2 text-slate-400 mt-3">
+                   <ShieldCheck size={24} className="flex-shrink-0 text-green-400" />
+                   <span className="text-xs leading-tight">SSL Secured Checkout</span>
                 </div>
              </div>
           </div>

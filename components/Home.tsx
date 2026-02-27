@@ -4,8 +4,6 @@ import { Hero } from './Hero';
 import { Benefits } from './Benefits';
 import { PricingGrid } from './PricingGrid';
 import { TrustSection } from './TrustSection';
-import { Voip } from './Voip';
-import { Store } from './Store';
 import { Modal } from './ui/Modal';
 import { Button } from './ui/Button';
 import { Address, AvailabilityResult, Package, Lead, Provider } from '../types';
@@ -123,8 +121,6 @@ export const Home: React.FC<HomeProps> = ({
         </div>
       )}
       
-      <Voip />
-      <Store />
       <TrustSection />
 
       {selectedPackage && (
