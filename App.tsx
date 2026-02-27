@@ -3,10 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Header } from './components/Header';
 import { Home } from './components/Home';
-import { Store } from './components/Store';
+import { Shop } from './components/Shop';
+import { ProductPage } from './components/shop/ProductPage';
+import { ShopCheckout } from './components/shop/ShopCheckout';
+import { ShopConfirmation } from './components/shop/ShopConfirmation';
 import { Webhosting } from './components/Webhosting';
 import { Voip } from './components/Voip';
-import { StoreCheckout } from './components/StoreCheckout';
 import { Terms } from './components/Terms';
 import { FibreCheckout } from './components/FibreCheckout';
 import { FibreConfirmation } from './components/FibreConfirmation';
@@ -141,11 +143,13 @@ const App: React.FC = () => {
             />
           }
         />
-        <Route path="/store" element={<Store />} />
+        <Route path="/shop" element={<Shop />} />
+        <Route path="/shop/product/:id" element={<ProductPage />} />
+        <Route path="/shop/checkout/:id" element={<ShopCheckout />} />
+        <Route path="/shop/confirmation/:id" element={<ShopConfirmation />} />
         <Route path="/webhosting" element={<Webhosting packages={webhostingPackages} />} />
         <Route path="/voip" element={<Voip />} />
         <Route path="/power-solutions" element={<PowerSolutions />} />
-        <Route path="/store-checkout/:productId" element={<StoreCheckout />} />
         <Route path="/checkout/:packageName" element={<FibreCheckout packages={allPackages} />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/fibre-confirmation" element={<FibreConfirmation />} />
