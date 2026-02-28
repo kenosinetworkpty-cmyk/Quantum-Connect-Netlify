@@ -43,7 +43,7 @@ const ProductCard: React.FC<{ product: typeof shopProducts[0] }> = ({ product })
       <div className="flex justify-between items-center mt-auto">
         <p className="text-xl font-black text-slate-900">R {product.price.toLocaleString()}</p>
         <Button size="sm" asChild variant='outline' className="border-slate-300 hover:bg-slate-800 hover:text-white">
-            <Link to={`/shop/${product.id}`}>View Details</Link>
+            <Link to={`/shop/${product.id}`}>Buy Now</Link>
         </Button>
       </div>
     </div>
