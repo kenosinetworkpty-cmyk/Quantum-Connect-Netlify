@@ -10,6 +10,7 @@ import { Input } from '../ui/Input';
 import { RadioGroup } from '../ui/RadioGroup';
 import { RadioGroupItem } from '../ui/RadioGroupItem';
 import { Checkbox } from '../ui/Checkbox';
+import { ShopProduct } from '../../types';
 
 const deliverySchema = z.object({
   fullName: z.string().min(1, 'Full name is required'),
@@ -20,7 +21,7 @@ const deliverySchema = z.object({
 });
 
 const paymentSchema = z.object({
-  billingSameAsDelivery: z.boolean().default(true),
+  billingSameAsDelivery: z.boolean().default(true).optional(),
   billingAddress: z.string().optional(),
   billingCity: z.string().optional(),
   billingPostalCode: z.string().optional(),
@@ -78,9 +79,9 @@ export const ShopCheckout: React.FC<ShopCheckoutProps> = ({ cart, onBack, onUpda
   const cartItems = Object.entries(cart).map(([productId, quantity]) => {
     const product = shopProducts.find(p => p.id === productId);
     return { product, quantity };
-  }).filter(item => item.product);
+  }).filter((item): item is { product: ShopProduct; quantity: number } => !!item.product);
 
-  const subtotal = cartItems.reduce((acc, item) => acc + item.product!.price * item.quantity, 0);
+  const subtotal = cartItems.reduce((acc, item) => acc + item.product.price * item.quantity, 0);
   const deliveryFee = 150;
   const total = subtotal + deliveryFee;
 
@@ -123,18 +124,18 @@ export const ShopCheckout: React.FC<ShopCheckoutProps> = ({ cart, onBack, onUpda
               <h1 className="text-3xl font-black tracking-tighter mb-6">Order Summary</h1>
               <div className="space-y-4 bg-slate-800/50 p-6 rounded-2xl shadow-lg sticky top-20">
                 {cartItems.map(({ product, quantity }) => (
-                  <div key={product!.id} className="flex items-center justify-between">
+                  <div key={product.id} className="flex items-center justify-between">
                     <div className="flex items-center">
-                      <img src={product!.image} alt={product!.name} className="w-20 h-20 object-cover rounded-lg mr-4"/>
+                      <img src={product.image} alt={product.name} className="w-20 h-20 object-cover rounded-lg mr-4"/>
                       <div>
-                        <h3 className="font-bold text-lg">{product!.name}</h3>
-                        <p className="text-slate-400">{product!.currency} {product!.price.toLocaleString()}</p>
+                        <h3 className="font-bold text-lg">{product.name}</h3>
+                        <p className="text-slate-400">{product.currency} {product.price.toLocaleString()}</p>
                       </div>
                     </div>
                     <div className="flex items-center bg-slate-700 rounded-full">
-                      <Button size="icon" variant="ghost" onClick={() => onUpdateQuantity(product!.id, Math.max(1, quantity - 1))} className="rounded-full h-8 w-8"><Minus size={16}/></Button>
+                      <Button size="icon" variant="ghost" onClick={() => onUpdateQuantity(product.id, Math.max(1, quantity - 1))} className="rounded-full h-8 w-8"><Minus size={16}/></Button>
                       <span className="font-bold w-8 text-center">{quantity}</span>
-                      <Button size="icon" variant="ghost" onClick={() => onUpdateQuantity(product!.id, quantity + 1)} className="rounded-full h-8 w-8"><Plus size={16}/></Button>
+                      <Button size="icon" variant="ghost" onClick={() => onUpdateQuantity(product.id, quantity + 1)} className="rounded-full h-8 w-8"><Plus size={16}/></Button>
                     </div>
                   </div>
                 ))}
@@ -179,7 +180,7 @@ export const ShopCheckout: React.FC<ShopCheckoutProps> = ({ cart, onBack, onUpda
                     {/* Billing Address */}
                     <div className="bg-slate-800/50 p-6 rounded-lg">
                       <h3 className="font-bold mb-4">Billing Address</h3>
-                      <div className="flex items-center space-x-2">
+                      <div className="flex items-.center space-x-2">
                          <Checkbox id="billingSameAsDelivery" {...methods.register('billingSameAsDelivery')} />
                          <label htmlFor="billingSameAsDelivery" className="text-sm font-medium text-slate-300">Same as delivery address</label>
                       </div>

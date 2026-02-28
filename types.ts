@@ -1,41 +1,57 @@
-export interface Address {
-  street: string;
-  suburb: string;
-  city: string;
-}
 
-export interface Provider {
+export type ShopProduct = {
   id: string;
   name: string;
-  logo: string;
-  rating: number; // 1-5
-  sla: string;
+  price: number;
+  currency: string;
+  image: string;
+  description: string;
+  category: string;
+  specs: string[];
+  features: string[];
+  whatsIncluded: string[];
+};
+
+export interface Address {
+  street: string;
+  city: string;
+  province: string;
+  postalCode: string;
+}
+
+export interface AvailabilityResult {
+  available: boolean;
+  exchange?: string;
+  providers: string[];
 }
 
 export interface Package {
   id: string;
   providerId: string;
   name: string;
-  speedDown: number; // Mbps
-  speedUp: number; // Mbps
+  speedDown: number;
+  speedUp: number;
   price: number;
   features: string[];
-  contractTerm: string; // e.g., "Month-to-Month"
+  contractTerm: string;
   hasRouter: boolean;
   hasInstallation: boolean;
   uncapped: boolean;
+  type?: 'fibre';
 }
 
 export interface Lead {
-  packageId: string;
   name: string;
+  contact: string;
   email: string;
-  phone: string;
   address: Address;
+  packageId: string;
 }
 
-export interface AvailabilityResult {
-  available: boolean;
-  exchange?: string;
-  providers: string[]; // Provider IDs
+export interface Provider {
+  id: string;
+  name: string;
+  logo: string;
+  rating: number;
+  sla: string;
 }
