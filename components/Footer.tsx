@@ -46,7 +46,7 @@ export const Footer: React.FC = () => {
               <a href="#" className="hover:text-white transition-colors"><Facebook size={20} /></a>
               <a href="#" className="hover:text-white transition-colors"><Twitter size={20} /></a>
               <a href="#" className="hover:text-white transition-colors"><Instagram size={20} /></a>
-              <a href="#" className="hover:text-white transition-colors"><Linkedin size={20} /></a>
+              <a href="https://www.linkedin.com/company/quantum-connect-click/?viewAsMember=true" target="_blank" rel="noopener noreferrer" aria-label="Visit Quantum Connect on LinkedIn" className="hover:text-white transition-colors"><Linkedin size={20} /></a>
             </div>
           </div>
 
