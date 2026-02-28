@@ -32,7 +32,7 @@ export const shopProducts: ShopProduct[] = [
   {
     id: 'portable-power-station',
     name: 'Portable Power Station',
-    price: 4999,
+    price: 6999,
     currency: 'ZAR',
     image: 'https://lh3.googleusercontent.com/pw/AP1GczOxjf4yZdhf25bOjMIANLSJl5S74UcHEZNQjo-pTl-LNKCtMy3yeuuhN5CnujNvoUEuqdakqodWKRQraNZfnVAq60dIwHLQIR0_8SqAsfe67qTzhWMI_LFzOtHRxU96bOrtqh8JRtdJax9Jf6F6--k=w899-h599-s-no-gm?authuser=2',
     description: 'A robust portable power station for running larger devices like TVs, laptops, and small appliances during an outage.',

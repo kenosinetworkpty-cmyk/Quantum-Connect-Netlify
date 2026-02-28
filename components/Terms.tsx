@@ -48,6 +48,7 @@ export const Terms: React.FC = () => {
               <li><strong>Billing:</strong> Monthly subscriptions for Fibre, VoIP, and Hosting are billed in advance. Our primary payment gateway is Netcash. Hardware purchases are billed at the time of order.</li>
               <li><strong>Late Payments:</strong> Failure to make payment by the due date may result in the suspension or termination of your service. A reconnection fee may be applicable.</li>
               <li><strong>Refund Policy:</strong> For products sold via our e-commerce shop, we offer a refund within two (2) weeks of purchase, provided the goods are returned in new condition with original packaging. The user is liable for any return shipping fees for refunds or exchanges.</li>
+               <li><strong>Product Disclaimer:</strong> For electronic products bought from our e-commerce shop, images shown online are for illustrative purposes only. Due to stock availability, we reserve the right to dispatch products with similar or equivalent features, which may not be identical to the images shown.</li>
             </ul>
 
             <h3 className="font-semibold mt-6 mb-4 text-xl">Debit Order Mandate</h3>
