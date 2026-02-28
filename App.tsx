@@ -122,19 +122,34 @@ const App: React.FC = () => {
   };
   
   const handleAddToCart = (productId: string, quantity: number) => {
-    setCart(prevCart => ({
-      ...prevCart,
-      [productId]: (prevCart[productId] || 0) + quantity,
-    }));
+    const numQuantity = Number(quantity);
+    const addQuantity = !isNaN(numQuantity) && numQuantity > 0 ? numQuantity : 1;
+    setCart(prevCart => {
+      const existingQuantity = prevCart[productId] || 0;
+      const newQuantity = existingQuantity + addQuantity;
+      return {
+        ...prevCart,
+        [productId]: newQuantity,
+      };
+    });
   };
 
   const handleUpdateCartQuantity = (productId: string, quantity: number) => {
-    if (quantity <= 0) {
-      const newCart = { ...cart };
-      delete newCart[productId];
-      setCart(newCart);
+    const numQuantity = Number(quantity);
+
+    if (isNaN(numQuantity)) {
+      setCart(prevCart => ({ ...prevCart, [productId]: 1 }));
+      return;
+    }
+
+    if (numQuantity <= 0) {
+      setCart(prevCart => {
+        const newCart = { ...prevCart };
+        delete newCart[productId];
+        return newCart;
+      });
     } else {
-      setCart(prevCart => ({ ...prevCart, [productId]: quantity }));
+      setCart(prevCart => ({ ...prevCart, [productId]: numQuantity }));
     }
   };
 
