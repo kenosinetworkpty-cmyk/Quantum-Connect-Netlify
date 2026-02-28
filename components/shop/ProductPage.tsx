@@ -1,59 +1,118 @@
 
 import React from 'react';
-import { useParams } from 'react-router-dom';
+import { ChevronLeft, CheckCircle, Package, Battery, Zap } from 'lucide-react';
 import { shopProducts } from './products';
-import { PageLayout } from '../ui/PageLayout';
 import { Button } from '../ui/Button';
-import { CheckCircle, Zap } from 'lucide-react';
 
-export const ProductPage: React.FC = () => {
-  const { productId } = useParams<{ productId: string }>();
+type ProductPageProps = {
+  productId: string;
+  onBack: () => void;
+  onAddToCart: (productId: string) => void;
+};
+
+export const ProductPage: React.FC<ProductPageProps> = ({ productId, onBack, onAddToCart }) => {
   const product = shopProducts.find(p => p.id === productId);
 
   if (!product) {
-    return <PageLayout title="Product Not Found"><p className='text-center'>Sorry, we couldn't find that product.</p></PageLayout>;
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-slate-900 text-white">
+        <h2 className="text-2xl font-bold mb-4">Product not found</h2>
+        <Button onClick={onBack}>Go back to Shop</Button>
+      </div>
+    );
   }
 
   return (
-    <PageLayout title={product.name}>
-      <div className="container mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+    <section className="bg-slate-900 text-white min-h-screen animate-in fade-in">
+      <div className="container mx-auto px-4 py-12 md:py-20">
+        
+        {/* Back to Shop Link */}
+        <div className="mb-8">
+          <a
+            href="#"
+            onClick={(e) => { e.preventDefault(); onBack(); }}
+            className="inline-flex items-center text-slate-300 hover:text-white transition-colors"
+          >
+            <ChevronLeft size={20} className="mr-2" />
+            Back to All Products
+          </a>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 lg:gap-20">
           
-          <div className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700 shadow-2xl">
-            <img src={product.image} alt={product.name} className="w-full h-auto rounded-lg object-contain max-h-[400px]"/>
+          {/* Left Column: Product Image */}
+          <div className="flex justify-center items-start">
+            <div className="relative w-full max-w-md bg-slate-800 rounded-2xl shadow-2xl overflow-hidden">
+              <img 
+                src={product.image}
+                alt={product.name}
+                className="w-full h-auto object-cover transform hover:scale-105 transition-transform duration-500"
+              />
+              <div className="absolute top-4 right-4 bg-blue-600 text-white text-sm font-bold px-3 py-1 rounded-full shadow-lg">
+                {product.category}
+              </div>
+            </div>
           </div>
 
+          {/* Right Column: Product Details */}
           <div>
-            <h1 className="text-4xl font-bold text-white mb-4">{product.name}</h1>
-            <p className="text-2xl font-light text-green-400 mb-6">R {product.price.toLocaleString()}</p>
-            <p className="text-slate-300 mb-8 text-lg">{product.description}</p>
-            
-            <Button size="lg" className="w-full md:w-auto rounded-full px-12 py-5 text-lg font-bold tracking-wide shadow-lg shadow-blue-500/30 hover:shadow-green-500/40 transform active:scale-95 transition-all duration-300 bg-gradient-to-r from-blue-600 to-green-500">Add to Cart</Button>
+            <h1 className="text-4xl lg:text-5xl font-black tracking-tighter mb-3">{product.name}</h1>
+            <p className="text-3xl font-bold text-blue-400 mb-6">
+              {product.currency} {product.price.toLocaleString()}
+            </p>
 
-            <div className="mt-10 border-t border-slate-700 pt-8">
-              <h3 className="text-xl font-semibold text-white mb-4 flex items-center"><Zap size={20} className="mr-2 text-yellow-400"/>Key Specs</h3>
-              <ul className="space-y-2 text-slate-400">
-                {product.specs.map((spec, i) => <li key={i} className="flex items-center"><CheckCircle size={16} className="mr-3 text-green-500 flex-shrink-0"/>{spec}</li>)}
-              </ul>
+            <p className="text-slate-300 text-lg leading-relaxed mb-8">{product.description}</p>
+            
+            <Button 
+              size="lg"
+              onClick={() => onAddToCart(product.id)}
+              className="w-full md:w-auto bg-green-600 hover:bg-green-700 text-white font-bold py-4 px-10 rounded-lg shadow-lg transform active:scale-95 transition-all duration-300"
+            >
+              Buy Now
+            </Button>
+
+            {/* Details Sections */}
+            <div className="mt-12 space-y-8">
+              {/* Key Specifications */}
+              <div>
+                <h3 className="text-xl font-bold flex items-center mb-4"><Battery className="mr-3 text-blue-400"/>Key Specifications</h3>
+                <ul className="space-y-2 text-slate-300">
+                  {product.specs.map((spec, i) => (
+                    <li key={i} className="flex items-start">
+                      <CheckCircle size={18} className="text-green-400 mr-3 mt-1 flex-shrink-0" />
+                      <span>{spec}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              {/* Features */}
+              <div>
+                <h3 className="text-xl font-bold flex items-center mb-4"><Zap className="mr-3 text-yellow-400"/>Features Overview</h3>
+                <ul className="space-y-2 text-slate-300">
+                  {product.features.map((feature, i) => (
+                    <li key={i} className="flex items-start">
+                      <CheckCircle size={18} className="text-green-400 mr-3 mt-1 flex-shrink-0" />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              {/* What's Included */}
+              <div>
+                <h3 className="text-xl font-bold flex items-center mb-4"><Package className="mr-3 text-gray-400"/>What's Included</h3>
+                <ul className="space-y-2 text-slate-300">
+                  {product.whatsIncluded.map((item, i) => (
+                    <li key={i} className="flex items-start">
+                      <CheckCircle size={18} className="text-green-400 mr-3 mt-1 flex-shrink-0" />
+                      <span>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </div>
         </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mt-16 pt-12 border-t border-slate-700">
-          <div>
-            <h2 className="text-3xl font-bold text-white mb-6">Features</h2>
-            <ul className="space-y-4 text-slate-300 text-lg">
-              {product.features.map((feature, i) => <li key={i}>{feature}</li>)}
-            </ul>
-          </div>
-          <div>
-            <h2 className="text-3xl font-bold text-white mb-6">What's Included</h2>
-            <ul className="space-y-4 text-slate-300 text-lg">
-              {product.whatsIncluded.map((item, i) => <li key={i}>{item}</li>)}
-            </ul>
-          </div>
-        </div>
       </div>
-    </PageLayout>
+    </section>
   );
 };

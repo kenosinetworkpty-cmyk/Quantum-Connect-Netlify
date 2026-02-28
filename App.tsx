@@ -4,10 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import { Header } from './components/Header';
 import { Home } from './components/Home';
 import { Shop } from './components/Shop';
-import { ProductPage } from './components/shop/ProductPage';
 import { shopProducts } from './components/shop/products';
-import { ShopCheckout } from './components/shop/ShopCheckout';
-import { ShopConfirmation } from './components/shop/ShopConfirmation';
 import { Webhosting } from './components/Webhosting';
 import { Voip } from './components/Voip';
 import { Terms } from './components/Terms';
@@ -22,7 +19,6 @@ import { ConsultationScheduling } from './components/ConsultationScheduling';
 import { Address, AvailabilityResult, Package as FibrePackage, Lead, Provider } from './types';
 import { getPackages, submitLead, PROVIDERS } from './services/mockApi';
 
-// Define a type for Webhosting packages
 export interface WebhostingPackage {
   name: string;
   price: string;
@@ -32,7 +28,6 @@ export interface WebhostingPackage {
   type: 'webhosting';
 }
 
-// Union type for any kind of package
 export type AnyPackage = FibrePackage | WebhostingPackage;
 
 const webhostingPackages: WebhostingPackage[] = [
@@ -102,12 +97,12 @@ const webhostingPackages: WebhostingPackage[] = [
     },
   ];
 
-
 const App: React.FC = () => {
   const [allPackages, setAllPackages] = useState<AnyPackage[]>([]);
   const [providers] = useState<Provider[]>(PROVIDERS);
   const [availability, setAvailability] = useState<AvailabilityResult | null>(null);
   const [userAddress, setUserAddress] = useState<Address | null>(null);
+  const [cart, setCart] = useState<{ [key: string]: number }>({});
 
   useEffect(() => {
     getPackages().then(fibrePackages => {
@@ -123,6 +118,23 @@ const App: React.FC = () => {
       setTimeout(() => {
         document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
+    }
+  };
+  
+  const handleAddToCart = (productId: string, quantity: number) => {
+    setCart(prevCart => ({
+      ...prevCart,
+      [productId]: (prevCart[productId] || 0) + quantity,
+    }));
+  };
+
+  const handleUpdateCartQuantity = (productId: string, quantity: number) => {
+    if (quantity <= 0) {
+      const newCart = { ...cart };
+      delete newCart[productId];
+      setCart(newCart);
+    } else {
+      setCart(prevCart => ({ ...prevCart, [productId]: quantity }));
     }
   };
 
@@ -144,10 +156,14 @@ const App: React.FC = () => {
             />
           }
         />
-        <Route path="/shop" element={<Shop products={shopProducts} />} />
-        <Route path="/shop/product/:id" element={<ProductPage />} />
-        <Route path="/shop/checkout/:id" element={<ShopCheckout />} />
-        <Route path="/shop/confirmation/:id" element={<ShopConfirmation />} />
+        <Route path="/shop" element={
+          <Shop 
+            products={shopProducts} 
+            onAddToCart={handleAddToCart} 
+            onUpdateCartQuantity={handleUpdateCartQuantity} 
+            cart={cart} 
+          />
+        } />
         <Route path="/webhosting" element={<Webhosting packages={webhostingPackages} />} />
         <Route path="/voip" element={<Voip />} />
         <Route path="/power-solutions" element={<PowerSolutions />} />

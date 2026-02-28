@@ -1,78 +1,46 @@
+
 import React from 'react';
 
 export const Privacy: React.FC = () => {
   return (
-    <div className="bg-slate-50 text-slate-900">
-      <div 
-        className="relative bg-gray-100 border-b border-slate-200"
-        style={{
-          backgroundImage: 'url("https://lh3.googleusercontent.com/pw/AP1GczNA9xwnFf0m_M7Q0OY3PEz_LABzC89BDd-YPzXaHhAA51_OGx5CdP7016ri3DBbCwrGbLAUf4IWYrI7hWQSbx7xFYaPXFU5Etnpjpequ0RcRrnLDb7etr2wEqUF_R6nwS6s74tSHiFcNMY3dz55gWUT=w936-h599-s-no-gm?authuser=2")',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-        }}
-      >
-        <div className="absolute inset-0 bg-slate-900/50"></div>
-        <div className="relative container mx-auto px-4 py-24 text-center text-white">
-          <h1 className="text-4xl md:text-5xl font-black tracking-tight">
-            Privacy Policy
-          </h1>
-          <p className="mt-4 text-lg max-w-3xl mx-auto text-slate-200">
-            Your privacy is important to us. This policy explains what personal data we collect and how we use it.
-          </p>
-          <p className="mt-2 text-sm text-slate-400">Last updated: {new Date().toLocaleDateString('en-ZA', { year: 'numeric', month: 'long', day: 'numeric' })}</p>
-        </div>
-      </div>
+    <div className="bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
+      <div className="max-w-3xl mx-auto">
+        <h1 className="text-3xl font-extrabold text-gray-900">Privacy Policy</h1>
+        <div className="mt-6 prose prose-indigo text-gray-500">
+          <p>This Privacy Policy describes how Quantum Connect collects, uses, and protects your personal information. By using our services, you consent to the data practices described in this policy.</p>
 
-      <div className="py-24">
-        <div className="container mx-auto px-4">
-          <div className="max-w-4xl mx-auto prose lg:prose-lg prose-slate text-justify">
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900 mt-8">1. Information We Collect</h2>
+          <p>We collect information you provide directly to us, such as when you create an account, place an order, or contact us for support. This may include:</p>
+          <ul>
+            <li>Contact information (name, email address, phone number)</li>
+            <li>Billing information (credit card details, billing address)</li>
+            <li>Account credentials (username, password)</li>
+          </ul>
 
-            <h2>1. Introduction</h2>
-            <p>Quantum Connect (kenosinetwork (PTY) Ltd) is committed to protecting the privacy and security of your personal information. This Privacy Policy outlines the types of information we collect, how it is used, and the measures we take to ensure its protection.</p>
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900 mt-8">2. How We Use Your Information</h2>
+          <p>We use the information we collect to:</p>
+          <ul>
+            <li>Provide, maintain, and improve our services</li>
+            <li>Process payments and manage your account</li>
+            <li>Communicate with you about products, services, and offers</li>
+            <li>Protect against fraud and abuse</li>
+          </ul>
 
-            <h2>2. Information We Collect</h2>
-            <p>We collect information to provide and improve our services. This includes:</p>
-            <ul>
-              <li><strong>Personal Identification Information:</strong> Name, email address, phone number, physical address, and identity documents.</li>
-              <li><strong>Financial Information:</strong> Bank account or payment card details for billing purposes.</li>
-              <li><strong>Technical Information:</strong> IP addresses, browser type, and usage data collected through our website and services.</li>
-              <li><strong>Service-Related Information:</strong> Information about the services you use, your account status, and customer support interactions.</li>
-            </ul>
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900 mt-8">3. Data Security</h2>
+          <p>We implement security measures to protect your information from unauthorized access, use, or disclosure. All payment transactions are encrypted using SSL technology.</p>
 
-            <h2>3. How We Use Your Information</h2>
-            <p>Your information is used for the following purposes:</p>
-            <ul>
-              <li>To create and manage your account.</li>
-              <li>To process payments and manage billing.</li>
-              <li>To provide, maintain, and improve our services.</li>
-              <li>To communicate with you about service updates, offers, and support.</li>
-              <li>To comply with legal and regulatory obligations.</li>
-            </ul>
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900 mt-8">4. Third-Party Disclosure</h2>
+          <p>We do not sell, trade, or otherwise transfer your personally identifiable information to outside parties, except for trusted third parties who assist us in operating our website, conducting our business, or servicing you, so long as those parties agree to keep this information confidential.</p>
 
-            <h2>4. Data Sharing and Disclosure</h2>
-            <p>We do not sell your personal data. We may share your information with:</p>
-            <ul>
-              <li><strong>Third-Party Service Providers:</strong> Partners who assist us in providing services, such as payment gateways and network infrastructure providers. These partners are bound by confidentiality agreements.</li>
-              <li><strong>Legal Authorities:</strong> When required by law or to protect our legal rights.</li>
-            </ul>
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900 mt-8">5. Your Rights</h2>
+          <p>You have the right to access, update, or delete your personal information at any time by logging into the Client Zone or contacting customer support.</p>
 
-            <h2>5. Data Security</h2>
-            <p>We implement robust security measures, including SSL encryption and access controls, to protect your personal information from unauthorized access, alteration, or destruction.</p>
+           <h2 className="text-2xl font-bold tracking-tight text-gray-900 mt-8">6.  Data Retention</h2>
+            <p>We retain your personal data for as long as necessary to fulfill the purposes for which it was collected, including to satisfy any legal, accounting, or reporting requirements. This includes retaining data to manage your account, process transactions, and maintain records.</p>
 
-            <h2>6. Your Rights</h2>
-            <p>You have the right to access, correct, or delete your personal information. You can manage your information through the Client Zone or by contacting our support team. You also have the right to object to or restrict certain processing of your data.</p>
+          <h2 className="text-2xl font-bold tracking-tight text-gray-900 mt-8">7. Cookies</h2>
+            <p>We use cookies to enhance your browsing experience and analyze site traffic. You can manage your cookie preferences through your browser settings. Declining cookies may affect the functionality of our website.</p>
 
-            <h2>7. Cookies and Tracking Technologies</h2>
-            <p>Our website uses cookies to enhance user experience and analyze site traffic. You can control cookie settings through your browser. For more information, please see our Cookie Policy.</p>
-
-            <h2>8. Changes to This Policy</h2>
-            <p>We may update this Privacy Policy from time to time. We will notify you of any significant changes by posting the new policy on our website and, where appropriate, through direct communication.</p>
-
-            <h2>9. Contact Us</h2>
-            <p>If you have any questions or concerns about this Privacy Policy or our data practices, please contact us at:</p>
-            <p><strong>Email:</strong> support@quantumconnect.click</p>
-
-          </div>
         </div>
       </div>
     </div>
