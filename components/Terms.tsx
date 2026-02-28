@@ -3,7 +3,7 @@ import React from 'react';
 import PolicyHero from './PolicyHero';
 
 export const Terms: React.FC = () => {
-  const lastUpdated = "2024-10-26";
+  const lastUpdated = "2024-07-27";
 
   const heroSubtext = "These terms govern the use of Quantum Connect services including Fibre, VoIP, Webhosting, and Backup Power Solutions.";
 
@@ -45,10 +45,28 @@ export const Terms: React.FC = () => {
             <h2 id="payments">4. Orders & Payments</h2>
             <ul>
               <li><strong>Pricing:</strong> Pricing for our services is subject to change with a 30-day notice. All prices are inclusive of VAT unless otherwise stated.</li>
-              <li><strong>Billing:</strong> Monthly subscriptions for Fibre, VoIP, and Hosting are billed in advance. Our payment gateway is Netcash. Hardware purchases are billed at the time of order.</li>
+              <li><strong>Billing:</strong> Monthly subscriptions for Fibre, VoIP, and Hosting are billed in advance. Our primary payment gateway is Netcash. Hardware purchases are billed at the time of order.</li>
               <li><strong>Late Payments:</strong> Failure to make payment by the due date may result in the suspension or termination of your service. A reconnection fee may be applicable.</li>
               <li><strong>Refund Policy:</strong> For products sold via our e-commerce shop, we offer a refund within two (2) weeks of purchase, provided the goods are returned in new condition with original packaging. The user is liable for any return shipping fees for refunds or exchanges.</li>
             </ul>
+
+            <h3 className="font-semibold mt-6 mb-4 text-xl">Debit Order Mandate</h3>
+            <p>By opting for payment via debit order, you agree to the following terms, which constitute a mandate authorising Quantum Connect to debit your account.</p>
+
+            <h4>A. Authority & Mandate</h4>
+            <p>I/We, the account holder, hereby authorise <strong>kenosinetwork (PTY) Ltd</strong>, trading as <strong>Quantum Connect</strong>, to issue and deliver payment instructions to my/our banker for collection against my/our nominated bank account. I/We acknowledge that all payment instructions issued by Quantum Connect shall be treated by my/our bank as if the instructions had been issued by me/us personally.</p>
+            <p>This authority applies to the contract or service agreement between me/us and Quantum Connect. The sum of such payment instructions will not exceed my/our obligations as agreed in our service agreement. The debit order will commence on the date specified in the service agreement and continue until this authority is terminated by me/us giving Quantum Connect written notice via email to <a href="mailto:support@quantumconnect.click">support@quantumconnect.click</a>, specifying the cancellation date, which may not be in the past.</p>
+            <p>Payment instructions will be issued on the due date. If this falls on a non-processing day (weekend or public holiday), the debit may occur on the following business day. I/We understand that withdrawals are processed via a computerised system and details will appear on my/our bank statement with a reference to identify the agreement.</p>
+            
+            <h4>B. Cancellation</h4>
+            <p>I/We agree that cancelling this Authority and Mandate will not cancel the underlying service agreement. I/We shall not be entitled to any refund of amounts lawfully withdrawn by Quantum Connect while this Authority was in force.</p>
+
+            <h4>C. Penalty Fees</h4>
+            <p>I/We understand that I/we are liable for any penalty fees resulting from dishonoured payment transactions (e.g., a debit order returned due to insufficient funds).</p>
+
+            <h4>D. Assignment</h4>
+            <p>I/We acknowledge that Quantum Connect may cede or assign this Authority to a third party if the underlying service agreement is also ceded or assigned to that third party.</p>
+
 
             <h2 id="service-availability">5. Service Availability & Performance</h2>
             <ul>
