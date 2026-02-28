@@ -5,6 +5,7 @@ import { Header } from './components/Header';
 import { Home } from './components/Home';
 import { Shop } from './components/Shop';
 import { ProductPage } from './components/shop/ProductPage';
+import { shopProducts } from './components/shop/products';
 import { ShopCheckout } from './components/shop/ShopCheckout';
 import { ShopConfirmation } from './components/shop/ShopConfirmation';
 import { Webhosting } from './components/Webhosting';
@@ -143,7 +144,7 @@ const App: React.FC = () => {
             />
           }
         />
-        <Route path="/shop" element={<Shop />} />
+        <Route path="/shop" element={<Shop products={shopProducts} />} />
         <Route path="/shop/product/:id" element={<ProductPage />} />
         <Route path="/shop/checkout/:id" element={<ShopCheckout />} />
         <Route path="/shop/confirmation/:id" element={<ShopConfirmation />} />

@@ -1,11 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ShoppingBag, Wifi, Server, Phone } from 'lucide-react';
 
 export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const location = useLocation();
+
+  const isTransparentPage = location.pathname === '/' || location.pathname === '/shop' || location.pathname === '/webhosting' || location.pathname === '/voip';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,72 +20,83 @@ export const Header: React.FC = () => {
 
   const navLinks = [
     { name: 'Fibre', icon: Wifi, path: '/' },
-    { name: 'Shop', icon: ShoppingBag, path: '/store' },
+    { name: 'Shop', icon: ShoppingBag, path: '/shop' },
     { name: 'Webhosting', icon: Server, path: '/webhosting' },
     { name: 'Voip', icon: Phone, path: '/voip' },
   ];
 
-  // Brand Colors
-  const brandBlue = "#0a254e";
-  const brandGreen = "#00b87c";
-  const brandRed = "#e60000";
+  const headerBaseClasses = "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out border-b";
+  const headerScrolledClasses = "bg-white/80 backdrop-blur-xl shadow-md border-slate-200/80";
+  const headerTopTransparentClasses = "bg-transparent border-transparent";
+  const headerTopSolidClasses = "bg-white border-slate-200 shadow-sm";
+
+  const getHeaderClasses = () => {
+    if (isScrolled) return headerScrolledClasses;
+    return isTransparentPage ? headerTopTransparentClasses : headerTopSolidClasses;
+  };
+
+  const getLinkClasses = () => {
+    const base = "group relative flex items-center gap-2 text-sm font-bold transition-colors py-2 tracking-wide";
+    if (isScrolled || !isTransparentPage) return `${base} text-slate-700 hover:text-blue-900`;
+    return `${base} text-slate-200 hover:text-white`;
+  };
+  
+  const brandColor = isScrolled || !isTransparentPage ? "#0a254e" : "#ffffff";
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-in-out border-b border-transparent ${
-        isScrolled
-          ? 'bg-white/80 backdrop-blur-xl shadow-lg border-white/20'
-          : 'bg-transparent'
-      }`}
-    >
-      {isScrolled && (
-        <div className="absolute inset-0 bg-gradient-to-b from-white/40 to-transparent pointer-events-none"></div>
-      )}
+    <header className={`${headerBaseClasses} ${getHeaderClasses()}`}>
+      <div className="container mx-auto px-4">
+        <div className="relative flex items-center justify-between h-24">
 
-      <div className="container mx-auto px-4 relative z-10">
-        <div className={`flex items-center justify-between transition-all duration-300 ${isScrolled ? 'h-20' : 'h-24'}`}>
+          {/* Left Spacer (Desktop) / Mobile Logo */} 
+          <div className="md:w-1/3">
+            <div className="md:hidden">
+              <Link to="/">
+                <QuantumLogo mainColor={brandColor} />
+              </Link>
+            </div>
+          </div>
 
-          <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-center group cursor-pointer">
-            <Link to="/">
-              <QuantumLogo isScrolled={isScrolled} />
+          {/* Centered Logo (Desktop) */}
+          <div className="hidden md:block absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+             <Link to="/">
+              <QuantumLogo mainColor={brandColor} />
             </Link>
           </div>
 
-          <div className="hidden md:block w-1/3"></div>
+          {/* Right Content (Desktop Nav / Mobile Button) */}
+          <div className="md:w-1/3 flex justify-end">
+            {/* Desktop Navigation */}
+            <nav className="hidden md:flex items-center justify-end gap-8">
+              {navLinks.map((link) => (
+                <Link key={link.name} to={link.path} className={getLinkClasses()}>
+                  <span>{link.name}</span>
+                  <span className="absolute bottom-0 left-0 w-0 h-[3px] rounded-full bg-gradient-to-r from-red-500 to-green-500 transition-all duration-300 group-hover:w-full"></span>
+                </Link>
+              ))}
+            </nav>
 
-          <nav className="hidden md:flex items-center justify-end w-1/3 gap-8">
-            {navLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.path}
-                className={`group relative flex items-center gap-2 text-sm font-bold transition-colors py-2 tracking-wide ${
-                  isScrolled ? `text-slate-700 hover:text-[${brandBlue}]` : 'text-slate-200 hover:text-white'
+            {/* Mobile Menu Button */}
+            <div className="md:hidden">
+              <button
+                className={`p-2 transition-colors rounded-lg backdrop-blur-sm border ${
+                  isScrolled || !isTransparentPage
+                    ? 'text-slate-800 hover:bg-slate-100 border-slate-200'
+                    : 'text-white hover:bg-white/10 border-white/10'
                 }`}
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="Toggle menu"
               >
-                <span>{link.name}</span>
-                <span className="absolute bottom-0 left-0 w-0 h-[3px] rounded-full bg-gradient-to-r from-red-500 to-green-500 transition-all duration-300 group-hover:w-full shadow-sm"></span>
-              </Link>
-            ))}
-          </nav>
-
-          <div className="flex md:hidden w-full justify-end">
-            <button
-              className={`p-2 transition-colors rounded-lg backdrop-blur-sm border ${
-                isScrolled
-                  ? 'text-slate-800 hover:bg-slate-100 border-slate-200'
-                  : 'text-white hover:bg-white/10 border-white/10'
-              }`}
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-            </button>
+                {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+              </button>
+            </div>
           </div>
         </div>
       </div>
 
+      {/* Mobile Menu Panel */}
       <div
-        className={`md:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-2xl border-b border-gray-100 transition-all duration-300 ease-in-out overflow-hidden shadow-2xl ${
+        className={`md:hidden absolute top-full left-0 w-full bg-white/95 backdrop-blur-2xl border-t border-gray-100 transition-all duration-300 ease-in-out overflow-hidden shadow-2xl ${
           isMobileMenuOpen ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
         }`}
       >
@@ -106,17 +120,13 @@ export const Header: React.FC = () => {
   );
 };
 
-const QuantumLogo = ({ isScrolled }: { isScrolled: boolean }) => {
-  const darkBlue = "#0a254e";
-  const white = "#ffffff";
-  const green = "#00b87c";
-  const red = "#e60000";
-  const mainColor = isScrolled ? darkBlue : white;
-
-  return (
-    <>
+const QuantumLogo = ({ mainColor }: { mainColor: string }) => {
+    const green = "#00b87c";
+    const red = "#e60000";
+  
+    return (
       <svg
-        className="hidden md:block h-14 w-auto transition-all duration-500"
+        className="h-12 w-auto transition-all duration-500"
         viewBox="0 0 300 70"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
@@ -126,37 +136,14 @@ const QuantumLogo = ({ isScrolled }: { isScrolled: boolean }) => {
             <stop offset="0%" stopColor={red} />
             <stop offset="100%" stopColor={green} />
           </linearGradient>
-          <linearGradient id={`mGrad-${isScrolled ? 'dark' : 'light'}`} x1="0" y1="0" x2="100%" y2="0">
-            <stop offset="65%" stopColor={mainColor} />
-            <stop offset="65%" stopColor={green} />
-          </linearGradient>
         </defs>
-
+  
         <text x="10" y="42" fontFamily="sans-serif" fontWeight="900" fontSize="38" fill={mainColor}>Q</text>
         <path d="M28 36 Q 32 38 40 46" stroke={red} strokeWidth="4" strokeLinecap="round" />
-        <text x="45" y="42" fontFamily="sans-serif" fontWeight="800" fontSize="36" fill={mainColor} letterSpacing="1">UANTU</text>
-        <text x="180" y="42" fontFamily="sans-serif" fontWeight="800" fontSize="36" fill={`url(#mGrad-${isScrolled ? 'dark' : 'light'})`} letterSpacing="1">M</text>
+        <text x="45" y="42" fontFamily="sans-serif" fontWeight="800" fontSize="36" fill={mainColor} letterSpacing="1">UANTUM</text>
+        <rect x="218" y="16" width="6" height="28" fill={green} />
         <text x="12" y="62" fontFamily="sans-serif" fontWeight="600" fontSize="13" fill={mainColor} letterSpacing="6.5">CONNECT</text>
         <path d="M10 68 Q 150 72 290 66" stroke="url(#underlineGrad)" strokeWidth="3" strokeLinecap="round" />
       </svg>
-
-      <svg
-        className="block md:hidden h-10 w-auto"
-        viewBox="0 0 60 50"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <defs>
-          <linearGradient id="underlineGradMobile" x1="0" y1="0" x2="100%" y2="0">
-            <stop offset="0%" stopColor={red} />
-            <stop offset="100%" stopColor={green} />
-          </linearGradient>
-        </defs>
-
-        <text x="5" y="35" fontFamily="sans-serif" fontWeight="900" fontSize="40" fill={mainColor}>Q</text>
-        <path d="M22 28 Q 26 30 32 38" stroke={red} strokeWidth="4" strokeLinecap="round" />
-        <path d="M5 45 Q 30 48 55 45" stroke="url(#underlineGradMobile)" strokeWidth="3" strokeLinecap="round" />
-      </svg>
-    </>
-  );
-};
+    );
+  };

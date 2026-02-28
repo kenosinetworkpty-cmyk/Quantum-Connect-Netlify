@@ -1,41 +1,24 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import { Home } from '../components/Home';
-import { Terms } from '../components/Terms';
-import { Privacy } from '../components/Privacy';
-import { AUP } from '../components/AUP';
-import { PAIA } from '../components/PAIA';
-import { Support } from '../components/Support';
-import { Header } from '../components/Header';
-import { Footer } from '../components/Footer';
-import { Voip } from '../components/Voip';
-import { ConsultationScheduling } from '../components/ConsultationScheduling';
-import { AdminDashboard } from '../components/AdminDashboard';
-import { Confirmation } from '../components/Confirmation';
-import { FibreCheckout } from '../components/FibreCheckout';
-import { FibreConfirmation } from '../components/FibreConfirmation';
-import { getPackages, submitLead, PROVIDERS } from '../services/mockApi';
-import { Address, AvailabilityResult, Package, Lead, Provider } from '../types';
+import { Header } from './components/Header';
+import { Footer } from './components/Footer';
+import { Home } from './components/Home';
+import { Fibre } from './components/Fibre';
+import { WebHosting } from './components/WebHosting';
+import { Shop } from './components/Shop';
+import { ProductPage } from './components/shop/ProductPage';
+import { ShopCheckout } from './components/shop/ShopCheckout';
+import { Checkout } from './components/Checkout';
+import { Address, AvailabilityResult, Package, Provider } from './types';
+
+import { PACKAGES_DATA, PROVIDERS_DATA } from './data';
 
 const App: React.FC = () => {
-  const [packages, setPackages] = useState<Package[]>([]);
-  const [providers, setProviders] = useState<Provider[]>([]);
+  const [packages] = useState<Package[]>(PACKAGES_DATA);
+  const [providers] = useState<Provider[]>(PROVIDERS_DATA);
   const [availability, setAvailability] = useState<AvailabilityResult | null>(null);
   const [userAddress, setUserAddress] = useState<Address | null>(null);
-  const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
-  const [leadForm, setLeadForm] = useState({ name: '', email: '', phone: '', consent: false });
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitSuccess, setSubmitSuccess] = useState(false);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const pkgs = await getPackages();
-      setPackages(pkgs);
-      setProviders(PROVIDERS);
-    };
-    fetchData();
-  }, []);
 
   const handleAvailabilityCheck = (result: AvailabilityResult, address: Address) => {
     setAvailability(result);
@@ -46,68 +29,33 @@ const App: React.FC = () => {
     }
   };
 
-  const handlePackageSelect = (pkg: Package) => {
-    setSelectedPackage(pkg);
-  };
-
-  const handleLeadSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!userAddress || !selectedPackage) {
-      console.error('Cannot submit lead without address and selected package.');
-      return;
-    }
-    setIsSubmitting(true);
-    try {
-      const lead: Lead = {
-        packageId: selectedPackage.id,
-        name: leadForm.name,
-        email: leadForm.email,
-        phone: leadForm.phone,
-        address: userAddress,
-      };
-      await submitLead(lead);
-      setSubmitSuccess(true);
-    } catch (error) {
-      console.error("Lead submission failed:", error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
   return (
     <Router>
-      <Header />
-      <Routes>
-        <Route path="/" element={<Home 
-          packages={packages}
-          providers={providers}
-          availability={availability}
-          userAddress={userAddress}
-          selectedPackage={selectedPackage}
-          leadForm={leadForm}
-          isSubmitting={isSubmitting}
-          submitSuccess={submitSuccess}
-          onAvailabilityCheck={handleAvailabilityCheck}
-          onPackageSelect={handlePackageSelect}
-          onLeadSubmit={handleLeadSubmit}
-          setLeadForm={setLeadForm}
-          setSelectedPackage={setSelectedPackage}
-        />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/aup" element={<AUP />} />
-        <Route path="/paia" element={<PAIA />} />
-        <Route path="/support" element={<Support />} />
-        <Route path="/voip" element={<Voip />} />
-        <Route path="/consultation-scheduling" element={<ConsultationScheduling />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/confirmation" element={<Confirmation />} />
-        <Route path="/fibre-checkout/:packageName" element={<FibreCheckout />} />
-        <Route path="/fibre-confirmation" element={<FibreConfirmation />} />
-      </Routes>
-      <Footer />
+      <div className="bg-white dark:bg-slate-900 font-sans">
+        <Header />
+        <main>
+          <Routes>
+            <Route path="/" element={
+              <Home 
+                packages={packages} 
+                providers={providers} 
+                availability={availability} 
+                userAddress={userAddress} 
+                onAvailabilityCheck={handleAvailabilityCheck} 
+              />
+            } />
+            <Route path="/fibre" element={<Fibre onAvailabilityCheck={handleAvailabilityCheck} />} />
+            <Route path="/web-hosting" element={<WebHosting />} />
+            <Route path="/shop" element={<Shop />} />
+            <Route path="/shop/:productId" element={<ProductPage />} />
+            <Route path="/shop/checkout" element={<ShopCheckout />} />
+            <Route path="/checkout/:packageName" element={<Checkout packages={packages} />} />
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </Router>
   );
-};
+}
 
 export default App;

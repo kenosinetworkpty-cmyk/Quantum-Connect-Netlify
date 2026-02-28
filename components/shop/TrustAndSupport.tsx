@@ -1,29 +1,33 @@
 
 import React from 'react';
-import { ShieldCheck, ThumbsUp, Truck, Phone } from 'lucide-react';
+import { ShieldCheck, Truck, MessageCircle } from 'lucide-react';
 
 export const TrustAndSupport: React.FC = () => {
   return (
-    <div className="bg-slate-50 border border-slate-200 rounded-lg p-6 mt-8">
-      <h3 className="text-xl font-semibold text-slate-900 mb-4">Trust & Support</h3>
-      <ul className="space-y-4 text-slate-600">
-        <li className="flex items-center">
-          <ThumbsUp size={20} className="text-blue-500 mr-3" />
-          <span>Reliable backup power for fibre internet</span>
-        </li>
-        <li className="flex items-center">
-          <ShieldCheck size={20} className="text-blue-500 mr-3" />
-          <span>Warranty support</span>
-        </li>
-        <li className="flex items-center">
-          <Truck size={20} className="text-blue-500 mr-3" />
-          <span>Fast delivery</span>
-        </li>
-        <li className="flex items-center">
-          <Phone size={20} className="text-blue-500 mr-3" />
-          <span>Customer support availability</span>
-        </li>
-      </ul>
-    </div>
+    <section className="bg-slate-800/50 border-t border-b border-slate-700 my-16">
+      <div className="container mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
+          
+          <div className="flex flex-col items-center p-6 bg-slate-700/30 rounded-xl">
+            <ShieldCheck size={40} className="text-green-400 mb-4"/>
+            <h3 className="text-xl font-bold text-white mb-2">Secure Shopping</h3>
+            <p className="text-slate-300">All transactions are encrypted and your information is kept private and secure.</p>
+          </div>
+          
+          <div className="flex flex-col items-center p-6 bg-slate-700/30 rounded-xl">
+            <Truck size={40} className="text-blue-400 mb-4"/>
+            <h3 className="text-xl font-bold text-white mb-2">Fast, Reliable Delivery</h3>
+            <p className="text-slate-300">We deliver nationwide to your door within 3-5 business days.</p>
+          </div>
+
+          <div className="flex flex-col items-center p-6 bg-slate-700/30 rounded-xl">
+            <MessageCircle size={40} className="text-yellow-400 mb-4"/>
+            <h3 className="text-xl font-bold text-white mb-2">24/7 Expert Support</h3>
+            <p className="text-slate-300">Our team is always here to help you choose the right product and assist with any questions.</p>
+          </div>
+
+        </div>
+      </div>
+    </section>
   );
 };

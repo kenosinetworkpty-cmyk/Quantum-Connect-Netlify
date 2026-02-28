@@ -1,22 +1,15 @@
 
-export interface ShopProduct {
-  id: string;
-  name: string;
-  price: number;
-  image: string;
-  description: string;
-  specs: string[];
-  features: string[];
-  whatsIncluded: string[];
-}
+import { ShopProduct } from '../../types';
 
 export const shopProducts: ShopProduct[] = [
   {
     id: 'mini-dc-ups',
     name: 'Mini DC UPS',
     price: 999,
-    image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR_x-4e-IBl3G-DRmCjB2K-d-y9z-F-p-q-w&s',
-    description: 'Keep your fibre and router powered during load shedding and power outages. This compact, reliable backup power solution ensures you stay connected when it matters most.',
+    currency: 'ZAR',
+    image: 'https://lh3.googleusercontent.com/pw/AP1GczMoKQPTZ18ibcsmTOBMJbdP2fA3rxcN9Bg_HFTQAWvP6EXG-6VsGsTfUIAH0oXrIIhz9E2cmRTPKsvOzhGkkr1ynXw9M2f-l-Q0v2_OBVdywcWAmvLQIGWPfba_id1FuqL7fEMimVMk3hTcGjhcXEs=w479-h599-s-no-gm?authuser=2',
+    description: 'Keep your fibre and router powered during load shedding. This compact backup ensures you stay connected.',
+    category: 'Compact Battery Backup',
     specs: [
       'Capacity: 8800mAh Li-ion',
       'Input: 220V AC',
@@ -37,66 +30,56 @@ export const shopProducts: ShopProduct[] = [
     ],
   },
   {
-    id: '5g-sim-package',
-    name: '5G SIM Package',
-    price: 499,
-    image: 'https://example.com/5g-sim.jpg',
-    description: 'Experience blazing-fast internet speeds with our 5G SIM package. Perfect for home or on-the-go.',
+    id: 'portable-power-station',
+    name: 'Portable Power Station',
+    price: 4999,
+    currency: 'ZAR',
+    image: 'https://lh3.googleusercontent.com/pw/AP1GczOxjf4yZdhf25bOjMIANLSJl5S74UcHEZNQjo-pTl-LNKCtMy3yeuuhN5CnujNvoUEuqdakqodWKRQraNZfnVAq60dIwHLQIR0_8SqAsfe67qTzhWMI_LFzOtHRxU96bOrtqh8JRtdJax9Jf6F6--k=w899-h599-s-no-gm?authuser=2',
+    description: 'A robust portable power station for running larger devices like TVs, laptops, and small appliances during an outage.',
+    category: 'Portable Power Stations',
     specs: [
-      'Network: 5G',
-      'Data: Uncapped',
-      'Compatibility: 5G-enabled devices',
+      'Capacity: 512Wh LiFePO4',
+      'Output Ports: 2x AC, 4x USB-A, 2x USB-C, 2x DC',
+      'AC Output: 500W Continuous',
+      'Lifecycles: 3000+',
     ],
     features: [
-      'Low latency for gaming and streaming',
-      'Easy to set up',
-      'Nationwide coverage',
+      'Solar panel compatible (sold separately)',
+      'Fast charging technology',
+      'Pure Sine Wave inverter for sensitive electronics',
+      'LCD screen with real-time stats',
     ],
     whatsIncluded: [
-      '5G SIM Card',
-      'Activation Instructions',
+      '512Wh Portable Power Station',
+      'AC Wall Charger',
+      'Car Charger Cable',
+      'User Manual',
     ],
   },
   {
-    id: 'fibre-installation-voucher',
-    name: 'Fibre Installation Voucher',
-    price: 1499,
-    image: 'https://example.com/fibre-voucher.jpg',
-    description: 'Get a discount on your new fibre installation with this voucher. Professional installation by our certified technicians.',
+    id: '20000mah-power-bank',
+    name: '20000mAh Power Bank',
+    price: 699,
+    currency: 'ZAR',
+    image: 'https://lh3.googleusercontent.com/pw/AP1GczNW9hVWKsvqxG4l7FO9UyvnT6c7W7nROEV_jTFSIoBI_0Hsxr-DYkgF_J9rYmKT65CrdoJIGYyeFMnjqs4wz7vdWiAJaUGDX7QljbbUde3hykQz_NlhXa4_0xNOkSGd2_atsrRI8TtvBzisdCjMduE=w899-h599-s-no-gm?authuser=2',
+    description: 'Charge your mobile phones, tablets, and other small devices on the go. Never run out of battery again.',
+    category: 'Portable Power Banks',
     specs: [
-      'Value: R500',
-      'Applicable for: New fibre installations',
-      'Validity: 12 months',
+      'Capacity: 20000mAh',
+      'Ports: 2x USB-A, 1x USB-C',
+      'Max Output: 22.5W',
+      'Compatibility: Universal',
     ],
     features: [
-      'Redeemable on any of our fibre packages',
-      'Professional and timely installation',
+      'Fast charging for compatible devices',
+      'Slim and portable design',
+      'Charge multiple devices simultaneously',
+      'Digital battery level display',
     ],
     whatsIncluded: [
-      'Fibre Installation Voucher Code',
-    ],
-  },
-  {
-    id: 'voip-phone',
-    name: 'VoIP Phone',
-    price: 799,
-    image: 'https://example.com/voip-phone.jpg',
-    description: 'A modern VoIP phone for crystal-clear conversations. Ideal for home offices and small businesses.',
-    specs: [
-      'Display: 2.8-inch color LCD',
-      'Lines: 2',
-      'Connectivity: Ethernet',
-    ],
-    features: [
-      'HD audio',
-      'Call waiting, forwarding, and transfer',
-      'Easy to configure',
-    ],
-    whatsIncluded: [
-      'VoIP Phone',
-      'Handset and Cord',
-      'Ethernet Cable',
-      'Power Adapter',
+      '20000mAh Power Bank',
+      'USB-C Charging Cable',
+      'User Guide',
     ],
   },
 ];

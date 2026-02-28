@@ -8,6 +8,7 @@ import { TrustSection } from './TrustSection';
 import { Button } from './ui/Button';
 import { Address, AvailabilityResult, Package, Provider } from '../types';
 import { Check, MapPin } from 'lucide-react';
+import { PackageBuilder } from './PackageBuilder';
 
 interface HomeProps {
   packages: Package[];
@@ -34,6 +35,7 @@ export const Home: React.FC<HomeProps> = ({
     <>
       <Hero onAvailabilityCheck={onAvailabilityCheck} />
       <Benefits />
+      <PackageBuilder />
 
       {availability ? (
         availability.available ? (
