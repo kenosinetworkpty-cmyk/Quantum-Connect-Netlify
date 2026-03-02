@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Lock } from 'lucide-react';
-import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, signOut } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, sendEmailVerification, signOut, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
 const AuthScreen = () => {
@@ -44,6 +44,23 @@ const AuthScreen = () => {
       } else {
         setError('An error occurred. Please try again.');
       }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleGoogleSignIn = async () => {
+    setLoading(true);
+    setError('');
+    try {
+      const provider = new GoogleAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+      if (user) {
+        navigate('/dashboard');
+      }
+    } catch (error) {
+      setError('An error occurred with Google Sign-In. Please try again.');
     } finally {
       setLoading(false);
     }
@@ -97,6 +114,18 @@ const AuthScreen = () => {
                 {loading ? 'Loading...' : isSignUp ? 'Sign Up' : 'Sign In'}
               </button>
             </form>
+            <div className="mt-4 flex items-center justify-center">
+                <hr className="w-full border-gray-300" />
+                <span className="px-2 text-gray-500">OR</span>
+                <hr className="w-full border-gray-300" />
+            </div>
+            <button
+                onClick={handleGoogleSignIn}
+                className="mt-4 w-full bg-red-600 text-white font-bold py-2 px-4 rounded-md hover:bg-red-700 transition duration-300"
+                disabled={loading}
+            >
+                Continue with Google
+            </button>
             <p className='text-center text-sm text-gray-600 mt-4'>
               {isSignUp ? 'Already have an account?' : "Don't have an account?"}{' '}
               <a href='#' className='text-blue-600 hover:underline' onClick={() => setIsSignUp(!isSignUp)}>
