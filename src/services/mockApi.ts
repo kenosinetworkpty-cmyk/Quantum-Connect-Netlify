@@ -208,7 +208,7 @@ export const checkAvailability = async (address: Address): Promise<AvailabilityR
       }
 
       // Ensure duplicates are removed if logic overlaps
-      providers = [...new Set(providers)];
+      providers = Array.from(new Set(providers));
 
       resolve({
         available: providers.length > 0,
@@ -221,7 +221,7 @@ export const checkAvailability = async (address: Address): Promise<AvailabilityR
 
 export const getPackages = async (): Promise<Package[]> => {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(PACKAGES), 200);
+    resolve(PACKAGES);
   });
 };
 

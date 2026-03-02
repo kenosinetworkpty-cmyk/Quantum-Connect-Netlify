@@ -1,130 +1,158 @@
-import React, { useRef } from 'react';
-import { Check, Rocket, Globe, Zap, Headset } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { WebhostingPackage } from '../App';
 
-interface WebhostingProps {
-  packages: WebhostingPackage[];
-}
+import React from 'react';
 
-export const Webhosting: React.FC<WebhostingProps> = ({ packages }) => {
-    const navigate = useNavigate();
-    const hostingPackagesRef = useRef<HTMLDivElement>(null);
-
-    const handleOrderClick = (packageName: string) => {
-        navigate(`/checkout/${packageName}`);
-    };
-
-    const handleScrollToPackages = () => {
-        hostingPackagesRef.current?.scrollIntoView({
-            behavior: 'smooth',
-            block: 'center'
-        });
-    };
-  const perks = [
+const webhostingPackages = [
     {
-        icon: Rocket,
-        title: 'Skip the Migration Fees — Forever!',
-        description: 'Already rocking a hosting plan but itching to switch? We move your site free of charge — lightning-fast, smooth, and stress-free. No hidden costs. No downtime drama. Just seamless migration.',
+      name: 'Basic Package',
+      price: 'R39',
+      type: 'webhosting',
+      description: 'Superior and secure hosting for personal sites.',
+      features: [
+        'Superior and secure hosting',
+        'Initial assessment and strategic IT roadmap',
+        'Easy-to-use control panel',
+        'Lightning-fast loading speed',
+        'Free website migration',
+        'Offsite backup',
+        '2 GB NVMe Storage',
+        '30 GB traffic',
+        '1 MySQL database',
+        '5 email accounts',
+        '1 website',
+        '3 domain aliases',
+        'SSL certificate',
+      ],
     },
     {
-        icon: Globe,
-        title: 'Your Domain, Your Rules',
-        description: 'Register a new domain or transfer your existing one effortlessly. One platform. Zero hassle. Total control.',
+      name: 'Standard Package',
+      price: 'R59',
+      type: 'webhosting',
+      description: 'Perfect for growing businesses with more traffic.',
+      isFavorite: true,
+      features: [
+        'Superior and secure hosting',
+        'Detailed assessment and ongoing advisory',
+        'Easy-to-use control panel',
+        'Lightning-fast loading speed',
+        'Free website migration',
+        'Offsite backup',
+        '5 GB NVMe storage',
+        'Unlimited traffic',
+        '3 MySQL databases',
+        '30 email accounts',
+        '5 websites',
+        '5 domain aliases',
+        'SSL certificate',
+      ],
     },
     {
-        icon: Zap,
-        title: 'Premium Hosting Without the Premium Price',
-        description: 'Enjoy high-performance hosting packed with powerful features — without the scary price tag. Full toolkit. Smart pricing. No compromises.',
+      name: 'Premium Package',
+      price: 'R149',
+      type: 'webhosting',
+      description: 'Advanced performance for e-commerce.',
+      features: [
+        'Superior and secure hosting',
+        'Comprehensive assessment and ongoing advisory',
+        'Easy-to-use control panel',
+        'Lightning-fast loading speed',
+        'Free website migration',
+        'Offsite backup',
+        '30 GB NVMe storage',
+        'Unlimited traffic',
+        '5 MySQL databases',
+        '15 websites',
+        '15 domain aliases',
+        'SSL certificate',
+        '90 email accounts',
+      ],
     },
-    {
-        icon: Headset,
-        title: '24/7 Expert Support',
-        description: 'Whether you\'re launching your first site or scaling like a pro, our hosting specialists are always available via Live Chat. No waiting. No stress. Just real support, anytime.',
-    }
-];
+  ];
 
-
-  const brandBlue = "#0a254e";
-
+const Webhosting = () => {
   return (
-    <div className="bg-slate-50">
-      {/* Hero Section */}
-      <div className="relative bg-gray-900 text-white">
-         <div className="absolute inset-0">
-          <img
-            className="w-full h-full object-cover opacity-20"
-            src="https://lh3.googleusercontent.com/pw/AP1GczMOgmcU3u-Ehnfc5tNVTSguBaEJCNr-1TisLEyma2kLSgFDy7jURtVYR1vjMWg3_MwzxtEAgepA4NRrXK4-dhuat98RmQG5875PaGdy9n2SdXBp3Ii4b05qYHdNZJATisdgEuSBBihD9k4fZhVWHacH=w1055-h704-s-no-gm?authuser=2"
-            alt="Webserver background"
-          />
-          <div className="absolute inset-0 bg-gray-900/50"></div>
-        </div>
-        <div className="relative container mx-auto px-4 py-32 text-center">
-          <h1 className="text-4xl md:text-5xl font-black">Web Hosting Packages</h1>
-          <p className="mt-4 text-lg text-slate-300">WEB HOSTING MADE IN SOUTH AFRICA. POWERFUL. FAST. SECURE.</p>
-          <button onClick={handleScrollToPackages} style={{ backgroundColor: brandBlue }} className="mt-8 text-white font-bold py-3 px-8 rounded-lg shadow-lg hover:opacity-90 transition">
-            Get Started
-          </button>
+    <div className="min-h-screen bg-gray-100">
+       <div 
+        className="bg-cover bg-center h-[500px] w-full flex items-center justify-center text-white"
+        style={{ backgroundImage: "url('https://images.unsplash.com/photo-1498050108023-c5249f4df085?q=80&w=2072&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D')" }}
+      >
+        <div className="text-center bg-black bg-opacity-60 p-12 rounded-xl">
+          <h1 className="text-6xl font-extrabold">Superior Web Hosting</h1>
+          <p className="text-xl mt-4 max-w-2xl">Reliable, fast, and secure hosting solutions designed to help your business thrive. Focus on what you do best, we'll handle the rest.</p>
         </div>
       </div>
-
-      {/* Pricing Section */}
-      <div ref={hostingPackagesRef} className="py-24">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-            {packages.map((pkg) => (
-              <div
-                key={pkg.name}
-                className={`rounded-2xl p-8 border shadow-lg transition-all duration-300 ${pkg.isFavorite ? 'bg-blue-900 text-white scale-105' : 'bg-white text-slate-900'}`}
-              >
-                 {pkg.isFavorite && (
-                  <span className="block text-center mb-4 font-bold bg-blue-500 text-white text-sm py-1 px-3 rounded-full w-fit mx-auto">CUSTOMER FAVORITE</span>
-                )}
-                <h3 className="text-2xl font-bold">{pkg.name}</h3>
-                <p className={`mt-2 ${pkg.isFavorite ? 'text-blue-200' : 'text-slate-500'}`}>{pkg.description}</p>
-                <div className="my-6">
-                  <span className={`text-5xl font-black ${pkg.isFavorite ? 'text-white' : 'text-slate-900'}`}>{pkg.price}</span>
-                  <span className={`ml-1 ${pkg.isFavorite ? 'text-blue-200' : 'text-slate-500'}`}>/mo</span>
+      
+      <main className="w-full max-w-6xl mx-auto p-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {webhostingPackages.map((pkg, index) => (
+            <div 
+              key={index} 
+              className={`p-8 bg-white rounded-lg shadow-lg flex flex-col ${pkg.isFavorite ? 'border-4 border-purple-600' : 'border'}`}
+            >
+              {pkg.isFavorite && (
+                <div className="bg-purple-600 text-white text-sm font-bold text-center py-1 rounded-t-lg -mt-8 mx-[-2rem] mb-4">
+                  MOST POPULAR
                 </div>
-                <button 
-                    onClick={() => handleOrderClick(pkg.name)} 
-                    className={`w-full font-bold py-3 rounded-lg border transition-colors ${pkg.isFavorite ? 'bg-white text-blue-900 hover:bg-blue-50' : 'bg-transparent border-slate-300 hover:bg-slate-50'}`}>
-                  Order
-                </button>
-                <ul className="mt-8 space-y-4">
-                  {pkg.features.map((feature) => (
-                    <li key={feature} className="flex items-center gap-3">
-                      <Check className={`w-5 h-5 ${pkg.isFavorite ? 'text-green-400' : 'text-green-500'}`} />
-                      <span>{feature}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+              )}
+              <h2 className="text-2xl font-semibold text-gray-800 mb-2">{pkg.name}</h2>
+              <p className="text-4xl font-bold text-gray-900 mb-4">{pkg.price}<span className="text-lg font-normal">/mo</span></p>
+              <p className="text-gray-600 mb-6">{pkg.description}</p>
+              <ul className="text-gray-600 space-y-2 flex-grow">
+                {pkg.features.map((feature, fIndex) => (
+                  <li key={fIndex} className="flex items-center">
+                    <svg className="w-5 h-5 text-green-500 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"></path></svg>
+                    {feature}
+                  </li>
+                ))}
+              </ul>
+              <button className="mt-8 bg-purple-600 text-white py-3 px-6 rounded-lg hover:bg-purple-700 transition duration-300">
+                Choose Plan
+              </button>
+            </div>
+          ))}
         </div>
-      </div>
 
-       {/* Perks Section */}
-       <div className="py-24 bg-white">
-          <div className="container mx-auto px-4 text-center">
-              <h2 className="text-3xl md:text-4xl font-bold text-slate-900">Perks of Webhosting with Quantum Connect</h2>
-              <p className="mt-4 text-slate-500 max-w-2xl mx-auto">
-                  We've packed our hosting with features to give you the best experience.
-              </p>
-              <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
-                  {perks.map((perk, index) => (
-                      <div key={index} className="text-center">
-                          <div className="inline-flex items-center justify-center w-16 h-16 mb-6 bg-blue-100 text-blue-600 rounded-full">
-                              <perk.icon className="w-8 h-8" />
-                          </div>
-                          <h3 className="text-xl font-bold text-slate-900 mb-2">{perk.title}</h3>
-                          <p className="text-slate-500">{perk.description}</p>
-                      </div>
-                  ))}
-              </div>
+        <section className="mt-16 bg-white p-10 rounded-lg shadow-lg">
+          <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">Why Choose Quantum Connect?</h2>
+          <div className="grid md:grid-cols-3 gap-8 text-center">
+            <div>
+              <h3 className="text-xl font-semibold text-purple-600">Blazing Fast Speed</h3>
+              <p className="text-gray-600 mt-2">Our NVMe storage and optimized servers ensure your website loads at lightning speed, improving user experience and SEO.</p>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-purple-600">Ironclad Security</h3>
+              <p className="text-gray-600 mt-2">With free SSL, offsite backups, and proactive monitoring, your website is safe and secure from threats.</p>
+            </div>
+            <div>
+              <h3 className="text-xl font-semibold text-purple-600">Expert 24/7 Support</h3>
+              <p className="text-gray-600 mt-2">Our friendly and knowledgeable support team is available around the clock to assist you with any issues.</p>
+            </div>
           </div>
-      </div>
+        </section>
+
+        <section className="mt-16">
+            <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">Frequently Asked Questions</h2>
+            <div className="space-y-4 max-w-4xl mx-auto">
+                <div className="p-6 bg-white rounded-lg shadow-lg">
+                    <h3 className="font-semibold text-lg text-gray-800">Can I migrate my existing website?</h3>
+                    <p className="text-gray-600 mt-2">Yes, all our web hosting packages come with free website migration. Our team will handle the entire process for you, ensuring a smooth transition with no downtime.</p>
+                </div>
+                <div className="p-6 bg-white rounded-lg shadow-lg">
+                    <h3 className="font-semibold text-lg text-gray-800">Do I get a free SSL certificate?</h3>
+                    <p className="text-gray-600 mt-2">Absolutely. A free SSL certificate is included with every hosting plan. This ensures your website is secure and helps improve your search engine rankings.</p>
+                </div>
+                <div className="p-6 bg-white rounded-lg shadow-lg">
+                    <h3 className="font-semibold text-lg text-gray-800">What is NVMe storage?</h3>
+                    <p className="text-gray-600 mt-2">NVMe (Non-Volatile Memory Express) is a new storage technology that is significantly faster than traditional SSDs. This means faster file access and quicker loading times for your website.</p>
+                </div>
+            </div>
+        </section>
+      </main>
+
+      <footer className="text-center py-10">
+        <p className="text-gray-500">© 2024 Quantum Connect. All rights reserved.</p>
+      </footer>
     </div>
   );
-};
+}
+
+export default Webhosting;

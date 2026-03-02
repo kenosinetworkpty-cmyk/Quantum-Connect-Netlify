@@ -14,6 +14,7 @@ export type ShopProduct = {
 
 export interface Address {
   street: string;
+  suburb: string;
   city: string;
   province: string;
   postalCode: string;
@@ -38,6 +39,8 @@ export interface Package {
   hasInstallation: boolean;
   uncapped: boolean;
   type?: 'fibre';
+  description?: string;
+  bestFor?: string;
 }
 
 export interface Lead {
@@ -55,3 +58,16 @@ export interface Provider {
   rating: number;
   sla: string;
 }
+
+export interface WebhostingPackage {
+  name: string;
+  price: string;
+  description: string;
+  isFavorite?: boolean;
+  features: string[];
+  type: 'webhosting';
+}
+
+export type AnyPackage = Package | WebhostingPackage;
+
+export { type Package as FibrePackage };

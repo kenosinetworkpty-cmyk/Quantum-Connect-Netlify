@@ -5,7 +5,7 @@ import { Header } from './components/Header';
 import { Home } from './components/Home';
 import { Shop } from './components/Shop';
 import { shopProducts } from './components/shop/products';
-import { Webhosting } from './components/Webhosting';
+import Webhosting from './components/Webhosting';
 import { Voip } from './components/Voip';
 import { Terms } from './components/Terms';
 import { FibreCheckout } from './components/FibreCheckout';
@@ -16,19 +16,8 @@ import { PAIA } from './components/PAIA';
 import { Support } from './components/Support';
 import { Privacy } from './components/Privacy';
 import { ConsultationScheduling } from './components/ConsultationScheduling';
-import { Address, AvailabilityResult, Package as FibrePackage, Lead, Provider } from './types';
+import { Address, AvailabilityResult, Package as FibrePackage, Lead, Provider, WebhostingPackage, AnyPackage } from './types';
 import { getPackages, submitLead, PROVIDERS } from './services/mockApi';
-
-export interface WebhostingPackage {
-  name: string;
-  price: string;
-  description: string;
-  isFavorite?: boolean;
-  features: string[];
-  type: 'webhosting';
-}
-
-export type AnyPackage = FibrePackage | WebhostingPackage;
 
 const webhostingPackages: WebhostingPackage[] = [
     {
@@ -179,10 +168,10 @@ const App: React.FC = () => {
             cart={cart} 
           />
         } />
-        <Route path="/webhosting" element={<Webhosting packages={webhostingPackages} />} />
+        <Route path="/webhosting" element={<Webhosting />} />
         <Route path="/voip" element={<Voip />} />
         <Route path="/power-solutions" element={<PowerSolutions />} />
-        <Route path="/checkout/:packageName" element={<FibreCheckout packages={allPackages} />} />
+        <Route path="/checkout/:packageName" element={<FibreCheckout packages={fibrePackages} />} />
         <Route path="/terms" element={<Terms />} />
         <Route path="/fibre-confirmation" element={<FibreConfirmation />} />
         <Route path="/PAIA" element={<PAIA />} />

@@ -9,11 +9,12 @@ interface Breadcrumb {
 
 interface PageLayoutProps {
   title: string;
+  subtitle?: string;
   breadcrumbs?: Breadcrumb[];
   children: React.ReactNode;
 }
 
-export const PageLayout: React.FC<PageLayoutProps> = ({ title, breadcrumbs, children }) => {
+export const PageLayout: React.FC<PageLayoutProps> = ({ title, subtitle, breadcrumbs, children }) => {
   return (
     <div className="bg-white">
       <div className="container mx-auto px-4 py-16"> {/* Increased padding from py-8 to py-16 */}
@@ -29,7 +30,8 @@ export const PageLayout: React.FC<PageLayoutProps> = ({ title, breadcrumbs, chil
             ))}
           </nav>
         )}
-        <h1 className="text-4xl font-bold text-slate-900 tracking-tight mb-8">{title}</h1>
+        <h1 className="text-4xl font-bold text-slate-900 tracking-tight mb-2">{title}</h1>
+        {subtitle && <p className="text-lg text-slate-500 mb-8">{subtitle}</p>}
         <div>
           {children}
         </div>

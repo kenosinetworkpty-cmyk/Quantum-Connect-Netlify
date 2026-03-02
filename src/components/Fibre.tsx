@@ -7,7 +7,7 @@ interface FibreProps {
   packages: Package[];
 }
 
-export const Fibre: React.FC<FibreProps> = ({ packages }) => {
+export const Fibre = ({ packages }: FibreProps) => {
     const navigate = useNavigate();
     const fibrePackagesRef = useRef<HTMLDivElement>(null);
 
