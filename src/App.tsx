@@ -1,23 +1,23 @@
 
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
-import { Header } from '../components/Header';
-import { Home } from '../components/Home';
-import { Shop } from '../components/Shop';
-import { shopProducts } from '../components/shop/products';
-import { Webhosting } from '../components/Webhosting';
-import { Voip } from '../components/Voip';
-import { Terms } from '../components/Terms';
-import { FibreCheckout } from '../components/FibreCheckout';
-import { FibreConfirmation } from '../components/FibreConfirmation';
-import { Footer } from '../components/Footer';
-import { PowerSolutions } from '../components/PowerSolutions';
-import { PAIA } from '../components/PAIA';
-import { Support } from '../components/Support';
-import { Privacy } from '../components/Privacy';
-import { ConsultationScheduling } from '../components/ConsultationScheduling';
-import { Address, AvailabilityResult, Package as FibrePackage, Lead, Provider } from '../types';
-import { getPackages, submitLead, PROVIDERS } from '../services/mockApi';
+import { Header } from './components/Header';
+import { Home } from './components/Home';
+import { Shop } from './components/Shop';
+import { shopProducts } from './components/shop/products';
+import { Webhosting } from './components/Webhosting';
+import { Voip } from './components/Voip';
+import { Terms } from './components/Terms';
+import { FibreCheckout } from './components/FibreCheckout';
+import { FibreConfirmation } from './components/FibreConfirmation';
+import { Footer } from './components/Footer';
+import { PowerSolutions } from './components/PowerSolutions';
+import { PAIA } from './components/PAIA';
+import { Support } from './components/Support';
+import { Privacy } from './components/Privacy';
+import { ConsultationScheduling } from './components/ConsultationScheduling';
+import { Address, AvailabilityResult, Package as FibrePackage, Lead, Provider } from './types';
+import { getPackages, submitLead, PROVIDERS } from './services/mockApi';
 
 export interface WebhostingPackage {
   name: string;

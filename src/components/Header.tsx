@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Menu, X, ShoppingBag, Wifi, Server, Phone, User, LogIn, LayoutDashboard } from 'lucide-react';
-import { useAuth } from '../src/auth/AuthContext';
+import { useAuth } from '../auth/AuthContext';
 
 export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
