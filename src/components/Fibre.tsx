@@ -1,10 +1,10 @@
 import React, { useRef } from 'react';
 import { Check, Zap, Wifi, Users, Film } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { FibrePackage } from '../src/types';
+import { Package } from '../types';
 
 interface FibreProps {
-  packages: FibrePackage[];
+  packages: Package[];
 }
 
 export const Fibre: React.FC<FibreProps> = ({ packages }) => {
@@ -78,7 +78,6 @@ export const Fibre: React.FC<FibreProps> = ({ packages }) => {
                 className={`rounded-2xl p-8 border shadow-lg transition-all duration-300 bg-white text-slate-900`}
               >
                 <h3 className="text-2xl font-bold">{pkg.name}</h3>
-                <p className={`mt-2 text-slate-500`}>{pkg.description}</p>
                 <div className="my-6">
                   <span className={`text-5xl font-black text-slate-900`}>R{pkg.price}</span>
                   <span className={`ml-1 text-slate-500`}>/mo</span>
@@ -88,20 +87,6 @@ export const Fibre: React.FC<FibreProps> = ({ packages }) => {
                     className={`w-full font-bold py-3 rounded-lg border transition-colors bg-transparent border-slate-300 hover:bg-slate-50`}>
                   Order
                 </button>
-                <ul className="mt-8 space-y-4">
-                    <li className="flex items-center gap-3">
-                      <Check className={`w-5 h-5 text-green-500`} />
-                      <span>{pkg.speedDown}Mbps Download</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <Check className={`w-5 h-5 text-green-500`} />
-                      <span>{pkg.speedUp}Mbps Upload</span>
-                    </li>
-                    <li className="flex items-center gap-3">
-                      <Check className={`w-5 h-5 text-green-500`} />
-                      <span>{pkg.bestFor}</span>
-                    </li>
-                </ul>
               </div>
             ))}
           </div>
