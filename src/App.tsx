@@ -1,68 +1,198 @@
 
-import React, { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { Header } from '../components/Header';
-import { Footer } from '../components/Footer';
 import { Home } from '../components/Home';
-import { Fibre } from '../components/Fibre';
-import { Webhosting } from '../components/Webhosting';
 import { Shop } from '../components/Shop';
-import { ProductPage } from '../components/shop/ProductPage';
-import { ShopCheckout } from '../components/shop/ShopCheckout';
+import { shopProducts } from '../components/shop/products';
+import { Webhosting } from '../components/Webhosting';
+import { Voip } from '../components/Voip';
+import { Terms } from '../components/Terms';
 import { FibreCheckout } from '../components/FibreCheckout';
-import { AnyPackage } from './types';
-import AuthScreen from './auth/AuthScreen';
-import Dashboard from './auth/Dashboard';
-import ProtectedRoute from './auth/ProtectedRoute';
-import { AuthProvider } from './auth/AuthContext';
+import { FibreConfirmation } from '../components/FibreConfirmation';
+import { Footer } from '../components/Footer';
+import { PowerSolutions } from '../components/PowerSolutions';
+import { PAIA } from '../components/PAIA';
+import { Support } from '../components/Support';
+import { Privacy } from '../components/Privacy';
+import { ConsultationScheduling } from '../components/ConsultationScheduling';
+import { Address, AvailabilityResult, Package as FibrePackage, Lead, Provider } from '../types';
+import { getPackages, submitLead, PROVIDERS } from '../services/mockApi';
 
-import { fibrePackages, webhostingPackages, voipPackages } from './data';
+export interface WebhostingPackage {
+  name: string;
+  price: string;
+  description: string;
+  isFavorite?: boolean;
+  features: string[];
+  type: 'webhosting';
+}
+
+export type AnyPackage = FibrePackage | WebhostingPackage;
+
+const webhostingPackages: WebhostingPackage[] = [
+    {
+      name: 'Basic Package',
+      price: 'R39',
+      type: 'webhosting',
+      description: 'Superior and secure hosting for personal sites.',
+      features: [
+        'Superior and secure hosting',
+        'Initial assessment and strategic IT roadmap',
+        'Easy-to-use control panel',
+        'Lightning-fast loading speed',
+        'Free website migration',
+        'Offsite backup',
+        '2 GB NVMe Storage',
+        '30 GB traffic',
+        '1 MySQL database',
+        '5 email accounts',
+        '1 website',
+        '3 domain aliases',
+        'SSL certificate',
+      ],
+    },
+    {
+      name: 'Standard Package',
+      price: 'R59',
+      type: 'webhosting',
+      description: 'Perfect for growing businesses with more traffic.',
+      isFavorite: true,
+      features: [
+        'Superior and secure hosting',
+        'Detailed assessment and ongoing advisory',
+        'Easy-to-use control panel',
+        'Lightning-fast loading speed',
+        'Free website migration',
+        'Offsite backup',
+        '5 GB NVMe storage',
+        'Unlimited traffic',
+        '3 MySQL databases',
+        '30 email accounts',
+        '5 websites',
+        '5 domain aliases',
+        'SSL certificate',
+      ],
+    },
+    {
+      name: 'Premium Package',
+      price: 'R149',
+      type: 'webhosting',
+      description: 'Advanced performance for e-commerce.',
+      features: [
+        'Superior and secure hosting',
+        'Comprehensive assessment and ongoing advisory',
+        'Easy-to-use control panel',
+        'Lightning-fast loading speed',
+        'Free website migration',
+        'Offsite backup',
+        '30 GB NVMe storage',
+        'Unlimited traffic',
+        '5 MySQL databases',
+        '15 websites',
+        '15 domain aliases',
+        'SSL certificate',
+        '90 email accounts',
+      ],
+    },
+  ];
 
 const App: React.FC = () => {
-  const allPackages: AnyPackage[] = [...fibrePackages, ...webhostingPackages, ...voipPackages];
-
+  const [allPackages, setAllPackages] = useState<AnyPackage[]>([]);
+  const [providers] = useState<Provider[]>(PROVIDERS);
+  const [availability, setAvailability] = useState<AvailabilityResult | null>(null);
+  const [userAddress, setUserAddress] = useState<Address | null>(null);
   const [cart, setCart] = useState<{ [key: string]: number }>({});
 
-  const addToCart = (productId: string) => {
-    setCart(prevCart => ({
-      ...prevCart,
-      [productId]: (prevCart[productId] || 0) + 1,
-    }));
+  useEffect(() => {
+    getPackages().then(fibrePackages => {
+        const packagesWithTypes = fibrePackages.map(p => ({...p, type: 'fibre' as const}));
+        setAllPackages([...packagesWithTypes, ...webhostingPackages]);
+    });
+  }, []);
+
+  const handleAvailabilityCheck = (result: AvailabilityResult, address: Address) => {
+    setAvailability(result);
+    setUserAddress(address);
+    if (result.available) {
+      setTimeout(() => {
+        document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
+      }, 100);
+    }
+  };
+  
+  const handleAddToCart = (productId: string, quantity: number) => {
+    const numQuantity = Number(quantity);
+    const addQuantity = !isNaN(numQuantity) && numQuantity > 0 ? numQuantity : 1;
+    setCart(prevCart => {
+      const existingQuantity = prevCart[productId] || 0;
+      const newQuantity = existingQuantity + addQuantity;
+      return {
+        ...prevCart,
+        [productId]: newQuantity,
+      };
+    });
   };
 
-  const updateQuantity = (productId: string, quantity: number) => {
-    if (quantity <= 0) {
-      const newCart = { ...cart };
-      delete newCart[productId];
-      setCart(newCart);
+  const handleUpdateCartQuantity = (productId: string, quantity: number) => {
+    const numQuantity = Number(quantity);
+
+    if (isNaN(numQuantity)) {
+      setCart(prevCart => ({ ...prevCart, [productId]: 1 }));
+      return;
+    }
+
+    if (numQuantity <= 0) {
+      setCart(prevCart => {
+        const newCart = { ...prevCart };
+        delete newCart[productId];
+        return newCart;
+      });
     } else {
-      setCart({ ...cart, [productId]: quantity });
+      setCart(prevCart => ({ ...prevCart, [productId]: numQuantity }));
     }
   };
 
+  const fibrePackages = allPackages.filter(p => p.type === 'fibre') as FibrePackage[];
+
   return (
-    <Router>
-      <AuthProvider>
-        <div className="bg-white dark:bg-slate-900 font-sans">
-          <Header />
-          <main>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/fibre" element={<Fibre packages={fibrePackages} />} />
-              <Route path="/webhosting" element={<Webhosting packages={webhostingPackages} />} />
-              <Route path="/shop" element={<Shop onAddToCart={addToCart} />} />
-              <Route path="/shop/:productId" element={<ProductPage onAddToCart={addToCart} />} />
-              <Route path="/shop/checkout" element={<ShopCheckout cart={cart} onUpdateQuantity={updateQuantity} onBack={() => {}} onProceedToPayment={() => {}} />} />
-              <Route path="/checkout/:packageName" element={<FibreCheckout packages={allPackages} />} />
-              <Route path="/auth" element={<AuthScreen />} />
-              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            </Routes>
-          </main>
-          <Footer />
-        </div>
-      </AuthProvider>
-    </Router>
+    <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
+      <Header />
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Home
+              packages={fibrePackages}
+              providers={providers}
+              availability={availability}
+              userAddress={userAddress}
+              onAvailabilityCheck={handleAvailabilityCheck}
+            />
+          }
+        />
+        <Route path="/shop" element={
+          <Shop 
+            products={shopProducts} 
+            onAddToCart={handleAddToCart} 
+            onUpdateCartQuantity={handleUpdateCartQuantity} 
+            cart={cart} 
+          />
+        } />
+        <Route path="/webhosting" element={<Webhosting packages={webhostingPackages} />} />
+        <Route path="/voip" element={<Voip />} />
+        <Route path="/power-solutions" element={<PowerSolutions />} />
+        <Route path="/checkout/:packageName" element={<FibreCheckout packages={allPackages} />} />
+        <Route path="/terms" element={<Terms />} />
+        <Route path="/fibre-confirmation" element={<FibreConfirmation />} />
+        <Route path="/PAIA" element={<PAIA />} />
+        <Route path="/support" element={<Support />} />
+        <Route path="/privacy" element={<Privacy />} />
+        <Route path="/consultation-scheduling" element={<ConsultationScheduling />} />
+      </Routes>
+      <Footer />
+    </div>
   );
-}
+};
 
 export default App;
