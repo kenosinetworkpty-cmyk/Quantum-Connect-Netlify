@@ -1,120 +1,200 @@
-import React, { useState, useEffect } from 'react';
-import { collection, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore';
+
+import React, { useState, useEffect, useRef } from 'react';
+import { collection, onSnapshot, addDoc, serverTimestamp, deleteDoc, doc, query, orderBy } from 'firebase/firestore';
+import { getStorage, ref, uploadBytesResumable, getDownloadURL, deleteObject } from 'firebase/storage';
 import { db } from '../../services/firebase';
 import { useAuth } from '../../auth/AuthContext';
 import { Modal } from '../ui/Modal';
-import { Input } from '../ui/Input';
 import { Button } from '../ui/Button';
+import { Trash, Download, FilePlus } from 'lucide-react';
 
 const MyFiles = () => {
   const { user } = useAuth();
   const [files, setFiles] = useState<any[]>([]);
-  const [folders, setFolders] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [isFolderModalOpen, setIsFolderModalOpen] = useState(false);
   const [isFileModalOpen, setIsFileModalOpen] = useState(false);
-  const [newFolderName, setNewFolderName] = useState('');
-  const [newFileName, setNewFileName] = useState('');
+  const [uploading, setUploading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [error, setError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      setLoading(false);
+      return;
+    }
 
-    const filesUnsub = onSnapshot(collection(db, `users/${user.uid}/files`), (snapshot) => {
+    const q = query(collection(db, `users/${user.uid}/files`), orderBy('createdAt', 'desc'));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
       setFiles(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
       setLoading(false);
-    });
-
-    const foldersUnsub = onSnapshot(collection(db, `users/${user.uid}/folders`), (snapshot) => {
-      setFolders(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+    }, (error) => {
+      console.error("Error fetching files:", error);
+      setError("Failed to load files.");
       setLoading(false);
     });
 
-    return () => {
-      filesUnsub();
-      foldersUnsub();
-    };
+    return () => unsubscribe();
   }, [user]);
 
-  const handleAddFolder = async () => {
-    if (!user || !newFolderName) return;
-    await addDoc(collection(db, `users/${user.uid}/folders`), {
-      name: newFolderName,
-      createdAt: serverTimestamp()
-    });
-    setNewFolderName('');
-    setIsFolderModalOpen(false);
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setSelectedFile(e.target.files[0]);
+    }
   };
 
-  const handleAddFile = async () => {
-    if (!user || !newFileName) return;
-    await addDoc(collection(db, `users/${user.uid}/files`), {
-      name: newFileName,
-      createdAt: serverTimestamp(),
-      size: 0 // Placeholder for actual file size
-    });
-    setNewFileName('');
-    setIsFileModalOpen(false);
+  const handleUpload = async () => {
+    if (!selectedFile || !user) return;
+
+    setUploading(true);
+    setError(null);
+    setUploadProgress(0);
+
+    const storage = getStorage();
+    const storageRef = ref(storage, `user_uploads/${user.uid}/${selectedFile.name}`);
+    const uploadTask = uploadBytesResumable(storageRef, selectedFile);
+
+    uploadTask.on('state_changed',
+      (snapshot) => {
+        const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setUploadProgress(progress);
+      },
+      (error) => {
+        console.error("Upload error:", error);
+        setError('Upload failed. Please try again.');
+        setUploading(false);
+      },
+      async () => {
+        try {
+          const downloadURL = await getDownloadURL(uploadTask.snapshot.ref);
+          await addDoc(collection(db, `users/${user.uid}/files`), {
+            name: selectedFile.name,
+            storagePath: storageRef.fullPath,
+            downloadURL: downloadURL,
+            size: selectedFile.size,
+            type: selectedFile.type,
+            createdAt: serverTimestamp(),
+          });
+        } catch (error) {
+          console.error("Error saving file metadata:", error);
+          setError('Failed to save file information.');
+        } finally {
+          setUploading(false);
+          setIsFileModalOpen(false);
+          setSelectedFile(null);
+        }
+      }
+    );
   };
 
+  const handleDelete = async (file: any) => {
+    if (!user) return;
+
+    const storage = getStorage();
+    const storageRef = ref(storage, file.storagePath);
+
+    try {
+      await deleteObject(storageRef);
+      await deleteDoc(doc(db, `users/${user.uid}/files`, file.id));
+    } catch (error) {
+      console.error("Error deleting file:", error);
+      alert("Failed to delete file.");
+    }
+  };
+
+  const handleDownload = (file: any) => {
+    window.open(file.downloadURL, '_blank');
+  };
+
+  const formatBytes = (bytes: number, decimals = 2) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const dm = decimals < 0 ? 0 : decimals;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i];
+  };
+  
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-2xl font-semibold">My Files</h2>
-        <div>
-          <Button onClick={() => setIsFolderModalOpen(true)} className="mr-2">New Folder</Button>
-          <Button onClick={() => setIsFileModalOpen(true)}>Add File</Button>
-        </div>
+        <Button onClick={() => setIsFileModalOpen(true)}>
+          <FilePlus className="mr-2 h-4 w-4" /> Add File
+        </Button>
       </div>
+
       {loading ? (
         <p>Loading...</p>
+      ) : files.length === 0 ? (
+        <div className="text-center py-10 bg-gray-50 rounded-lg">
+          <p className="text-gray-500">You haven't uploaded any files yet.</p>
+        </div>
       ) : (
-        <>
-          {folders.length === 0 && files.length === 0 ? (
-            <p>No files or folders yet.</p>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {folders.map(folder => (
-                <div key={folder.id} className="bg-white p-4 rounded-md shadow-md">
-                  <p className="font-semibold">{folder.name}</p>
-                </div>
-              ))}
+        <div className="overflow-x-auto">
+          <table className="min-w-full bg-white shadow-md rounded-lg">
+            <thead className="bg-gray-100">
+              <tr>
+                <th className="text-left py-3 px-4 font-semibold text-sm">Name</th>
+                <th className="text-left py-3 px-4 font-semibold text-sm">Type</th>
+                <th className="text-left py-3 px-4 font-semibold text-sm">Size</th>
+                <th className="text-right py-3 px-4 font-semibold text-sm">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
               {files.map(file => (
-                <div key={file.id} className="bg-white p-4 rounded-md shadow-md">
-                  <p className="font-semibold">{file.name}</p>
-                  <p className="text-sm text-gray-500">{file.size} bytes</p>
-                </div>
+                <tr key={file.id} className="border-b">
+                  <td className="py-3 px-4">{file.name}</td>
+                  <td className="py-3 px-4">{file.type}</td>
+                  <td className="py-3 px-4">{formatBytes(file.size)}</td>
+                  <td className="py-3 px-4 text-right">
+                    <Button variant="ghost" size="sm" onClick={() => handleDownload(file)}>
+                      <Download className="h-4 w-4" />
+                    </Button>
+                    <Button variant="ghost" size="sm" className="text-red-500" onClick={() => handleDelete(file)}>
+                      <Trash className="h-4 w-4" />
+                    </Button>
+                  </td>
+                </tr>
               ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+      
+      <Modal isOpen={isFileModalOpen} onClose={() => setIsFileModalOpen(false)} title="Upload File">
+        <div className="flex flex-col space-y-4">
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileSelect}
+            className="hidden"
+          />
+          <Button
+            onClick={() => fileInputRef.current?.click()}
+            variant="outline"
+            disabled={uploading}
+          >
+            {selectedFile ? selectedFile.name : 'Choose File'}
+          </Button>
+
+          {uploading && (
+            <div className="w-full bg-gray-200 rounded-full h-2.5">
+              <div
+                className="bg-blue-600 h-2.5 rounded-full"
+                style={{ width: `${uploadProgress}%` }}
+              ></div>
             </div>
           )}
-        </>
-      )}
 
-      <Modal isOpen={isFolderModalOpen} onClose={() => setIsFolderModalOpen(false)} title="New Folder">
-        <div className="flex flex-col space-y-4">
-          <Input 
-            type="text" 
-            placeholder="Folder name" 
-            value={newFolderName} 
-            onChange={(e) => setNewFolderName(e.target.value)} 
-          />
-          <div className="flex justify-end space-x-2">
-            <Button onClick={() => setIsFolderModalOpen(false)} variant="secondary">Cancel</Button>
-            <Button onClick={handleAddFolder}>Create</Button>
-          </div>
-        </div>
-      </Modal>
+          {error && <p className="text-red-500 text-sm">{error}</p>}
 
-      <Modal isOpen={isFileModalOpen} onClose={() => setIsFileModalOpen(false)} title="Add File">
-        <div className="flex flex-col space-y-4">
-          <Input 
-            type="text" 
-            placeholder="File name" 
-            value={newFileName} 
-            onChange={(e) => setNewFileName(e.target.value)} 
-          />
           <div className="flex justify-end space-x-2">
-            <Button onClick={() => setIsFileModalOpen(false)} variant="secondary">Cancel</Button>
-            <Button onClick={handleAddFile}>Add</Button>
+            <Button onClick={() => setIsFileModalOpen(false)} variant="secondary" disabled={uploading}>Cancel</Button>
+            <Button onClick={handleUpload} disabled={!selectedFile || uploading}>
+              {uploading ? `Uploading... ${Math.round(uploadProgress)}%` : 'Upload'}
+            </Button>
           </div>
         </div>
       </Modal>
