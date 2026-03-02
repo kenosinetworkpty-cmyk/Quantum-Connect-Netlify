@@ -4,7 +4,7 @@ import { Button } from './ui/Button';
 import { PageLayout } from './ui/PageLayout';
 import { InputField } from './ui/InputField';
 import { Lock, ArrowLeft, CreditCard, Landmark } from 'lucide-react';
-import { AnyPackage } from '../App'; // Import the unified package type
+import { AnyPackage } from '../src/types'; // Import the unified package type
 
 interface CheckoutProps {
   packages: AnyPackage[];
@@ -27,7 +27,7 @@ export const FibreCheckout: React.FC<CheckoutProps> = ({ packages }) => {
 
   const [formData, setFormData] = useState({
     // Step 1
-    firstName: '', surname: '', email: '', contactNumber: '',
+    firstName: '', surname: '', email: '', contactNumber: '', password: '',
     // Step 2
     address: '', city: '', postalCode: '', country: 'South Africa',
     billingAddress: '', billingCity: '', billingPostalCode: '', billingCountry: 'South Africa',
@@ -126,6 +126,7 @@ export const FibreCheckout: React.FC<CheckoutProps> = ({ packages }) => {
                 <InputField label="Surname" name="surname" value={formData.surname} onChange={handleInputChange} autoComplete="family-name" />
                 <InputField label="Email Address" name="email" type="email" value={formData.email} onChange={handleInputChange} autoComplete="email" />
                 <InputField label="Contact Number" name="contactNumber" type="tel" value={formData.contactNumber} onChange={handleInputChange} autoComplete="tel" />
+                 <InputField label="Create Password" name="password" type="password" value={formData.password} onChange={handleInputChange} />
             </div>
           </div>
         );

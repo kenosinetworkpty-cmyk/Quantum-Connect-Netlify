@@ -18,6 +18,7 @@ const deliverySchema = z.object({
   city: z.string().min(1, 'City is required'),
   postalCode: z.string().min(1, 'Postal code is required'),
   contactNumber: z.string().min(1, 'Contact number is required'),
+  password: z.string().min(1, 'Password is required'),
 });
 
 const paymentSchema = z.object({
@@ -86,7 +87,7 @@ export const ShopCheckout: React.FC<ShopCheckoutProps> = ({ cart, onBack, onUpda
   const total = subtotal + deliveryFee;
 
   const handleProceedToPaymentStep = async () => {
-    const isValid = await trigger(['fullName', 'address', 'city', 'postalCode', 'contactNumber']);
+    const isValid = await trigger(['fullName', 'address', 'city', 'postalCode', 'contactNumber', 'password']);
     if (isValid) {
       setCheckoutStep('payment');
       window.scrollTo(0, 0);
@@ -167,6 +168,8 @@ export const ShopCheckout: React.FC<ShopCheckoutProps> = ({ cart, onBack, onUpda
                       {errors.postalCode && <p className="text-red-500 text-sm">{errors.postalCode.message}</p>}
                       <Input type="tel" placeholder="Contact Number" {...methods.register('contactNumber')} className="bg-slate-800" />
                       {errors.contactNumber && <p className="text-red-500 text-sm">{errors.contactNumber.message}</p>}
+                       <Input type="password" placeholder="Create Password" {...methods.register('password')} className="bg-slate-800" />
+                      {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
                     </div>
                     <Button size="lg" onClick={handleProceedToPaymentStep} className="w-full mt-8 bg-green-600 hover:bg-green-700">Proceed to Secure Checkout</Button>
                     <p className="text-center text-slate-400 text-sm mt-4 flex items-center justify-center"><Lock size={14} className="mr-2"/> SSL Encrypted & Secure</p>

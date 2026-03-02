@@ -1,12 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ShoppingBag, Wifi, Server, Phone } from 'lucide-react';
+import { Menu, X, ShoppingBag, Wifi, Server, Phone, User, LogIn, LayoutDashboard } from 'lucide-react';
+import { useAuth } from '../src/auth/AuthContext';
 
 export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { user } = useAuth();
 
   const isTransparentPage = location.pathname === '/' || location.pathname === '/shop' || location.pathname === '/webhosting' || location.pathname === '/voip';
 
@@ -24,6 +26,11 @@ export const Header: React.FC = () => {
     { name: 'Webhosting', icon: Server, path: '/webhosting' },
     { name: 'Voip', icon: Phone, path: '/voip' },
   ];
+
+  const authLink = user ? 
+    { name: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' } :
+    { name: 'Client Zone Sign In', icon: LogIn, path: '/auth' };
+
 
   const headerBaseClasses = "fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out border-b";
   const headerScrolledClasses = "bg-white/80 backdrop-blur-xl shadow-md border-slate-200/80";
@@ -68,7 +75,7 @@ export const Header: React.FC = () => {
           <div className="md:w-1/3 flex justify-end">
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center justify-end gap-8">
-              {navLinks.map((link) => (
+              {[...navLinks, authLink].map((link) => (
                 <Link key={link.name} to={link.path} className={getLinkClasses()}>
                   <span>{link.name}</span>
                   <span className="absolute bottom-0 left-0 w-0 h-[3px] rounded-full bg-gradient-to-r from-red-500 to-green-500 transition-all duration-300 group-hover:w-full"></span>
@@ -101,7 +108,7 @@ export const Header: React.FC = () => {
         }`}
       >
         <div className="container mx-auto px-4 py-6 flex flex-col gap-3">
-          {navLinks.map((link) => (
+          {[...navLinks, authLink].map((link) => (
             <Link
               key={link.name}
               to={link.path}
