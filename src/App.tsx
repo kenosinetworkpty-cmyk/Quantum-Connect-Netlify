@@ -133,7 +133,7 @@ const App: React.FC = () => {
               />
             }
           />
-          <Route path="/shop/*" element={<ShopCheckoutWrapper products={shopProducts} />} />
+          <Route path="/shop/*" element={<ProtectedRoute><ShopCheckoutWrapper products={shopProducts} /></ProtectedRoute>} />
           <Route path="/webhosting" element={<Webhosting />} />
           <Route path="/webhosting-checkout/:packageName" element={<WebhostingCheckout packages={webhostingPackages} />} />
           <Route path="/voip" element={<Voip />} />
