@@ -71,3 +71,80 @@ export interface WebhostingPackage {
 export type AnyPackage = Package | WebhostingPackage;
 
 export { type Package as FibrePackage };
+
+export interface Order {
+    id: string;
+    date: string;
+    service: AnyPackage;
+    timeline: {
+        name: string;
+        status: 'completed' | 'pending' | 'next';
+        description: string;
+    }[];
+}
+
+export interface SupportTicket {
+  id: string;
+  subject: string;
+  message: string;
+  status: 'open' | 'closed';
+  date: string;
+  replies: {
+      from: 'user' | 'support';
+      message: string;
+      date: string;
+  }[];
+}
+
+export interface User {
+  id: string;
+  name: string;
+  surname: string;
+  idNumber: string;
+  cellphoneNumber: string;
+  address: Address;
+  purchases: PurchasedProduct[];
+  subscriptions: Subscription[];
+  invoices: Invoice[];
+  documents: UserDocument[];
+  orders: Order[];
+  tickets: SupportTicket[];
+}
+
+export interface PurchasedProduct {
+  product: ShopProduct;
+  purchaseDate: string;
+  quantity: number;
+  totalPrice: number;
+}
+
+export interface Subscription {
+  service: AnyPackage;
+  startDate: string;
+  nextPaymentDate: string;
+  monthlyAmount: number;
+  status: 'active' | 'cancelled';
+  contractType: 'prepaid' | 'month-to-month';
+  remainingDays?: number;
+  dataUsage?: {
+    used: number;
+    total: number;
+    unit: 'GB' | 'TB';
+  };
+}
+
+export interface Invoice {
+  id: string;
+  date: string;
+  amount: number;
+  status: 'Paid' | 'Due';
+  url: string;
+}
+
+export interface UserDocument {
+  id: string;
+  name: string;
+  type: 'ID' | 'Proof of Address';
+  uploadDate: string;
+  url: string;
+}

@@ -46,7 +46,7 @@ export const Shop: React.FC<ShopProps> = ({ products, onAddToCart, onUpdateCartQ
   };
 
   if (currentView === 'checkout') {
-    return <ShopCheckout cart={cart} onBack={handleBackToProducts} onUpdateQuantity={onUpdateCartQuantity} onProceedToPayment={handleProceedToPayment} />;
+    return <ShopCheckout cart={cart} products={products} onCheckout={handleProceedToPayment} />;
   }
 
   if (currentView === 'confirmation') {

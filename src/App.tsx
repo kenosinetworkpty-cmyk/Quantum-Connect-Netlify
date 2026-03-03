@@ -18,6 +18,10 @@ import { Privacy } from './components/Privacy';
 import { ConsultationScheduling } from './components/ConsultationScheduling';
 import { Address, AvailabilityResult, Package as FibrePackage, Lead, Provider, WebhostingPackage, AnyPackage } from './types';
 import { getPackages, submitLead, PROVIDERS } from './services/mockApi';
+import { AuthProvider } from './auth/AuthContext';
+import ProtectedRoute from './auth/ProtectedRoute';
+import UserDashboard from './components/Dashboard/UserDashboard';
+import { AuthScreen } from './auth/AuthScreen';
 
 const webhostingPackages: WebhostingPackage[] = [
     {
@@ -145,42 +149,46 @@ const App: React.FC = () => {
   const fibrePackages = allPackages.filter(p => p.type === 'fibre') as FibrePackage[];
 
   return (
-    <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
-      <Header />
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <Home
-              packages={fibrePackages}
-              providers={providers}
-              availability={availability}
-              userAddress={userAddress}
-              onAvailabilityCheck={handleAvailabilityCheck}
-            />
-          }
-        />
-        <Route path="/shop" element={
-          <Shop 
-            products={shopProducts} 
-            onAddToCart={handleAddToCart} 
-            onUpdateCartQuantity={handleUpdateCartQuantity} 
-            cart={cart} 
+    <AuthProvider>
+      <div className="min-h-screen bg-slate-50 font-sans text-slate-900">
+        <Header />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <Home
+                packages={fibrePackages}
+                providers={providers}
+                availability={availability}
+                userAddress={userAddress}
+                onAvailabilityCheck={handleAvailabilityCheck}
+              />
+            }
           />
-        } />
-        <Route path="/webhosting" element={<Webhosting />} />
-        <Route path="/voip" element={<Voip />} />
-        <Route path="/power-solutions" element={<PowerSolutions />} />
-        <Route path="/checkout/:packageName" element={<FibreCheckout packages={fibrePackages} />} />
-        <Route path="/terms" element={<Terms />} />
-        <Route path="/fibre-confirmation" element={<FibreConfirmation />} />
-        <Route path="/PAIA" element={<PAIA />} />
-        <Route path="/support" element={<Support />} />
-        <Route path="/privacy" element={<Privacy />} />
-        <Route path="/consultation-scheduling" element={<ConsultationScheduling />} />
-      </Routes>
-      <Footer />
-    </div>
+          <Route path="/shop" element={
+            <Shop 
+              products={shopProducts} 
+              onAddToCart={handleAddToCart} 
+              onUpdateCartQuantity={handleUpdateCartQuantity} 
+              cart={cart} 
+            />
+          } />
+          <Route path="/webhosting" element={<Webhosting />} />
+          <Route path="/voip" element={<Voip />} />
+          <Route path="/power-solutions" element={<PowerSolutions />} />
+          <Route path="/checkout/:packageName" element={<FibreCheckout packages={fibrePackages} />} />
+          <Route path="/terms" element={<Terms />} />
+          <Route path="/fibre-confirmation" element={<FibreConfirmation />} />
+          <Route path="/PAIA" element={<PAIA />} />
+          <Route path="/support" element={<Support />} />
+          <Route path="/privacy" element={<Privacy />} />
+          <Route path="/consultation-scheduling" element={<ConsultationScheduling />} />
+          <Route path="/auth" element={<AuthScreen />} />
+          <Route path="/dashboard" element={<ProtectedRoute><UserDashboard /></ProtectedRoute>} />
+        </Routes>
+        <Footer />
+      </div>
+    </AuthProvider>
   );
 };
 
