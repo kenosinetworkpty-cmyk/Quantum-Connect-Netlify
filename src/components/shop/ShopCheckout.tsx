@@ -1,15 +1,15 @@
 import React from 'react';
-import { useForm, FormProvider, useFormContext } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ShoppingCart } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
-import { RadioGroup } from '../ui/RadioGroup';
-import { RadioGroupItem } from '../ui/RadioGroupItem';
+import { RadioGroup, RadioGroupItem } from '../ui/RadioGroup';
 import { Checkbox } from '../ui/Checkbox';
 import { ShopProduct } from '../../types';
 import { Label } from '../ui/Label';
+import { StepIndicator } from '../ui/StepIndicator';
 
 const checkoutSchema = z.object({
   fullName: z.string().min(1, 'Full name is required'),
@@ -19,7 +19,6 @@ const checkoutSchema = z.object({
   contactNumber: z.string().min(1, 'Contact number is required'),
   email: z.string().email('Invalid email address'),
   password: z.string().min(8, 'Password must be at least 8 characters'),
-  createAccount: z.boolean(),
   paymentMethod: z.enum(['card', 'debit_order']),
   billingSameAsDelivery: z.boolean(),
   billingAddress: z.string().optional(),
@@ -36,7 +35,7 @@ const checkoutSchema = z.object({
   termsAccepted: z.boolean().refine(val => val === true, 'You must accept the terms and conditions'),
 });
 
-type CheckoutFormValues = z.infer<typeof checkoutSchema>;
+export type CheckoutFormValues = z.infer<typeof checkoutSchema>;
 
 interface ShopCheckoutProps {
   cart: { [id: string]: number };
@@ -48,7 +47,6 @@ export const ShopCheckout = ({ cart, products, onCheckout }: ShopCheckoutProps) 
   const methods = useForm<CheckoutFormValues>({
     resolver: zodResolver(checkoutSchema),
     defaultValues: {
-      createAccount: true,
       paymentMethod: 'card',
       billingSameAsDelivery: true,
       termsAccepted: false,
@@ -80,7 +78,8 @@ export const ShopCheckout = ({ cart, products, onCheckout }: ShopCheckoutProps) 
         <div className="min-h-screen bg-gray-50">
           <header className="bg-white shadow-sm">
             <div className="container mx-auto px-4 py-6">
-              <h1 className="text-3xl font-bold text-gray-900">Checkout</h1>
+                <StepIndicator currentStep={2} steps={['Review', 'Payment', 'Confirm']} />
+              <h1 className="text-3xl font-bold text-gray-900 text-center">Checkout</h1>
             </div>
           </header>
 
@@ -113,22 +112,16 @@ export const ShopCheckout = ({ cart, products, onCheckout }: ShopCheckoutProps) 
                             <Input name="postalCode" />
                         </div>
                     </div>
-                    <div className="mt-4 flex items-center">
-                        <Checkbox name="createAccount" id='createAccount' />
-                        <Label htmlFor='createAccount' className="ml-2">Create an account for faster checkout next time</Label>
-                    </div>
-                    {watch('createAccount') && (
-                        <div className="grid sm:grid-cols-2 gap-6 mt-4">
-                            <div>
-                                <Label htmlFor='email'>Email Address</Label>
-                                <Input name="email" type="email" />
-                            </div>
-                            <div>
-                                <Label htmlFor='password'>Password</Label>
-                                <Input name="password" type="password" />
-                            </div>
+                    <div className="grid sm:grid-cols-2 gap-6 mt-4">
+                        <div>
+                            <Label htmlFor='email'>Email Address</Label>
+                            <Input name="email" type="email" />
                         </div>
-                    )}
+                        <div>
+                            <Label htmlFor='password'>Password</Label>
+                            <Input name="password" type="password" />
+                        </div>
+                    </div>
                   </FormSection>
                   <FormSection title="2. Payment Method">
                     <RadioGroup name="paymentMethod">

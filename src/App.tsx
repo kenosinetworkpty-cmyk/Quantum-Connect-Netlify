@@ -5,10 +5,11 @@ import { Home } from './components/Home';
 import { Shop } from './components/Shop';
 import { shopProducts } from './components/shop/products';
 import Webhosting from './components/Webhosting';
+import { WebhostingCheckout } from './components/WebhostingCheckout';
 import { Voip } from './components/Voip';
 import { Terms } from './components/Terms';
 import { FibreCheckout } from './components/FibreCheckout';
-import { FibreConfirmation } from './components/FibreConfirmation';
+import { Confirmation } from './components/Confirmation';
 import { Footer } from './components/Footer';
 import { PowerSolutions } from './components/PowerSolutions';
 import { PAIA } from './components/PAIA';
@@ -174,11 +175,12 @@ const App: React.FC = () => {
             />
           } />
           <Route path="/webhosting" element={<Webhosting />} />
+          <Route path="/webhosting-checkout/:packageName" element={<WebhostingCheckout packages={webhostingPackages} />} />
           <Route path="/voip" element={<Voip />} />
           <Route path="/power-solutions" element={<PowerSolutions />} />
           <Route path="/checkout/:packageName" element={<FibreCheckout packages={fibrePackages} />} />
           <Route path="/terms" element={<Terms />} />
-          <Route path="/fibre-confirmation" element={<FibreConfirmation />} />
+          <Route path="/confirmation" element={<Confirmation />} />
           <Route path="/PAIA" element={<PAIA />} />
           <Route path="/support" element={<Support />} />
           <Route path="/privacy" element={<Privacy />} />

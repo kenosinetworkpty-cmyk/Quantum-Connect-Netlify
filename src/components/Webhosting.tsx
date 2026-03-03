@@ -1,5 +1,6 @@
 
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const webhostingPackages = [
     {
@@ -69,6 +70,12 @@ const webhostingPackages = [
   ];
 
 const Webhosting = () => {
+  const navigate = useNavigate();
+
+  const handleChoosePlan = (packageName: string) => {
+    navigate(`/webhosting-checkout/${packageName}`);
+  };
+
   return (
     <div className="min-h-screen bg-gray-100">
        <div 
@@ -104,7 +111,7 @@ const Webhosting = () => {
                   </li>
                 ))}
               </ul>
-              <button className="mt-8 bg-purple-600 text-white py-3 px-6 rounded-lg hover:bg-purple-700 transition duration-300">
+              <button onClick={() => handleChoosePlan(pkg.name)} className="mt-8 bg-purple-600 text-white py-3 px-6 rounded-lg hover:bg-purple-700 transition duration-300">
                 Choose Plan
               </button>
             </div>

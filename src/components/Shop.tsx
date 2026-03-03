@@ -1,12 +1,14 @@
 
 import React, { useState } from 'react';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signOut } from 'firebase/auth';
 import { ShopProduct } from '../types';
 import { ShopHero } from './ShopHero';
 import { ProductFilters } from './shop/ProductFilters';
 import { ProductGrid } from './shop/ProductGrid';
 import { TrustAndSupport } from './shop/TrustAndSupport';
 import { ProductPage } from './shop/ProductPage';
-import { ShopCheckout } from './shop/ShopCheckout';
+import { PreCheckout } from './shop/PreCheckout';
+import { ShopCheckout, CheckoutFormValues } from './shop/ShopCheckout';
 import { ShopConfirmation } from './shop/ShopConfirmation';
 
 interface ShopProps {
@@ -17,8 +19,10 @@ interface ShopProps {
 }
 
 export const Shop: React.FC<ShopProps> = ({ products, onAddToCart, onUpdateCartQuantity, cart }) => {
-  const [currentView, setCurrentView] = useState<'shop' | 'checkout' | 'confirmation'>('shop');
+  const [currentView, setCurrentView] = useState<'shop' | 'pre-checkout' | 'checkout' | 'confirmation'>('shop');
   const [selectedProductId, setSelectedProductId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const auth = getAuth();
 
   const handleProductClick = (productId: string) => {
     setSelectedProductId(productId);
@@ -31,7 +35,7 @@ export const Shop: React.FC<ShopProps> = ({ products, onAddToCart, onUpdateCartQ
   };
 
   const handleGoToCheckout = () => {
-    setCurrentView('checkout');
+    setCurrentView('pre-checkout');
     window.scrollTo(0, 0);
   };
   
@@ -40,13 +44,43 @@ export const Shop: React.FC<ShopProps> = ({ products, onAddToCart, onUpdateCartQ
     handleGoToCheckout();
   };
 
-  const handleProceedToPayment = () => {
-    setCurrentView('confirmation');
+  const handleProceedToFullCheckout = () => {
+    setCurrentView('checkout');
     window.scrollTo(0, 0);
   };
 
+  const handleProceedToPayment = async (data: CheckoutFormValues) => {
+    try {
+      // Create user
+      const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+      await sendEmailVerification(userCredential.user);
+      await signOut(auth);
+
+      // TODO: Process order (e.g., save to database, etc.)
+      console.log('Order data:', data);
+
+      setCurrentView('confirmation');
+      window.scrollTo(0, 0);
+    } catch (error: any) {
+      if (error.code === 'auth/email-already-in-use') {
+        setError('This email address is already in use. Please go to the client zone to sign in.');
+      } else {
+        setError('An unexpected error occurred. Please try again.');
+      }
+    }
+  };
+
+  if (currentView === 'pre-checkout') {
+    return <PreCheckout cart={cart} products={products} onUpdateCartQuantity={onUpdateCartQuantity} onProceedToCheckout={handleProceedToFullCheckout} />;
+  }
+
   if (currentView === 'checkout') {
-    return <ShopCheckout cart={cart} products={products} onCheckout={handleProceedToPayment} />;
+    return (
+      <>
+        {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
+        <ShopCheckout cart={cart} products={products} onCheckout={handleProceedToPayment} />
+      </>
+    );
   }
 
   if (currentView === 'confirmation') {
