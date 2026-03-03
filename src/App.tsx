@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Header } from './components/Header';
 import { Home } from './components/Home';
-import { Shop } from './components/Shop';
 import { shopProducts } from './components/shop/products';
 import Webhosting from './components/Webhosting';
 import { WebhostingCheckout } from './components/WebhostingCheckout';
@@ -23,6 +22,7 @@ import ProtectedRoute from './auth/ProtectedRoute';
 import UserDashboard from './components/Dashboard/UserDashboard';
 import AuthScreen from './auth/AuthScreen';
 import AuthLayout from './auth/AuthLayout';
+import { ShopCheckoutWrapper } from './components/ShopCheckoutWrapper';
 
 const webhostingPackages: WebhostingPackage[] = [
     {
@@ -96,7 +96,6 @@ const App: React.FC = () => {
   const [providers] = useState<Provider[]>(PROVIDERS);
   const [availability, setAvailability] = useState<AvailabilityResult | null>(null);
   const [userAddress, setUserAddress] = useState<Address | null>(null);
-  const [cart, setCart] = useState<{ [key: string]: number }>({});
 
   useEffect(() => {
     getPackages().then(fibrePackages => {
@@ -112,38 +111,6 @@ const App: React.FC = () => {
       setTimeout(() => {
         document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' });
       }, 100);
-    }
-  };
-  
-  const handleAddToCart = (productId: string, quantity: number) => {
-    const numQuantity = Number(quantity);
-    const addQuantity = !isNaN(numQuantity) && numQuantity > 0 ? numQuantity : 1;
-    setCart(prevCart => {
-      const existingQuantity = prevCart[productId] || 0;
-      const newQuantity = existingQuantity + addQuantity;
-      return {
-        ...prevCart,
-        [productId]: newQuantity,
-      };
-    });
-  };
-
-  const handleUpdateCartQuantity = (productId: string, quantity: number) => {
-    const numQuantity = Number(quantity);
-
-    if (isNaN(numQuantity)) {
-      setCart(prevCart => ({ ...prevCart, [productId]: 1 }));
-      return;
-    }
-
-    if (numQuantity <= 0) {
-      setCart(prevCart => {
-        const newCart = { ...prevCart };
-        delete newCart[productId];
-        return newCart;
-      });
-    } else {
-      setCart(prevCart => ({ ...prevCart, [productId]: numQuantity }));
     }
   };
 
@@ -166,14 +133,7 @@ const App: React.FC = () => {
               />
             }
           />
-          <Route path="/shop" element={
-            <Shop 
-              products={shopProducts} 
-              onAddToCart={handleAddToCart} 
-              onUpdateCartQuantity={handleUpdateCartQuantity} 
-              cart={cart} 
-            />
-          } />
+          <Route path="/shop/*" element={<ShopCheckoutWrapper products={shopProducts} />} />
           <Route path="/webhosting" element={<Webhosting />} />
           <Route path="/webhosting-checkout/:packageName" element={<WebhostingCheckout packages={webhostingPackages} />} />
           <Route path="/voip" element={<Voip />} />

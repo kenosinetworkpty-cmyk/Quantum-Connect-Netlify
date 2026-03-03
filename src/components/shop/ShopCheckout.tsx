@@ -53,7 +53,7 @@ export const ShopCheckout = ({ cart, products, onCheckout }: ShopCheckoutProps) 
     },
   });
 
-  const { handleSubmit, watch } = methods;
+  const { handleSubmit, watch, formState: { errors } } = methods;
   const watchPaymentMethod = watch('paymentMethod');
   const watchBillingSame = watch('billingSameAsDelivery');
 
@@ -166,6 +166,7 @@ export const ShopCheckout = ({ cart, products, onCheckout }: ShopCheckoutProps) 
                         <Checkbox name="termsAccepted" id='termsAccepted' />
                         <Label htmlFor='termsAccepted' className="ml-2">I have read and agree to the Terms and Conditions and Privacy Policy</Label>
                     </div>
+                    {errors.termsAccepted && <p className="text-red-500 text-sm mt-2">{errors.termsAccepted.message}</p>}
                   </div>
                   <div className="flex justify-end">
                     <Button type="submit" size="lg">Place Order</Button>
