@@ -9,6 +9,7 @@ import { Address, AvailabilityResult, Package, Provider } from '../types';
 import { Check, MapPin } from 'lucide-react';
 import { PackageBuilder } from './PackageBuilder';
 import { FibrePlanSelection } from './FibrePlanSelection';
+import { PricingGrid } from './PricingGrid';
 
 interface HomeProps {
   packages: Package[];
