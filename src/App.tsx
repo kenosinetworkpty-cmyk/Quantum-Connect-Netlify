@@ -22,6 +22,7 @@ import { AuthProvider } from './auth/AuthContext';
 import ProtectedRoute from './auth/ProtectedRoute';
 import UserDashboard from './components/Dashboard/UserDashboard';
 import { AuthScreen } from './auth/AuthScreen';
+import AuthLayout from './auth/AuthLayout';
 
 const webhostingPackages: WebhostingPackage[] = [
     {
@@ -183,7 +184,7 @@ const App: React.FC = () => {
           <Route path="/support" element={<Support />} />
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/consultation-scheduling" element={<ConsultationScheduling />} />
-          <Route path="/auth" element={<AuthScreen />} />
+          <Route path="/auth" element={<AuthLayout><AuthScreen /></AuthLayout>} />
           <Route path="/dashboard" element={<ProtectedRoute><UserDashboard /></ProtectedRoute>} />
         </Routes>
         <Footer />
