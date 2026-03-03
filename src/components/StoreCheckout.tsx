@@ -82,6 +82,8 @@ export const StoreCheckout: React.FC = () => {
 
   const handleFinalSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    console.log('handleFinalSubmit called');
+    console.log('termsAccepted:', termsAccepted);
     if (!termsAccepted) {
       alert('Please accept the Terms and Conditions to complete your purchase.');
       return;
