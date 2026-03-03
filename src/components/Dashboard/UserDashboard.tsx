@@ -1,17 +1,32 @@
 import React, { useState, useRef } from 'react';
 import { mockUser } from '../../lib/mock-data';
-import { User, Invoice, UserDocument, SupportTicket } from '../../types';
+import { User as UserType, Invoice, UserDocument, SupportTicket } from '../../types';
 import { Button } from '../ui/Button';
 import { Wifi, CreditCard, Network, Download, Upload, FileText, Sun, Moon, Settings, LifeBuoy, LogOut } from 'lucide-react';
 import InstallationTracker from './InstallationTracker';
 import Support from './Support';
+import { useAuth } from '../../auth/AuthContext';
+import { getAuth, signOut } from 'firebase/auth';
+import { useNavigate } from 'react-router-dom';
 
 const UserDashboard = () => {
-  const [user, setUser] = useState<User>(mockUser);
+  const [user, setUser] = useState<UserType>(mockUser);
   const [isDarkMode, setDarkMode] = useState(false);
   const [activeTab, setActiveTab] = useState('dashboard');
   const [showTracker, setShowTracker] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { user: authUser } = useAuth();
+  const navigate = useNavigate();
+  const auth = getAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await signOut(auth);
+      navigate('/');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -157,7 +172,7 @@ const UserDashboard = () => {
                 <div key={doc.id} className="flex justify-between items-center p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
                   <div>
                     <p className="font-semibold">{doc.name}</p>
-                    <p className="text-sm text-gray-400">{doc.type} - {doc.uploadDate}</p>
+                    <p className.tsx="text-sm text-gray-400">{doc.type} - {doc.uploadDate}</p>
                   </div>
                   <a href={doc.url} target="_blank" rel="noopener noreferrer">
                     <Download size={20} />
@@ -202,13 +217,13 @@ const UserDashboard = () => {
 
       <main className="flex-1 p-8">
         <header className="flex justify-between items-center mb-8">
-          <h1 className="text-3xl font-bold">Welcome back, {user.name}</h1>
+          <h1 className="text-3xl font-bold">Hi {authUser?.displayName || 'there'}, Welcome Back</h1>
           <div className="flex items-center space-x-4">
             <Button variant="primary" onClick={() => setShowTracker(true)}>Track Order</Button>
-            <div className="flex items-center space-x-2">
-              <span>{user.name} {user.surname}</span>
-              <LogOut size={20} />
-            </div>
+            <Button variant="secondary" onClick={handleSignOut}>
+                <LogOut size={20} className="mr-2" />
+                Sign Out
+            </Button>
           </div>
         </header>
         {renderContent()}
