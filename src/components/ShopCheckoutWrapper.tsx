@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Shop } from './Shop';
 import { ShopCheckout } from './shop/ShopCheckout';
-import { Confirmation } from './Confirmation';
 import { ShopProduct } from '../types';
 import { CheckoutFormValues } from './shop/ShopCheckout';
 
@@ -12,7 +12,7 @@ interface ShopCheckoutWrapperProps {
 export const ShopCheckoutWrapper: React.FC<ShopCheckoutWrapperProps> = ({ products }) => {
   const [cart, setCart] = useState<{ [id: string]: number }>({});
   const [isCheckingOut, setIsCheckingOut] = useState(false);
-  const [isOrderConfirmed, setIsOrderConfirmed] = useState(false);
+  const navigate = useNavigate();
 
   const handleAddToCart = (productId: string) => {
     setCart(prevCart => ({
@@ -39,12 +39,8 @@ export const ShopCheckoutWrapper: React.FC<ShopCheckoutWrapperProps> = ({ produc
 
   const handleCheckout = (data: CheckoutFormValues) => {
     console.log('Checkout data:', data);
-    setIsOrderConfirmed(true);
+    navigate('/confirmation');
   };
-
-  if (isOrderConfirmed) {
-    return <Confirmation />;
-  }
 
   if (isCheckingOut) {
     return <ShopCheckout cart={cart} products={products} onCheckout={handleCheckout} />;

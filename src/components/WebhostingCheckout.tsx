@@ -45,7 +45,7 @@ export const WebhostingCheckout: React.FC<WebhostingCheckoutProps> = ({ packages
       // TODO: Process order
       console.log('Order data:', formData);
 
-      navigate('/webhosting-confirmation');
+      navigate('/confirmation');
     } catch (error: any) {
        if (error.code === 'auth/email-already-in-use') {
         setError('This email address is already in use. Please go to the client zone to sign in.');

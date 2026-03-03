@@ -3,12 +3,12 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Hero } from './Hero';
 import { Benefits } from './Benefits';
-import { PricingGrid } from './PricingGrid';
 import { TrustSection } from './TrustSection';
 import { Button } from './ui/Button';
 import { Address, AvailabilityResult, Package, Provider } from '../types';
 import { Check, MapPin } from 'lucide-react';
 import { PackageBuilder } from './PackageBuilder';
+import { FibrePlanSelection } from './FibrePlanSelection';
 
 interface HomeProps {
   packages: Package[];
@@ -27,8 +27,8 @@ export const Home: React.FC<HomeProps> = ({
 }) => {
   const navigate = useNavigate();
 
-  const handlePackageSelect = (pkg: Package) => {
-    navigate(`/checkout/${pkg.name}`);
+  const handlePackageSelect = (pkg: Package, planType: 'prepaid' | 'month-to-month') => {
+    navigate(`/checkout/${pkg.name}?planType=${planType}`);
   };
 
   return (
@@ -55,7 +55,7 @@ export const Home: React.FC<HomeProps> = ({
               </div>
             </div>
 
-            <PricingGrid
+            <FibrePlanSelection
               providers={providers}
               packages={packages}
               onSelectPackage={handlePackageSelect}

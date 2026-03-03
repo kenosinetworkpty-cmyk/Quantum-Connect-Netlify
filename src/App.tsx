@@ -19,7 +19,7 @@ import { Address, AvailabilityResult, Package as FibrePackage, Lead, Provider, W
 import { getPackages, submitLead, PROVIDERS } from './services/mockApi';
 import { AuthProvider } from './auth/AuthContext';
 import ProtectedRoute from './auth/ProtectedRoute';
-import UserDashboard from './components/Dashboard/UserDashboard';
+import { Dashboard } from './components/Dashboard';
 import AuthScreen from './auth/AuthScreen';
 import AuthLayout from './auth/AuthLayout';
 import { ShopCheckoutWrapper } from './components/ShopCheckoutWrapper';
@@ -146,7 +146,7 @@ const App: React.FC = () => {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/consultation-scheduling" element={<ConsultationScheduling />} />
           <Route path="/auth" element={<AuthLayout><AuthScreen /></AuthLayout>} />
-          <Route path="/dashboard" element={<ProtectedRoute><UserDashboard /></ProtectedRoute>} />
+          <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
         </Routes>
         <Footer />
       </div>
