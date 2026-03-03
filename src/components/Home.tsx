@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Hero } from './Hero';
@@ -9,7 +8,6 @@ import { Address, AvailabilityResult, Package, Provider } from '../types';
 import { Check, MapPin } from 'lucide-react';
 import { PackageBuilder } from './PackageBuilder';
 import { FibrePlanSelection } from './FibrePlanSelection';
-import { PricingGrid } from './PricingGrid';
 
 interface HomeProps {
   packages: Package[];
@@ -85,17 +83,9 @@ export const Home: React.FC<HomeProps> = ({
           </div>
         )
       ) : (
-        <div className="opacity-50 hover:opacity-100 transition-opacity duration-500">
-          <PricingGrid
-            providers={providers}
-            packages={packages}
-            onSelectPackage={(pkg) => {
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-          />
-        </div>
+        <div></div>
       )}
-      
+
       <TrustSection />
     </>
   );
