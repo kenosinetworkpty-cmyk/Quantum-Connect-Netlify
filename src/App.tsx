@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { Header } from './components/Header';
@@ -21,7 +20,7 @@ import { getPackages, submitLead, PROVIDERS } from './services/mockApi';
 import { AuthProvider } from './auth/AuthContext';
 import ProtectedRoute from './auth/ProtectedRoute';
 import UserDashboard from './components/Dashboard/UserDashboard';
-import { AuthScreen } from './auth/AuthScreen';
+import AuthScreen from './auth/AuthScreen';
 import AuthLayout from './auth/AuthLayout';
 
 const webhostingPackages: WebhostingPackage[] = [
