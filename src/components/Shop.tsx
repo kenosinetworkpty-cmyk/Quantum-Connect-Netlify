@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signOut } from 'firebase/auth';
 import { ShopProduct } from '../types';
@@ -9,7 +8,7 @@ import { TrustAndSupport } from './shop/TrustAndSupport';
 import { ProductPage } from './shop/ProductPage';
 import { PreCheckout } from './shop/PreCheckout';
 import { ShopCheckout, CheckoutFormValues } from './shop/ShopCheckout';
-import { ShopConfirmation } from './shop/ShopConfirmation';
+import { Confirmation } from './Confirmation';
 
 interface ShopProps {
   products: ShopProduct[];
@@ -39,8 +38,8 @@ export const Shop: React.FC<ShopProps> = ({ products, onAddToCart, onUpdateCartQ
     window.scrollTo(0, 0);
   };
   
-  const handleAddToCartAndGoToCheckout = (productId: string, quantity: number) => {
-    onAddToCart(productId, quantity);
+  const handleAddToCartAndGoToCheckout = (productId: string) => {
+    onAddToCart(productId, 1);
     handleGoToCheckout();
   };
 
@@ -84,7 +83,7 @@ export const Shop: React.FC<ShopProps> = ({ products, onAddToCart, onUpdateCartQ
   }
 
   if (currentView === 'confirmation') {
-    return <ShopConfirmation onContinueShopping={handleBackToProducts} />;
+    return <Confirmation />;
   }
 
   if (selectedProductId) {
@@ -99,7 +98,7 @@ export const Shop: React.FC<ShopProps> = ({ products, onAddToCart, onUpdateCartQ
 
   return (
     <div className="bg-white">
-      <ShopHero onShopNowClick={handleGoToCheckout} />
+      <ShopHero />
       <main className="container mx-auto px-4 py-16">
         <h2 id="product-categories" className="text-3xl font-bold text-center mb-4">Featured Power Solutions</h2>
         <p className="text-center text-slate-600 mb-12 max-w-2xl mx-auto">Solutions to keep you connected and productive during load shedding.</p>

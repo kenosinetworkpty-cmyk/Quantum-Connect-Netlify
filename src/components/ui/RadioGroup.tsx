@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { Controller, useFormContext } from 'react-hook-form';
 
@@ -24,4 +23,12 @@ const RadioGroup = React.forwardRef<HTMLDivElement, RadioGroupProps>(({ name, ch
 
 RadioGroup.displayName = 'RadioGroup';
 
-export { RadioGroup };
+interface RadioGroupItemProps extends React.InputHTMLAttributes<HTMLInputElement> {}
+
+const RadioGroupItem = React.forwardRef<HTMLInputElement, RadioGroupItemProps>((props, ref) => (
+    <input type="radio" ref={ref} {...props} />
+));
+
+RadioGroupItem.displayName = 'RadioGroupItem';
+
+export { RadioGroup, RadioGroupItem };
