@@ -172,7 +172,7 @@ const UserDashboard = () => {
                 <div key={doc.id} className="flex justify-between items-center p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
                   <div>
                     <p className="font-semibold">{doc.name}</p>
-                    <p className.tsx="text-sm text-gray-400">{doc.type} - {doc.uploadDate}</p>
+                    <p className="text-sm text-gray-400">{doc.type} - {doc.uploadDate}</p>
                   </div>
                   <a href={doc.url} target="_blank" rel="noopener noreferrer">
                     <Download size={20} />
