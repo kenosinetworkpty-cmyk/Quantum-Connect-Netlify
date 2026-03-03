@@ -3,6 +3,7 @@ import { useForm, FormProvider } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { ShoppingCart } from 'lucide-react';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { Button } from '../ui/Button';
 import { Input } from '../ui/Input';
 import { RadioGroup, RadioGroupItem } from '../ui/RadioGroup';
@@ -52,6 +53,7 @@ export const ShopCheckout = ({ cart, products, onCheckout }: ShopCheckoutProps) 
       termsAccepted: false,
     },
   });
+  const auth = getAuth();
 
   const { handleSubmit, watch, formState: { errors } } = methods;
   const watchPaymentMethod = watch('paymentMethod');
@@ -65,8 +67,14 @@ export const ShopCheckout = ({ cart, products, onCheckout }: ShopCheckoutProps) 
     })
     .filter((item): item is ShopProduct & { quantity: number } => item !== null);
 
-  const onSubmit = (data: CheckoutFormValues) => {
-    onCheckout(data);
+  const onSubmit = async (data: CheckoutFormValues) => {
+    try {
+        const userCredential = await createUserWithEmailAndPassword(auth, data.email, data.password);
+        await sendEmailVerification(userCredential.user);
+        onCheckout(data);
+    } catch(error: any) {
+        console.error(error);
+    }
   };
 
   const subtotal = cartItems.reduce((acc, item) => acc + item.price * item.quantity, 0);

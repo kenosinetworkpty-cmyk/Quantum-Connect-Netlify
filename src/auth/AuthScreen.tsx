@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Mail, Lock } from 'lucide-react';
-import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
+import { getAuth, signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail, GoogleAuthProvider, signInWithPopup } from 'firebase/auth';
 import { useNavigate } from 'react-router-dom';
 
 const AuthScreen = () => {
@@ -23,11 +23,13 @@ const AuthScreen = () => {
       if (userCredential.user.emailVerified) {
         navigate('/dashboard');
       } else {
-        await sendPasswordResetEmail(auth, email);
+        await sendEmailVerification(userCredential.user);
         setInfoMessage(`We have sent you a verification email to ${email}. Please verify it and log in.`);
       }
     } catch (error: any) {
       if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+        setError('Email or password is incorrect');
+      } else if (error.code === 'auth/invalid-credential') {
         setError('Email or password is incorrect');
       } else {
         setError('An error occurred. Please try again.');

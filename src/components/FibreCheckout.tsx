@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signOut } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { Button } from './ui/Button';
 import { PageLayout } from './ui/PageLayout';
 import { InputField } from './ui/InputField';
@@ -46,7 +46,6 @@ export const FibreCheckout: React.FC<FibreCheckoutProps> = ({ packages }) => {
       // Create user
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       await sendEmailVerification(userCredential.user);
-      await signOut(auth);
 
       // TODO: Process order (e.g., save to database, etc.)
       console.log('Order data:', formData);

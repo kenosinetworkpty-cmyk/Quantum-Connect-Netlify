@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { getAuth, createUserWithEmailAndPassword, sendEmailVerification, signOut } from 'firebase/auth';
+import { getAuth, createUserWithEmailAndPassword, sendEmailVerification } from 'firebase/auth';
 import { Button } from './ui/Button';
 import { PageLayout } from './ui/PageLayout';
 import { InputField } from './ui/InputField';
@@ -41,7 +41,6 @@ export const WebhostingCheckout: React.FC<WebhostingCheckoutProps> = ({ packages
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, formData.email, formData.password);
       await sendEmailVerification(userCredential.user);
-      await signOut(auth);
       
       // TODO: Process order
       console.log('Order data:', formData);
