@@ -19,7 +19,7 @@ import { Address, AvailabilityResult, Package as FibrePackage, Lead, Provider, W
 import { getPackages, submitLead, PROVIDERS } from './services/mockApi';
 import { AuthProvider } from './auth/AuthContext';
 import ProtectedRoute from './auth/ProtectedRoute';
-import { Dashboard } from './components/Dashboard';
+import  Dashboard  from './components/Dashboard';
 import AuthScreen from './auth/AuthScreen';
 import AuthLayout from './auth/AuthLayout';
 import { ShopCheckoutWrapper } from './components/ShopCheckoutWrapper';

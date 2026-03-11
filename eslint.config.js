@@ -1,64 +1,31 @@
-import js from "@eslint/js";
-import globals from "globals";
-import tseslint from "typescript-eslint";
-import pluginReact from "eslint-plugin-react";
-import viteConfig from "./vite.config.js";
-import { defineConfig } from "eslint/config";
+import js from '@eslint/js';
+import globals from 'globals';
+import reactHooks from 'eslint-plugin-react-hooks';
+import reactRefresh from 'eslint-plugin-react-refresh';
+import tseslint from 'typescript-eslint';
 
-export const viteConfigObj = {
-  resolve: {
-      alias: {
-          _: path.resolve(__dirname, "src")
-      }
-  },
-};
-// for using `eslint-plugin-import`
-module.exports = {
-  settings: {
-      "import/resolver": {
-          vite: {
-              viteConfig: require("./vite.config").viteConfigObj, // named export of the Vite config object.
-          }
-      }
-  }
-}
-
-
-// for using `eslint-plugin-import-x` resolver interface v3
-const { createViteImportResolver } = require("eslint-import-resolver-vite");
-
-module.exports = {
-  settings: {
-      "import-x/resolver-next": [
-          createViteImportResolver({
-              viteConfig: require("./vite.config").viteConfigObj, // named export of the Vite config object.
-          })
-      ]
-  }
-}
-export default defineConfig([
-  { files: ["**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}"], plugins: { js }, extends: ["js/recommended"], languageOptions: { globals: globals.browser } },
-  rules, {
-    'no-unused-vars': ['warn'],
-    'qoutes': ['warn', 'single'],
-    'semi': ['warn', 'always'],
-  },
-  // eslint.config.js
-const { createViteImportResolver } = require("eslint-import-resolver-vite");
-
-module.exports = [
-  // ... other configs
+export default tseslint.config(
+  { ignores: ['dist'] },
   {
-    settings: {
-      "import-x/resolver-next": [ // Use "import-x/resolver-next" for eslint-plugin-import-x v3
-        createViteImportResolver({
-          // Optional configuration object
-        })
-      ]
-    }
+    extends: [js.configs.recommended, ...tseslint.configs.recommended],
+    files: ['**/*.{ts,tsx}'],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+    },
+    plugins: {
+      'react-hooks': reactHooks,
+      'react-refresh': reactRefresh,
+    },
+    rules: {
+      ...reactHooks.configs.recommended.rules,
+      'react-refresh/only-export-components': [
+        'warn',
+        { allowConstantExport: true },
+      ],
+      // Adding these to help with common Firebase/React dev issues
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-vars': 'warn',
+    },
   }
-];
-
-  tseslint.configs.recommended,
-  pluginReact.configs.recommended,
-]);
+);
