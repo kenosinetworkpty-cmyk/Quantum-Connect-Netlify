@@ -15,11 +15,7 @@ export const AuthProvider: React.FC<{children: React.ReactNode}> = ({ children }
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user && user.emailVerified) {
-        setUser(user);
-      } else {
-        setUser(null);
-      }
+      setUser(user);
       setLoading(false);
     });
 

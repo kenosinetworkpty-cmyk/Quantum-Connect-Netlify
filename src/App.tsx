@@ -138,7 +138,7 @@ const App: React.FC = () => {
           <Route path="/webhosting-checkout/:packageName" element={<WebhostingCheckout packages={webhostingPackages} />} />
           <Route path="/voip" element={<Voip />} />
           <Route path="/power-solutions" element={<PowerSolutions />} />
-          <Route path="/checkout/:packageName" element={<FibreCheckout packages={fibrePackages} />} />
+          <Route path="/fibre-checkout/:packageName" element={<FibreCheckout packages={fibrePackages} />} />
           <Route path="/terms" element={<Terms />} />
           <Route path="/confirmation" element={<Confirmation />} />
           <Route path="/PAIA" element={<PAIA />} />

@@ -1,19 +1,16 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { Check, Zap, Wifi, Users, Film } from 'lucide-react';
-import { useNavigate } from 'react-router-dom';
-import { Package } from '../types';
+import { Package, Provider } from '../types';
+import { FibrePlanSelection } from './FibrePlanSelection';
 
 interface FibreProps {
   packages: Package[];
+  providers: Provider[];
 }
 
-export const Fibre = ({ packages }: FibreProps) => {
-    const navigate = useNavigate();
+export const Fibre = ({ packages, providers }: FibreProps) => {
     const fibrePackagesRef = useRef<HTMLDivElement>(null);
-
-    const handleOrderClick = (packageName: string) => {
-        navigate(`/checkout/${packageName}`);
-    };
+    const [filteredProviders, setFilteredProviders] = useState<string[]>([]);
 
     const handleScrollToPackages = () => {
         fibrePackagesRef.current?.scrollIntoView({
@@ -21,6 +18,7 @@ export const Fibre = ({ packages }: FibreProps) => {
             block: 'center'
         });
     };
+
   const perks = [
     {
         icon: Zap,
@@ -71,25 +69,11 @@ export const Fibre = ({ packages }: FibreProps) => {
       {/* Pricing Section */}
       <div ref={fibrePackagesRef} className="py-24">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-            {packages.map((pkg) => (
-              <div
-                key={pkg.name}
-                className={`rounded-2xl p-8 border shadow-lg transition-all duration-300 bg-white text-slate-900`}
-              >
-                <h3 className="text-2xl font-bold">{pkg.name}</h3>
-                <div className="my-6">
-                  <span className={`text-5xl font-black text-slate-900`}>R{pkg.price}</span>
-                  <span className={`ml-1 text-slate-500`}>/mo</span>
-                </div>
-                <button 
-                    onClick={() => handleOrderClick(pkg.name)} 
-                    className={`w-full font-bold py-3 rounded-lg border transition-colors bg-transparent border-slate-300 hover:bg-slate-50`}>
-                  Order
-                </button>
-              </div>
-            ))}
-          </div>
+            <FibrePlanSelection 
+                packages={packages} 
+                providers={providers} 
+                filteredProviders={filteredProviders} 
+            />
         </div>
       </div>
 

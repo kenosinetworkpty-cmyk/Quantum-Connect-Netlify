@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Check, ChevronDown, ChevronUp, Router, PenTool as Tool, Wifi, Shield } from 'lucide-react';
 import { Package, Provider } from '../types';
 import { Button } from './ui/Button';
@@ -6,17 +7,25 @@ import { Button } from './ui/Button';
 interface PricingGridProps {
   providers: Provider[];
   packages: Package[];
-  onSelectPackage: (pkg: Package) => void;
+  planType: 'prepaid' | 'month-to-month';
   filteredProviders?: string[];
 }
 
 export const PricingGrid: React.FC<PricingGridProps> = ({ 
   providers, 
   packages, 
-  onSelectPackage, 
+  planType,
   filteredProviders 
 }) => {
   const [expandedPkgId, setExpandedPkgId] = useState<string | null>(null);
+  const navigate = useNavigate();
+
+  const handleSelectPackage = (pkg: Package) => {
+    if (planType) {
+      const encodedPackageName = encodeURIComponent(pkg.name);
+      navigate(`/fibre-checkout/${encodedPackageName}?planType=${planType}`);
+    }
+  };
 
   // Filter packages based on availability if provided
   const displayPackages = filteredProviders && filteredProviders.length > 0
@@ -120,7 +129,7 @@ export const PricingGrid: React.FC<PricingGridProps> = ({
                        {isExpanded ? <ChevronUp size={16} className="ml-1" /> : <ChevronDown size={16} className="ml-1" />}
                      </button>
                      <Button 
-                       onClick={() => onSelectPackage(pkg)}
+                       onClick={() => handleSelectPackage(pkg)}
                        className={`w-full sm:w-auto shadow-lg transition-all ${
                          isExpanded ? 'bg-blue-900 hover:bg-blue-800' : 'bg-slate-900 hover:bg-slate-800'
                        }`}

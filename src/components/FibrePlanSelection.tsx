@@ -6,18 +6,11 @@ import { Package, Provider } from '../types';
 interface FibrePlanSelectionProps {
   packages: Package[];
   providers: Provider[];
-  onSelectPackage: (pkg: Package, planType: 'prepaid' | 'month-to-month') => void;
   filteredProviders: string[];
 }
 
-export const FibrePlanSelection: React.FC<FibrePlanSelectionProps> = ({ packages, providers, onSelectPackage, filteredProviders }) => {
+export const FibrePlanSelection: React.FC<FibrePlanSelectionProps> = ({ packages, providers, filteredProviders }) => {
   const [planType, setPlanType] = useState<'prepaid' | 'month-to-month' | null>(null);
-
-  const handleSelectPackage = (pkg: Package) => {
-    if (planType) {
-      onSelectPackage(pkg, planType);
-    }
-  };
 
   return (
     <div>
@@ -43,7 +36,7 @@ export const FibrePlanSelection: React.FC<FibrePlanSelectionProps> = ({ packages
         <PricingGrid
           providers={providers}
           packages={packages}
-          onSelectPackage={handleSelectPackage}
+          planType={planType}
           filteredProviders={filteredProviders}
         />
       )}

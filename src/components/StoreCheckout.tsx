@@ -1,8 +1,11 @@
 
 import React, { useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useForm, FormProvider, SubmitHandler } from 'react-hook-form';
 import { Button } from './ui/Button';
 import { Lock, ArrowRight, CheckCircle } from 'lucide-react';
+import { InputField } from './ui/InputField';
+import { Checkbox } from './ui/Checkbox';
 
 const products = {
   p1: { name: 'Compact Power Station', price: 3499 },
@@ -11,6 +14,26 @@ const products = {
 };
 
 type ProductId = keyof typeof products;
+
+interface StoreCheckoutForm {
+  firstName: string;
+  surname: string;
+  email: string;
+  contactNumber: string;
+  address: string;
+  city: string;
+  postalCode: string;
+  country: string;
+  cardName: string;
+  cardNumber: string;
+  cardExpiry: string;
+  cardCVC: string;
+  accountHolder: string;
+  accountNumber: string;
+  bank: string;
+  branchCode: string;
+  terms: boolean;
+}
 
 const ProgressIndicator: React.FC<{ step: number }> = ({ step }) => (
     <div className="w-full mb-12">
@@ -44,52 +67,35 @@ export const StoreCheckout: React.FC = () => {
   const { productId } = useParams<{ productId: ProductId }>();
   const navigate = useNavigate();
   const [step, setStep] = useState(1);
-  const [termsAccepted, setTermsAccepted] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState('card');
 
-
-  const [formData, setFormData] = useState({
-    firstName: '',
-    surname: '',
-    email: '',
-    contactNumber: '',
-    address: '',
-    city: '',
-    postalCode: '',
-    country: '',
-    cardName: '',
-    cardNumber: '',
-    cardExpiry: '',
-    cardCVC: '',
-    accountHolder: '',
-    accountNumber: '',
-    bank: '',
-    branchCode: ''
+  const methods = useForm<StoreCheckoutForm>({
+    defaultValues: {
+      country: 'South Africa',
+      terms: false,
+    },
+    mode: 'onTouched',
   });
+
+  const { handleSubmit, trigger, watch } = methods;
+  const termsAccepted = watch('terms');
 
   const product = productId ? products[productId] : null;
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+  const handleNextStep = async () => {
+    const isValid = await trigger(['firstName', 'surname', 'email', 'contactNumber']);
+    if (isValid) {
+      setStep(2);
+      window.scrollTo(0, 0);
+    }
   };
 
-  const handleNextStep = (e: React.FormEvent) => {
-    e.preventDefault();
-    setStep(2);
-    window.scrollTo(0, 0);
-  };
-
-  const handleFinalSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('handleFinalSubmit called');
-    console.log('termsAccepted:', termsAccepted);
-    if (!termsAccepted) {
+  const onFinalSubmit: SubmitHandler<StoreCheckoutForm> = (data) => {
+    if (!data.terms) {
       alert('Please accept the Terms and Conditions to complete your purchase.');
       return;
     }
-    setStep(3);
-    console.log('Store Order submitted!', { productId, ...formData });
+    console.log('Store Order submitted!', { productId, ...data });
     navigate('/confirmation');
   };
 
@@ -98,144 +104,130 @@ export const StoreCheckout: React.FC = () => {
   }
 
   return (
-    <div className="bg-slate-100 py-16 sm:py-24">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-16 gap-y-12">
-          <div className="lg:col-span-2 bg-white p-8 rounded-2xl shadow-lg">
-            <ProgressIndicator step={step} />
-            {step === 1 ? (
-              <form onSubmit={handleNextStep}>
-                <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-2">Step 1: Your Details</h2>
-                <p className="text-slate-600 mb-8">Let's get your contact information.</p>
-                <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
-                  <InputField label="First Name" name="firstName" value={formData.firstName} onChange={handleInputChange} />
-                  <InputField label="Surname" name="surname" value={formData.surname} onChange={handleInputChange} />
-                  <div className="sm:col-span-2">
-                    <InputField label="Email Address" name="email" type="email" value={formData.email} onChange={handleInputChange} />
-                  </div>
-                  <div className="sm:col-span-2">
-                    <InputField label="Contact Number" name="contactNumber" type="tel" value={formData.contactNumber} onChange={handleInputChange} />
-                  </div>
-                </div>
-                <div className="pt-10">
-                  <Button type="submit" className="w-full flex items-center justify-center gap-2" size="lg">
-                    Continue Checkout <ArrowRight size={18} />
-                  </Button>
-                </div>
-              </form>
-            ) : (
-              <form onSubmit={handleFinalSubmit}>
-                <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-8">Step 2: Shipping & Payment</h2>
-                <div className="space-y-10">
-                  <div className="border-b border-gray-900/10 pb-12">
-                    <h3 className="text-lg font-semibold leading-7 text-gray-900">Shipping Address</h3>
-                    <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
-                      <div className="sm:col-span-6">
-                        <InputField label="Street Address" name="address" value={formData.address} onChange={handleInputChange} />
+    <FormProvider {...methods}>
+      <div className="bg-slate-100 py-16 sm:py-24">
+        <div className="container mx-auto px-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-x-16 gap-y-12">
+            <div className="lg:col-span-2 bg-white p-8 rounded-2xl shadow-lg">
+              <ProgressIndicator step={step} />
+              <form onSubmit={handleSubmit(onFinalSubmit)}>
+                {step === 1 && (
+                  <div>
+                    <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-2">Step 1: Your Details</h2>
+                    <p className="text-slate-600 mb-8">Let's get your contact information.</p>
+                    <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
+                      <InputField label="First Name" name="firstName" required />
+                      <InputField label="Surname" name="surname" required />
+                      <div className="sm:col-span-2">
+                        <InputField label="Email Address" name="email" type="email" required />
                       </div>
-                      <div className="sm:col-span-2"><InputField label="City" name="city" value={formData.city} onChange={handleInputChange} /></div>
-                      <div className="sm:col-span-2"><InputField label="Postal Code" name="postalCode" value={formData.postalCode} onChange={handleInputChange} /></div>
-                      <div className="sm:col-span-2"><InputField label="Country" name="country" value={formData.country} onChange={handleInputChange} /></div>
+                      <div className="sm:col-span-2">
+                        <InputField label="Contact Number" name="contactNumber" type="tel" required />
+                      </div>
+                    </div>
+                    <div className="pt-10">
+                      <Button type="button" onClick={handleNextStep} className="w-full flex items-center justify-center gap-2" size="lg">
+                        Continue Checkout <ArrowRight size={18} />
+                      </Button>
                     </div>
                   </div>
-                  <div className="border-b border-gray-900/10 pb-12">
-                    <h3 className="text-lg font-semibold leading-7 text-gray-900">Payment Method</h3>
-                    <div className="mt-4 flex gap-x-6">
-                        <div className="flex items-center">
-                            <input id="card" name="paymentMethod" type="radio" value="card" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod('card')} className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-600" />
-                            <label htmlFor="card" className="ml-3 block text-sm font-medium leading-6 text-gray-900">Credit/Debit Card</label>
+                )}
+                {step === 2 && (
+                  <div>
+                    <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-8">Step 2: Shipping & Payment</h2>
+                    <div className="space-y-10">
+                      <div className="border-b border-gray-900/10 pb-12">
+                        <h3 className="text-lg font-semibold leading-7 text-gray-900">Shipping Address</h3>
+                        <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
+                          <div className="sm:col-span-6">
+                            <InputField label="Street Address" name="address" required />
+                          </div>
+                          <div className="sm:col-span-2"><InputField label="City" name="city" required /></div>
+                          <div className="sm:col-span-2"><InputField label="Postal Code" name="postalCode" required /></div>
+                          <div className="sm:col-span-2"><InputField label="Country" name="country" required /></div>
                         </div>
-                        <div className="flex items-center">
-                            <input id="debit" name="paymentMethod" type="radio" value="debit" checked={paymentMethod === 'debit'} onChange={() => setPaymentMethod('debit')} className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-600" />
-                            <label htmlFor="debit" className="ml-3 block text-sm font-medium leading-6 text-gray-900">Debit Order</label>
+                      </div>
+                      <div className="border-b border-gray-900/10 pb-12">
+                        <h3 className="text-lg font-semibold leading-7 text-gray-900">Payment Method</h3>
+                        <div className="mt-4 flex gap-x-6">
+                            <div className="flex items-center">
+                                <input id="card" name="paymentMethod" type="radio" value="card" checked={paymentMethod === 'card'} onChange={() => setPaymentMethod('card')} className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-600" />
+                                <label htmlFor="card" className="ml-3 block text-sm font-medium leading-6 text-gray-900">Credit/Debit Card</label>
+                            </div>
+                            <div className="flex items-center">
+                                <input id="debit" name="paymentMethod" type="radio" value="debit" checked={paymentMethod === 'debit'} onChange={() => setPaymentMethod('debit')} className="h-4 w-4 border-gray-300 text-blue-600 focus:ring-blue-600" />
+                                <label htmlFor="debit" className="ml-3 block text-sm font-medium leading-6 text-gray-900">Debit Order</label>
+                            </div>
                         </div>
-                    </div>
 
-                    {paymentMethod === 'card' ? (
-                        <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
-                            <div className="sm:col-span-4">
-                               <InputField label="Name on Card" name="cardName" value={formData.cardName} onChange={handleInputChange} />
+                        {paymentMethod === 'card' ? (
+                            <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
+                                <div className="sm:col-span-4">
+                                   <InputField label="Name on Card" name="cardName" required />
+                                </div>
+                                <div className="sm:col-span-4">
+                                    <InputField label="Card Number" name="cardNumber" required />
+                                </div>
+                                <div className="sm:col-span-2">
+                                    <InputField label="Expiry (MM/YY)" name="cardExpiry" required />
+                                </div>
+                                <div className="sm:col-span-2">
+                                    <InputField label="CVC" name="cardCVC" required />
+                                </div>
                             </div>
-                            <div className="sm:col-span-4">
-                                <InputField label="Card Number" name="cardNumber" value={formData.cardNumber} onChange={handleInputChange} />
+                        ) : (
+                            <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
+                                 <div className="sm:col-span-4">
+                                   <InputField label="Account Holder Name" name="accountHolder" required />
+                                </div>
+                                <div className="sm:col-span-4">
+                                    <InputField label="Account Number" name="accountNumber" required />
+                                </div>
+                                <div className="sm:col-span-2">
+                                    <InputField label="Bank" name="bank" required />
+                                </div>
+                                <div className="sm:col-span-2">
+                                    <InputField label="Branch Code" name="branchCode" required />
+                                </div>
                             </div>
-                            <div className="sm:col-span-2">
-                                <InputField label="Expiry (MM/YY)" name="cardExpiry" value={formData.cardExpiry} onChange={handleInputChange} />
-                            </div>
-                            <div className="sm:col-span-2">
-                                <InputField label="CVC" name="cardCVC" value={formData.cardCVC} onChange={handleInputChange} />
-                            </div>
-                        </div>
-                    ) : (
-                        <div className="mt-8 grid grid-cols-1 gap-x-6 gap-y-6 sm:grid-cols-6">
-                             <div className="sm:col-span-4">
-                               <InputField label="Account Holder Name" name="accountHolder" value={formData.accountHolder} onChange={handleInputChange} />
-                            </div>
-                            <div className="sm:col-span-4">
-                                <InputField label="Account Number" name="accountNumber" value={formData.accountNumber} onChange={handleInputChange} />
-                            </div>
-                            <div className="sm:col-span-2">
-                                <InputField label="Bank" name="bank" value={formData.bank} onChange={handleInputChange} />
-                            </div>
-                            <div className="sm:col-span-2">
-                                <InputField label="Branch Code" name="branchCode" value={formData.branchCode} onChange={handleInputChange} />
-                            </div>
-                        </div>
-                    )}
+                        )}
+                      </div>
+                    </div>
+                    <div className="pt-10">
+                      <div className="flex items-start mb-6">
+                        <Checkbox name="terms" id="terms" />
+                        <label htmlFor="terms" className="ml-3 text-sm leading-6 text-gray-700">
+                          I accept the <Link to="/terms" target="_blank" rel="noopener noreferrer" className="font-medium text-blue-600 hover:text-blue-500">Terms and Conditions</Link>
+                        </label>
+                      </div>
+                      <Button type="submit" className="w-full flex items-center justify-center gap-2" size="lg" disabled={!termsAccepted}>
+                        <Lock size={16} />
+                        Complete Order
+                      </Button>
+                    </div>
                   </div>
-                </div>
-                <div className="pt-10">
-                  <div className="flex items-start mb-6">
-                    <input id="terms" name="terms" type="checkbox" checked={termsAccepted} onChange={(e) => setTermsAccepted(e.target.checked)} className="h-4 w-4 mt-1 rounded border-gray-300 text-blue-600 focus:ring-blue-600" />
-                    <label htmlFor="terms" className="ml-3 text-sm leading-6 text-gray-700">
-                      I accept the <Link to="/terms" target="_blank" rel="noopener noreferrer" className="font-medium text-blue-600 hover:text-blue-500">Terms and Conditions</Link>
-                    </label>
-                  </div>
-                  <Button type="submit" className="w-full flex items-center justify-center gap-2" size="lg" disabled={!termsAccepted}>
-                    <Lock size={16} />
-                    Complete Order
-                  </Button>
-                </div>
+                )}
               </form>
-            )}
-          </div>
+            </div>
 
-          <div className="lg:col-span-1">
-            <div className="bg-white p-6 rounded-2xl shadow-lg sticky top-24">
-              <h3 className="text-xl font-bold text-slate-800 border-b pb-4 mb-6">Order Summary</h3>
-              <div className="space-y-4">
-                <div className="flex justify-between items-center">
-                  <span className="text-slate-600 font-medium">{product.name}</span>
-                  <span className="font-semibold text-lg">R{product.price.toLocaleString('en-ZA')}</span>
-                </div>
-                <div className="border-t pt-4 mt-4 flex justify-between font-bold text-xl">
-                  <span>Total</span>
-                  <span>R{product.price.toLocaleString('en-ZA')}</span>
+            <div className="lg:col-span-1">
+              <div className="bg-white p-6 rounded-2xl shadow-lg sticky top-24">
+                <h3 className="text-xl font-bold text-slate-800 border-b pb-4 mb-6">Order Summary</h3>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-slate-600 font-medium">{product.name}</span>
+                    <span className="font-semibold text-lg">R{product.price.toLocaleString('en-ZA')}</span>
+                  </div>
+                  <div className="border-t pt-4 mt-4 flex justify-between font-bold text-xl">
+                    <span>Total</span>
+                    <span>R{product.price.toLocaleString('en-ZA')}</span>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </FormProvider>
   );
 };
-
-// Reusable InputField component
-interface InputFieldProps {
-  label: string;
-  name: string;
-  type?: string;
-  value: string;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  required?: boolean;
-}
-
-const InputField: React.FC<InputFieldProps> = ({ label, name, type = 'text', value, onChange, required = true }) => (
-    <div>
-        <label htmlFor={name} className="block text-sm font-medium leading-6 text-gray-900">{label}</label>
-        <div className="mt-2">
-            <input type={type} name={name} id={name} value={value} onChange={onChange} required={required} className="block w-full rounded-lg border-0 py-2.5 px-3.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 transition-shadow duration-200" />
-        </div>
-    </div>
-);

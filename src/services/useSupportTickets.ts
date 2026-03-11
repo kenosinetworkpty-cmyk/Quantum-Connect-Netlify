@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { collection, onSnapshot, query, orderBy, addDoc } from 'firebase/firestore';
-import { db, auth } from '../firebase';
+import { db } from '../auth/firebase';
+import { getAuth } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { SupportTicket } from '../components/dashboard/support/supportTicketTypes';
 import { TicketFormValues } from '../components/dashboard/support/CreateTicketModal';
 
 export const useSupportTickets = () => {
+  const auth = getAuth();
   const [user] = useAuthState(auth);
   const [tickets, setTickets] = useState<SupportTicket[]>([]);
   const [isLoading, setIsLoading] = useState(true);

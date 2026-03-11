@@ -1,5 +1,4 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 import { Hero } from './Hero';
 import { Benefits } from './Benefits';
 import { TrustSection } from './TrustSection';
@@ -24,12 +23,6 @@ export const Home: React.FC<HomeProps> = ({
   userAddress,
   onAvailabilityCheck,
 }) => {
-  const navigate = useNavigate();
-
-  const handlePackageSelect = (pkg: Package, planType: 'prepaid' | 'month-to-month') => {
-    navigate(`/checkout/${pkg.name}?planType=${planType}`);
-  };
-
   return (
     <>
       <Hero onAvailabilityCheck={onAvailabilityCheck} />
@@ -57,7 +50,6 @@ export const Home: React.FC<HomeProps> = ({
             <FibrePlanSelection
               providers={providers}
               packages={packages}
-              onSelectPackage={handlePackageSelect}
               filteredProviders={availability.providers}
             />
           </div>

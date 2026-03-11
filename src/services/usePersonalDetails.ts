@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import { doc, onSnapshot, updateDoc } from 'firebase/firestore';
-import { db, auth } from '../firebase';
+import { db } from '../auth/firebase';
+import { getAuth } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { PersonalDetails } from '../components/dashboard/personal-details/personalDetailsTypes';
 
 export const usePersonalDetails = () => {
+  const auth = getAuth();
   const [user] = useAuthState(auth);
   const [personalDetails, setPersonalDetails] = useState<PersonalDetails | null>(null);
   const [isLoading, setIsLoading] = useState(false);

@@ -17,6 +17,10 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
     return <Navigate to="/auth" />;
   }
 
+  if (!user.emailVerified) {
+    return <Navigate to="/auth" />;
+  }
+
   return children;
 };
 

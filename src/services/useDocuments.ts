@@ -1,11 +1,13 @@
 import { useState, useEffect } from 'react';
 import { collection, addDoc, deleteDoc, onSnapshot, query, orderBy, where, doc } from 'firebase/firestore';
-import { db, auth } from '../firebase';
+import { db } from '../auth/firebase';
+import { getAuth } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { Document } from '../components/dashboard/documents/documentTypes';
 import { DocumentFormValues } from '../components/dashboard/documents/DocumentUploadModal';
 
 export const useDocuments = () => {
+  const auth = getAuth();
   const [user] = useAuthState(auth);
   const [documents, setDocuments] = useState<Document[]>([]);
   const [isLoading, setIsLoading] = useState(false);
