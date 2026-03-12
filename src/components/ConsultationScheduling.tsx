@@ -3,7 +3,27 @@ import { Button } from './ui/Button';
 import { CheckCircle, Shield, Users, Briefcase, Calendar, MessageSquare, Video, BrainCircuit, Phone } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
-const InputField = ({ icon, label, placeholder, type = 'text', name, value, onChange, required = true }) => (
+// --- 1. DEFINE TYPES FOR PROPS ---
+interface InputProps {
+    icon: React.ReactNode;
+    label: string;
+    placeholder: string;
+    name: string;
+    value: string;
+    onChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => void;
+    type?: string;
+    required?: boolean;
+}
+
+interface SelectProps extends Omit<InputProps, 'placeholder' | 'type'> {
+    children: React.ReactNode;
+}
+
+// --- 2. TYPED HELPER COMPONENTS ---
+
+const InputField: React.FC<InputProps> = ({ 
+    icon, label, placeholder, type = 'text', name, value, onChange, required = true 
+}) => (
     <div className="mb-5">
         <label htmlFor={name} className="font-semibold text-sm text-gray-700 pb-1 block">{label}</label>
         <div className="relative">
@@ -22,7 +42,9 @@ const InputField = ({ icon, label, placeholder, type = 'text', name, value, onCh
     </div>
 );
 
-const SelectField = ({ icon, label, name, value, onChange, children, required = true }) => (
+const SelectField: React.FC<SelectProps> = ({ 
+    icon, label, name, value, onChange, children, required = true 
+}) => (
     <div className="mb-5">
         <label htmlFor={name} className="font-semibold text-sm text-gray-700 pb-1 block">{label}</label>
         <div className="relative">
@@ -33,7 +55,7 @@ const SelectField = ({ icon, label, name, value, onChange, children, required = 
                 value={value} 
                 onChange={onChange} 
                 required={required}
-                className="border rounded-lg pl-10 pr-4 py-2.5 w-full text-sm text-gray-700 focus:border-blue-500 focus:ring-blue-500 transition duration-200 appearance-none"
+                className="border rounded-lg pl-10 pr-4 py-2.5 w-full text-sm text-gray-700 focus:border-blue-500 focus:ring-blue-500 transition duration-200 appearance-none bg-white"
             >
                 {children}
             </select>
@@ -41,7 +63,9 @@ const SelectField = ({ icon, label, name, value, onChange, children, required = 
     </div>
 );
 
-const TextareaField = ({ icon, label, placeholder, name, value, onChange }) => (
+const TextareaField: React.FC<InputProps> = ({ 
+    icon, label, placeholder, name, value, onChange 
+}) => (
     <div className="mb-5">
         <label htmlFor={name} className="font-semibold text-sm text-gray-700 pb-1 block">{label}</label>
         <div className="relative">
@@ -58,9 +82,11 @@ const TextareaField = ({ icon, label, placeholder, name, value, onChange }) => (
         </div>
     </div>
 );
+// ... (your imports and field components stay the same)
 
 export const ConsultationScheduling: React.FC = () => {
     const [submitSuccess, setSubmitSuccess] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false); // Added for better UX
     const [formData, setFormData] = useState({
         fullName: '',
         companyName: '',
@@ -72,15 +98,41 @@ export const ConsultationScheduling: React.FC = () => {
         message: ''
     });
 
-    const handleInputChange = (e) => {
+    const handleInputChange = (e: { target: { name: any; value: any; }; }) => {
         const { name, value } = e.target;
         setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    // --- MODIFIED SUBMIT HANDLER ---
+    const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        console.log('Form Submitted', formData);
-        setSubmitSuccess(true);
+        setIsSubmitting(true);
+
+        const { grecaptcha } = window as any;
+
+        if (!grecaptcha) {
+            console.error("reCAPTCHA has not loaded yet.");
+            setIsSubmitting(false);
+            return;
+        }
+
+        grecaptcha.ready(() => {
+            grecaptcha.execute('6Le2MX8sAAAAAMeWpt631FtAbJ5jjg2njmjnzE4Y', { action: 'book_consultation' })
+                .then(async (token: string) => {
+                    console.log('reCAPTCHA Token generated:', token);
+                    
+                    // Here you would typically send formData AND the token to your backend
+                    // Example: await myApi.sendConsultation({...formData, recaptchaToken: token});
+
+                    console.log('Form Submitted with Security Token', formData);
+                    setSubmitSuccess(true);
+                    setIsSubmitting(false);
+                })
+                .catch((err: any) => {
+                    console.error("reCAPTCHA Error:", err);
+                    setIsSubmitting(false);
+                });
+        });
     };
 
     return (
@@ -90,7 +142,8 @@ export const ConsultationScheduling: React.FC = () => {
                     
                     <div className="bg-white p-8 md:p-12 rounded-2xl shadow-xl border border-gray-100">
                         {submitSuccess ? (
-                            <div className="text-center py-8">
+                            // ... (Success UI stays the same)
+                             <div className="text-center py-8">
                                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6 text-green-600"><CheckCircle size={32} /></div>
                                 <h3 className="text-xl font-bold text-slate-900 mb-2">Thank You, {formData.fullName}!</h3>
                                 <p className="text-slate-600 mb-6">
@@ -131,20 +184,31 @@ export const ConsultationScheduling: React.FC = () => {
                                     <TextareaField icon={<MessageSquare size={16} />} label="Message / Requirements" name="message" placeholder="Tell us about your project..." value={formData.message} onChange={handleInputChange} />
                                     
                                     <div className="mt-8">
-                                        <Button type="submit" className="w-full flex items-center justify-center gap-2" size="lg">
-                                            <Video size={18} /> Submit Consultation Request
+                                        <Button 
+                                            type="submit" 
+                                            className="w-full flex items-center justify-center gap-2" 
+                                            size="lg"
+                                            disabled={isSubmitting} // Disable while processing reCAPTCHA
+                                        >
+                                            {isSubmitting ? 'Securing...' : <><Video size={18} /> Submit Consultation Request</>}
                                         </Button>
-                                        <p className="text-xs text-gray-500 mt-3 text-center">We respond within 1 business hour.</p>
+                                        
+                                        {/* MANDATORY RECAPTCHA TERMS */}
+                                        <p className="text-[10px] text-gray-400 mt-4 text-center leading-relaxed">
+                                            This site is protected by reCAPTCHA and the Google <br/>
+                                            <a href="https://policies.google.com/privacy" className="underline">Privacy Policy</a> and 
+                                            <a href="https://policies.google.com/terms" className="underline"> Terms of Service</a> apply.
+                                        </p>
                                     </div>
-                                    <div className="mt-6 flex items-center justify-center">
+                                    <div className="mt-6 flex items-center justify-center border-t border-gray-100 pt-6">
                                         <Shield size={14} className="text-green-600"/>
-                                        <p className="text-xs text-gray-500 ml-2">Your information is secure and confidential. No obligation consultation.</p>
+                                        <p className="text-xs text-gray-500 ml-2">Your information is secure and confidential.</p>
                                     </div>
                                 </form>
                             </>
                         )}
                     </div>
-
+                    {/* ... (Right-side UI stays the same) */}
                     <div className="hidden lg:block p-8 bg-gradient-to-br from-blue-900 to-gray-800 rounded-2xl text-white shadow-2xl">
                          <div className="text-center">
                             <BrainCircuit size={48} className="mx-auto mb-4 text-blue-300"/>
@@ -179,7 +243,6 @@ export const ConsultationScheduling: React.FC = () => {
                             <p className="text-xs text-blue-300">Need help? Contact our support team at <a href="mailto:support@quantumconnect.click" className="underline">support@quantumconnect.click</a></p>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

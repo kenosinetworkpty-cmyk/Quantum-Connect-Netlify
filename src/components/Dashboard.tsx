@@ -30,7 +30,7 @@ interface NetworkStatus {
 // --- 2. DATA ACTIONS (Functions) ---
 
 // THIS FIXES YOUR ERROR: The function must be defined here
-export const createSupportTicket = async (subject: string, category: string, message: string) => {
+export const createSupportTicket = async (subject: string, category: string, message: string, token: string) => {
   try {
     const user = auth.currentUser;
     if (!user) throw new Error("You must be logged in to create a ticket.");
@@ -120,15 +120,21 @@ export function SupportForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const result = await createSupportTicket(subject, category, message);
-
-    if (result.success) {
-      alert("Ticket submitted successfully! Ref: " + result.id);
-      setSubject("");
-      setMessage("");
-    } else {
-      alert("Error: " + result.error);
-    }
+  
+    // 1. Tell TypeScript grecaptcha exists globally
+    const { grecaptcha } = window as any;
+  
+    grecaptcha.ready(() => {
+      grecaptcha.execute('reCAPTCHA_site_key', { action: 'support_ticket' }).then(async (token: string) => {
+        
+        // 2. Send the token to your backend along with your form data
+        const result = await createSupportTicket(subject, category, message, token);
+  
+        if (result.success) {
+          alert("Ticket submitted!");
+        }
+      });
+    });
   };
 
   return (
