@@ -74,8 +74,8 @@ export const Footer: React.FC = () => {
              <h4 className="text-white font-bold mb-6 uppercase text-sm tracking-wider">Contact Us</h4>
              <ul className="space-y-3 text-sm">
                <li>support@quantumconnect.click</li>
-               <li>WhatsApp Chat: +27 68 054 6225</li>
-               <li>WhatsApp support on +27 68 054 6225</li>
+               <li>WhatsApp Chat: +27 69 298 7611</li>
+               <li>WhatsApp support on +27 69 298 7611</li>
              </ul>
              <div className="mt-6">
                 <span className="text-xs text-slate-500 block mb-2">Secure Payments & SSL</span>
