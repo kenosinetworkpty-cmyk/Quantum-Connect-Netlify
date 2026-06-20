@@ -1,0 +1,27 @@
+/* WhatsApp Floating Widget Styling */
+.whatsapp-widget {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 60px;
+    height: 60px;
+    background-color: #25d366;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    z-index: 9999;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Hover Animation Effect */
+.whatsapp-widget:hover {
+    transform: scale(1.1);
+}
+
+/* Icon Sizing Inside the Bubble */
+.whatsapp-widget img {
+    width: 35px;
+    height: 35px;
+}
